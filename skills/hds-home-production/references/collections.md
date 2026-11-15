@@ -86,3 +86,26 @@ separately from collection identity.
 Preserve UUIDs when moving an existing collection, use fresh native identities
 for new collections, and verify local references and actual destination opening.
 An on-disk count or unit test does not prove successful cross-device use.
+
+## Archive and restore a collection
+
+For a rollback point before a provider or mode change, copy each affected
+collection with saved Plans or production results as one complete folder under
+a dated archive. Include its Batch, profiles, Plan, assets, history and local
+references. Keep the Master available as its own reusable library. Setup-only
+collections generally need only a record of their previous settings for this
+rollback, unless the user asks to archive them too.
+
+Wait until the source writers and cleanup are idle. For each collection, use
+the working copy with the actual results. Copies with the same UUID can have
+different progress. Record the source path, collection ID and archive path in
+the existing ledger or a small archive index. Compare relative paths and file
+contents or checksums before changing setup. Keep archive folders out of active
+selection so they remain point-in-time copies.
+
+To return to the previous recipe while keeping later work, recover only the
+relevant saved Batch or channel settings from the archive and apply them through
+the installed workflow. Read them back and use **Keep** for existing images.
+Already-authored native Karmin Plans retain their mode. If the user asks to
+restore the whole point-in-time state, restore to a separate location first,
+verify the copy, and switch active ownership through the native collection flow.

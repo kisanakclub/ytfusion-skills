@@ -12,6 +12,7 @@ edition and the agent's file, terminal, browser or native API access.
 | Apply Midjourney moodboard codes | Match saved codes to current content assignments and thumbnail settings in each collection | "Pasang kode MJ yang sudah kusimpan sesuai mapping Master untuk koleksi ini." |
 | Prepare a wave | Allocate titles, profiles, collection names, storage and execution order | "Siapkan 50 judul per channel dan pisahkan koleksi berdasarkan bahasa." |
 | Execute or resume | Use native HDS to create briefs/plans and complete the requested stages | "Lanjutkan koleksi ini sampai gambar dan thumbnail selesai." |
+| Switch image production | Use [Adaptasi Karmin](production.md#switch-image-production-to-midjourney-discord) for saved Plans, configure native Karmin for future Plans, and preserve existing results | "Pindah dari Muse API ke Midjourney Discord. Pakai Plan dan gambar yang sudah ada." |
 | Inspect and hand off | Report evidence, preserve current work and prepare a destination device | "Apa yang kurang dan koleksi mana yang bisa dibawa ke Mac lain?" |
 
 For first use, identify the installation, user's goal and relevant collection.

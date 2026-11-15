@@ -1,6 +1,6 @@
 ---
 name: hds-home-production
-description: "Prepare and operate home-design channel production with an existing YtFusion HDS installation. Use for Master setup, channel and title libraries, visual and narration references, production collections, and resuming batches."
+description: "Prepare and operate home-design channel production with an existing YtFusion HDS installation. Use for Master setup, channel and title libraries, visual and narration references, production collections, resuming batches, and switching image providers with Adaptasi Karmin."
 ---
 
 # HDS Home Production
@@ -23,6 +23,9 @@ Respond in the user's language.
   [collections](references/collections.md).
 - For brief, Plan, media generation, resume or progress, read
   [production](references/production.md).
+- For switching to Midjourney Discord while keeping saved Plans and images, see
+  [Adaptasi Karmin](references/production.md#switch-image-production-to-midjourney-discord).
+  For a backup or rollback, see [archive and restore](references/collections.md#archive-and-restore-a-collection).
 - For another agent, HDS edition, missing tools or an unavailable provider, read
   [compatibility](references/compatibility.md).
 
