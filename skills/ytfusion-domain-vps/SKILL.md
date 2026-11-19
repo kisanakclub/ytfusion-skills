@@ -10,6 +10,15 @@ Use the installed YtFusion workflow and respond in the user's language. Open
 installation files are available, read `docs/setup/DOMAIN_CLOUDFLARE.md` from that
 installation and check which actions its wizard actually offers.
 
+On a remote VPS, the default page shows the installed configuration for the
+current dashboard hostname: managed public site, Web project, callback and saved
+channel count. Setup profiles and drafts belong to the management installation.
+An empty wizard catalog on a VPS does not establish that its client is missing.
+Use the overview's installed state first. The explicit **Wizard domain & HTTPS**
+action opens management; Google client import/install stays on localhost. The
+HTTPS label describes the current connection, while domain and Google review
+checks remain separate operations.
+
 ## Identify the target and check its state
 
 - Reuse the user's saved **Server Transfer** connection for the intended VPS.
