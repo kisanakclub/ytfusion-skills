@@ -62,6 +62,12 @@ workflow page and runtime tools: FFmpeg/FFprobe for media work, and the installe
 Drive/rclone connection for Drive sources. Keep credentials and account consent
 in their intended UI. Reuse existing app connections before requesting setup.
 
+For an empty installation, first channel/Drive connection, additional channel, or
+re-login, follow [Channels and Drive](accounts.md). It covers the actual onboarding
+actions and their completion checks; do not stop at requesting account names.
+If the requested setup needs its own project, branding pages, publishing, or new
+clients, execute [Google project setup](google-project.md) before account login.
+
 For Google setup, read the sibling [domain/VPS skill](../../ytfusion-domain-vps/SKILL.md)
 and `docs/setup/DOMAIN_CLOUDFLARE.md` from the app. Current behavior matters:
 

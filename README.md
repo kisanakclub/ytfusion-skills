@@ -13,6 +13,12 @@ Regular Studio, serta Live dengan API atau tanpa API. Agen membaca alur aplikasi
 yang sesuai tugasnya dan menyimpan penugasan pribadi tiap instance agar setup
 dasar tidak diulang. Lihat [instruksi skill](skills/ytfusion-operations/SKILL.md)
 dan [setup serta profil penugasan](skills/ytfusion-operations/references/setup.md).
+Instalasi kosong mengikuti [panduan tambah channel dan koneksi Drive](skills/ytfusion-operations/references/accounts.md),
+termasuk pemilihan metode login, impor koneksi, serta pemeriksaan hasilnya.
+Jika perlu project sendiri, ikuti [panduan GCP, branding, dan publish](skills/ytfusion-operations/references/google-project.md).
+Agen menyiapkan project/API, halaman publik, client, dan pemasangannya sesuai
+tugas. Hosting dipilih dari yang bisa dipakai: website yang sudah ada,
+Cloudflare Pages, atau GitHub Pages; hasil publish/verifikasi dicatat terpisah.
 
 ## Mulai di Muse
 
@@ -37,10 +43,19 @@ Siapkan instance ini untuk mengoperasikan YtFusion.
 4. Tugas awal instance ini: YT Upload untuk video final dari Google Drive,
    tanpa generate atau render HDS. Pelajari alur YT Upload yang terpasang,
    format paket/metadata, antrean, jadwal, riwayat, dan pemulihannya.
-5. Gunakan koneksi yang sudah ada. Tanyakan hanya akses atau pilihan yang
-   masih kurang: akun/channel, sumber Drive, jadwal/zona waktu, privasi,
-   serta izin kerja berkelanjutan. Arahkan login dan isian rahasia lewat UI
-   yang sesuai. Jangan minta token atau password ditempel ke chat.
+5. Jika belum ada project Google yang ditugaskan, ikuti
+   references/google-project.md untuk menyiapkan project sendiri: aktifkan API
+   yang diperlukan, siapkan branding dan halaman publik di hosting yang bisa
+   dipakai, lakukan publish In production serta verifikasi yang diperlukan,
+   lalu buat dan pasang client Web/Desktop sesuai jalur login yang tersedia.
+   Periksa hasilnya; jangan berhenti pada memberikan link panduan.
+   Ikuti references/accounts.md untuk menambah channel dan menghubungkan Drive
+   bila belum tersedia. Pelajari UI dan handler login yang terpasang, pilih
+   metode yang cocok, lalu siapkan dan periksa koneksinya. Gunakan koneksi yang
+   sudah ada. Tanyakan hanya akses atau pilihan yang masih kurang: akun pemilik
+   GCP, channel, sumber Drive, jadwal/zona waktu, privasi, serta izin kerja
+   berkelanjutan. Arahkan login dan isian rahasia lewat UI yang sesuai.
+   Jangan minta token atau password ditempel ke chat.
 6. Simpan profil penugasan pribadi di luar kedua repo agar nanti cukup
    dilanjutkan. Untuk profil baru, mulai satu upload bersamaan dan simpan
    sumber video. Pertahankan pengaturan aplikasi yang sudah ada.

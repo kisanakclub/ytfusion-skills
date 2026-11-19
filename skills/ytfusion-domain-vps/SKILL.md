@@ -71,6 +71,12 @@ checks remain separate operations.
 
 ## Google OAuth clients and private archives
 
+For a first Google project, API activation, public branding pages (including
+existing hosting, Cloudflare Pages, or GitHub Pages), publishing and client
+creation, follow [Google project setup](../ytfusion-operations/references/google-project.md).
+Execute the authorized setup and record the actual publishing/review state;
+reuse an assigned existing project rather than creating one per connection.
+
 Use **GCP** in the management device's YouTube API Setup to select the saved VPS
 and project, import its Google downloads, then install the Web client through
 SSH. Follow the installed UI when older versions have different controls.

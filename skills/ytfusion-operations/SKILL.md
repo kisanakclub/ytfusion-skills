@@ -1,14 +1,14 @@
 ---
 name: ytfusion-operations
-description: Install or prepare YtFusion on a new agent host and operate existing final-video workflows through YT Upload, Regular Studio, or Live. Use for Muse onboarding, Drive-to-YouTube uploads, assigned channel queues, scheduled publication, and API or encoder-only live streams. Reuse the instance assignment and installed application instead of repeating setup.
+description: Install or prepare YtFusion, set up its Google project and OAuth branding/clients, connect YouTube channels and Google Drive, and operate final-video workflows through YT Upload, Regular Studio, or Live. Use for Muse onboarding, first account connections, Drive-to-YouTube uploads, assigned channel queues, scheduled publication, and API or encoder-only live streams. Reuse the instance assignment and installed application instead of repeating setup.
 ---
 
 # YtFusion Operations
 
 Operate the installed YtFusion and respond in the user's language. This skill
 covers installation and final-media operations on Muse, a VPS, or a local device.
-HDS generation belongs to `hds-home-production`; domains and managed Google
-clients belong to `ytfusion-domain-vps` in this repository.
+Use `hds-home-production` for HDS generation. Reuse `ytfusion-domain-vps` in this
+repository for domain/HTTPS deployment and managed Google-client installation.
 
 ## Start with the assignment
 
@@ -24,13 +24,22 @@ clients belong to `ytfusion-domain-vps` in this repository.
 
    | Task | Reference | Native entry point |
    | --- | --- | --- |
+   | Own GCP project, APIs, public branding pages, publishing, or clients | [Google project](references/google-project.md) | Google Cloud / site hosting / native client import |
+   | First channel/Drive connection, additional account, or re-login | [Channels and Drive](references/accounts.md) | `/channel_manager`, `/add_channel`, `/gdrive-downloader` |
    | Upload final video packages from Drive or local output | [YT Upload](references/yt-upload.md) | `/fitur_tambahan/yt_upload` |
    | Operate a channel's Regular pipeline | [Regular Studio](references/regular-studio.md) | `/studio_dashboard` |
    | Live with YouTube API or encoder-only Live | [Live](references/live.md) | `/live_dashboard` or `/live_without_api` |
 
-4. Fill only missing information that prevents the requested work. Let the user
-   complete login, consent, and secret entry through the intended secure UI.
-   Save resolved choices privately so future tasks do not repeat onboarding.
+4. When the requested setup needs a Google project/client or public branding,
+   execute [Google project](references/google-project.md); choose usable hosting,
+   complete authorized publishing/verification steps, and install the clients.
+   When the installation is empty or a required connection is missing, follow
+   [Channels and Drive](references/accounts.md) before proceeding to the assigned
+   workflow. Study the relevant installed UI and handlers; do not merely tell the
+   user to add accounts. Prepare the connection and guide any necessary user login.
+   Fill only missing information and save resolved choices privately so future
+   tasks do not repeat onboarding. Connect only accounts needed by the task;
+   encoder-only Live with a local source need not add a YouTube OAuth channel.
 
 The assignment is agent context, not a configuration format that YtFusion loads.
 App settings, account grants, queues, and receipts remain owned by the app. Reconcile
