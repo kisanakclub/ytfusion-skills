@@ -1,5 +1,9 @@
 # YT Upload: final videos and Drive packages
 
+This reference operates native YtFusion queues. For a user-assigned Muse executor
+using connectors/APIs without the dashboard, read [Muse executor](muse-executor.md).
+Do not force its connector to use the app's rclone connection or package format.
+
 Open `/fitur_tambahan/yt_upload`. Read the installed
 `docs/HDS_UPLOAD_FORMAT_MIGRATION.md` for the current Drive package contract and
 `docs/YT_UPLOAD_QUEUE_RECOVERY_AUDIT.md` for scheduling and recovery behavior.

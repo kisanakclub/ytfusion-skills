@@ -20,11 +20,18 @@ Agen menyiapkan project/API, halaman publik, client, dan pemasangannya sesuai
 tugas. Hosting dipilih dari yang bisa dipakai: website yang sudah ada,
 Cloudflare Pages, atau GitHub Pages; hasil publish/verifikasi dicatat terpisah.
 
+Untuk tugas Muse yang mengambil video final tanpa dashboard, tersedia
+[panduan executor Muse](skills/ytfusion-operations/references/muse-executor.md):
+konektor Drive atau API, uploader YouTube resumable, catatan job privat, dan
+scheduler bawaan. Pemeriksaan satu instance menemukan fasilitas pendukungnya,
+tetapi unduh/upload nyata belum diuji. Panduan ini belum menyertakan helper
+uploader mandiri atau membuat jadwal otomatis.
+
 ## Mulai di Muse
 
-Copas perintah berikut ke Muse baru. Perintah ini meminta agen **memasang aplikasi
-YtFusion dan mengambil skill**, lalu menyiapkan tugas awal. Ini bukan script
-installer yang langsung dijalankan oleh repo skill.
+Copas perintah berikut ke Muse baru. Perintah ini meminta agen **mengambil source
+YtFusion dan skill**, memeriksa jalur eksekusi, lalu menyiapkan tugas awal beserta
+instalasi yang diperlukan. Ini bukan script installer otomatis dari repo skill.
 
 ```text
 Siapkan instance ini untuk mengoperasikan YtFusion.
@@ -33,24 +40,29 @@ Siapkan instance ini untuk mengoperasikan YtFusion.
    ambil https://github.com/kisanakclub/ytfusion-skills dan baca
    skills/ytfusion-operations/SKILL.md beserta references/setup.md.
    Kalau sudah ada, gunakan checkout itu dan baca panduan yang sama.
-2. Kalau YtFusion belum terpasang, clone dan install aplikasi dari
-   https://github.com/kisanakclub/Yt_FusionX sesuai AGENTS.md dan panduan
-   platform di repo aplikasi. Periksa dulu kecocokan lingkungan Muse dan
-   kebutuhan tugas. Kalau sudah terpasang, pertahankan data dan konfigurasinya.
+2. Untuk tugas upload final di Muse, baca references/muse-executor.md dan
+   periksa konektor/API serta scheduler yang tersedia. Ambil source dari
+   https://github.com/kisanakclub/Yt_FusionX untuk mempelajari logic dan
+   gunakan dependency yang diperlukan. Jika memilih alur aplikasi native,
+   install sesuai AGENTS.md dan panduan platform setelah memeriksa kecocokan
+   host. Pertahankan instalasi, data, dan konfigurasi yang sudah ada.
 3. Pasang/daftarkan skill melalui mekanisme yang benar-benar didukung agen ini
    jika tersedia. Simpan petunjuk untuk menemukan skill dan profil pada tugas
    berikutnya; jangan anggap clone saja sudah mengaktifkan skill otomatis.
-4. Tugas awal instance ini: YT Upload untuk video final dari Google Drive,
-   tanpa generate atau render HDS. Pelajari alur YT Upload yang terpasang,
-   format paket/metadata, antrean, jadwal, riwayat, dan pemulihannya.
-5. Jika belum ada project Google yang ditugaskan, ikuti
+4. Tugas awal instance ini: persiapan upload video final dari Google Drive,
+   tanpa generate atau render HDS. Evaluasi jalur executor Muse terlebih
+   dahulu. Pelajari logic metadata, mapping channel, jadwal, riwayat, dan
+   pemulihan YtFusion yang relevan. Jangan anggap uploader mandiri sudah ada.
+5. Jika jalur terpilih memerlukan client Google sendiri dan belum ada project
+   yang ditugaskan, ikuti
    references/google-project.md untuk menyiapkan project sendiri: aktifkan API
    yang diperlukan, siapkan branding dan halaman publik di hosting yang bisa
    dipakai, lakukan publish In production serta verifikasi yang diperlukan,
    lalu buat dan pasang client Web/Desktop sesuai jalur login yang tersedia.
    Periksa hasilnya; jangan berhenti pada memberikan link panduan.
-   Ikuti references/accounts.md untuk menambah channel dan menghubungkan Drive
-   bila belum tersedia. Pelajari UI dan handler login yang terpasang, pilih
+   Untuk aplikasi native, ikuti references/accounts.md. Untuk executor Muse,
+   gunakan koneksi yang benar-benar didukung konektor/uploader terpilih.
+   Pelajari UI dan handler login yang terpasang, pilih
    metode yang cocok, lalu siapkan dan periksa koneksinya. Gunakan koneksi yang
    sudah ada. Tanyakan hanya akses atau pilihan yang masih kurang: akun pemilik
    GCP, channel, sumber Drive, jadwal/zona waktu, privasi, serta izin kerja
@@ -62,6 +74,8 @@ Siapkan instance ini untuk mengoperasikan YtFusion.
 7. Selesaikan pemasangan dan setup yang sudah bisa dilakukan. Laporkan
    kesiapan dan kebutuhan yang benar-benar belum tersedia. Jalankan upload
    atau Live setelah ada tugas/penugasan yang mengizinkannya.
+   Tugas berulang baru dibuat setelah diminta, sumber/tujuan jelas, dan jalur
+   transfer terbukti. Jadwal persisten tidak menjamin proses upload tahan putus.
 ```
 
 Repo aplikasi Private memerlukan akses GitHub. Jika belum tersedia, agen
@@ -119,7 +133,7 @@ Menyalin folder sumber ke lokasi biasa belum membuatnya otomatis aktif.
 
 Paket ini berisi instruksi dan satu helper Python read-only. Mengambil paket ini
 saja tidak memasang YtFusion. Perintah **Mulai di Muse** meminta agen melakukan
-pemasangan aplikasi sesuai panduannya. Paket skill tidak membuat koneksi agen ke
+penyiapan sesuai jalur eksekusi yang dipilih. Paket skill tidak membuat koneksi agen ke
 komputer dan tidak menambahkan provider ke edisi yang tidak menyediakannya.
 
 ## Mulai

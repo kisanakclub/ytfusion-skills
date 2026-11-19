@@ -1,5 +1,9 @@
 # Set up an operations instance
 
+For a Muse connector/API executor assignment, read [Muse executor](muse-executor.md)
+first. Obtain the app source as a workflow reference and reuse needed dependencies;
+the native server installation below is conditional on choosing native-app mode.
+
 ## Find or install YtFusion
 
 Inspect the host, existing checkout, app service, and saved assignment before
@@ -119,6 +123,7 @@ Example shape for a newly prepared, not yet assigned instance:
 {
   "schema": 1,
   "instance_id": "uploader-one",
+  "execution_mode": "native_app",
   "app_root": "<resolved installation directory>",
   "dashboard_url": "<verified dashboard URL>",
   "workflows": ["yt_upload"],
@@ -133,7 +138,9 @@ Example shape for a newly prepared, not yet assigned instance:
 }
 ```
 
-Resolve IDs and timezone from confirmed app/user choices. When an ongoing task is
+For a chosen Muse connector/API executor, set `execution_mode` to
+`agent_executor` and follow its reference instead of treating this profile as an
+application queue. Resolve IDs and timezone from confirmed app/user choices. When an ongoing task is
 authorized, record its actual scope and boundaries, then reuse them. Keep credential
 references here, never secret values. The app does not read this example format:
 native configuration must still be changed through native controls, and an agent's

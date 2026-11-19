@@ -1,11 +1,11 @@
 ---
 name: ytfusion-operations
-description: Install or prepare YtFusion, set up its Google project and OAuth branding/clients, connect YouTube channels and Google Drive, and operate final-video workflows through YT Upload, Regular Studio, or Live. Use for Muse onboarding, first account connections, Drive-to-YouTube uploads, assigned channel queues, scheduled publication, and API or encoder-only live streams. Reuse the instance assignment and installed application instead of repeating setup.
+description: Prepare YtFusion and its Google project/accounts, operate final-video workflows through YT Upload, Regular Studio, or Live, or evaluate an assigned Muse connector/API executor with recurring tasks. Use for Muse onboarding, first account connections, Drive-to-YouTube uploads, assigned queues, scheduled publication, and API or encoder-only live streams. Reuse the instance assignment and installed application instead of repeating setup.
 ---
 
 # YtFusion Operations
 
-Operate the installed YtFusion and respond in the user's language. This skill
+Respond in the user's language. Normally operate the installed YtFusion. This skill
 covers installation and final-media operations on Muse, a VPS, or a local device.
 Use `hds-home-production` for HDS generation. Reuse `ytfusion-domain-vps` in this
 repository for domain/HTTPS deployment and managed Google-client installation.
@@ -13,6 +13,9 @@ repository for domain/HTTPS deployment and managed Google-client installation.
 ## Start with the assignment
 
 1. Find the existing installation and the agent's saved instance assignment.
+   Establish whether the assigned mode is the native app or a Muse connector/API
+   executor. For the latter, read [Muse executor](references/muse-executor.md)
+   before installing a server or prescribing native account-import flows.
    Read its `AGENTS.md` and inspect the relevant native connection, channel, queue,
    and worker status. Do not start a second installation or worker to find status.
 2. For a new host, missing connection, or installation/update request, read
@@ -24,6 +27,7 @@ repository for domain/HTTPS deployment and managed Google-client installation.
 
    | Task | Reference | Native entry point |
    | --- | --- | --- |
+   | Muse connector/API execution, capability proof, recurring upload tasks | [Muse executor](references/muse-executor.md) | Available host connectors, uploader, and scheduler |
    | Own GCP project, APIs, public branding pages, publishing, or clients | [Google project](references/google-project.md) | Google Cloud / site hosting / native client import |
    | First channel/Drive connection, additional account, or re-login | [Channels and Drive](references/accounts.md) | `/channel_manager`, `/add_channel`, `/gdrive-downloader` |
    | Upload final video packages from Drive or local output | [YT Upload](references/yt-upload.md) | `/fitur_tambahan/yt_upload` |
@@ -42,7 +46,8 @@ repository for domain/HTTPS deployment and managed Google-client installation.
    encoder-only Live with a local source need not add a YouTube OAuth channel.
 
 The assignment is agent context, not a configuration format that YtFusion loads.
-App settings, account grants, queues, and receipts remain owned by the app. Reconcile
+In native mode, app settings, grants, queues, and receipts remain owned by the app.
+An authorized independent executor has separate jobs and private durable state. Reconcile
 the assignment against actual installed state before acting; a saved note cannot
 establish that a channel is connected or a video was uploaded.
 
@@ -60,11 +65,12 @@ establish that a channel is connected or a video was uploaded.
 - Bind channel IDs and Drive file/folder identities, not just display names.
   Multiple hosts must have distinct assigned inputs or use an actual shared
   coordination mechanism. Separate local queues do not provide a distributed lock.
-- Use native UI or authenticated APIs whose current request/response contract has
+- In native mode, use UI or authenticated APIs whose current request/response contract has
   been inspected. Preserve session, origin, and CSRF checks. Never guess a payload,
   forge connection status, directly edit queue databases, or import `src/app.py`
   into a diagnostic script to discover behavior.
-- Use native Start, Pause, Resume, Stop, Retry, and review actions. Re-read state
+- Use the selected executor's supported Start, Pause, Resume, Stop, Retry, and
+  review actions; native-app controls apply to native jobs. Re-read state
   after timeouts. Reconcile an uncertain YouTube result before retrying upload;
   do not create a second video or broadcast just because a response was lost.
 - Keep Google downloads, refresh tokens, stream keys, app passwords, and GitHub
@@ -73,10 +79,11 @@ establish that a channel is connected or a video was uploaded.
 
 ## Continue and report
 
-On continuation, reconcile the saved assignment with native jobs and receipts,
+On continuation, reconcile the saved assignment with the selected executor's jobs and receipts,
 then perform the next authorized action. Keep stable job, package, file, channel,
-video, or broadcast IDs in private progress notes only as needed. YtFusion owns
-durable job scheduling; an agent note or open chat is not a job supervisor.
+video, or broadcast IDs in private progress notes only as needed. In native mode,
+YtFusion owns durable scheduling. In agent-executor mode, use the authorized host
+scheduler and durable ledger. An open chat is not a job supervisor.
 
 For recurring monitoring requested by the user, use the host's supported task
 mechanism and the same saved assignment. Do not promise a permanent shell process,
