@@ -1,0 +1,4 @@
+interface:
+  display_name: "YtFusion Operations"
+  short_description: "Set up YtFusion and operate uploads and live"
+  default_prompt: "Use $ytfusion-operations to set up YtFusion or continue my assigned upload and live workflows."
