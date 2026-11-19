@@ -59,6 +59,47 @@ installation and check which actions its wizard actually offers.
    links if the public site used there is moving. Verify the new dashboard and
    any moved public pages from the browser before reporting success.
 
+
+## Google OAuth clients and private archives
+
+Use **GCP** in the management device's YouTube API Setup to select the saved VPS
+and project, import its Google downloads, then install the Web client through
+SSH. Follow the installed UI when older versions have different controls.
+
+- A Web application client serves both Add Channel and Google Drive on the VPS.
+  Register the exact HTTPS callback shown by the wizard. The YouTube and Drive
+  grants are separate account logins even when they share the Web client.
+- A Desktop client serves localhost logins for both YouTube and Drive on the
+  management Mac. Preserve each client's actual Google type regardless of its
+  downloaded filename. Creating or replacing credentials is a separate action
+  from importing an existing download.
+- Current localhost imports automatically archive original JSON bytes beneath
+  `secrets/gcp_client_archive/<dashboard-hostname>/<project-id>/`, named
+  `oauth-web.json` and `oauth-desktop.json`. The hostname identifies the chosen
+  VPS without depending on a provider nickname. Keep archives private and out
+  of Git. They can be copied or moved for personal backup.
+- Setup and installed dashboards use managed snapshots under
+  `secrets/google_oauth/` with `index.json` and hash-named JSON files. Preserve
+  this active store. Older installations may still reference original files
+  through `global_config/domain_setup_profiles.json`; check the saved paths
+  before moving an old archive. Import through the current wizard to create
+  managed copies.
+- Existing channels retain their client and login token in
+  `channels/<channel>/data_internal/auth/`. Installing a default project selects
+  the client for new logins. Reauthorizing or switching an existing channel is
+  a separate operation. Keep Drive's existing connection backups and channel
+  upload queues intact during ordinary setup.
+- Original downloads may also be kept privately on a VPS when requested. VPS
+  installation creates the active client snapshots; automatic original-file
+  archiving described above belongs to the localhost import step. Check the
+  actual files before reporting an original-download backup on a VPS.
+
+Verify the project's Audience publishing status separately from branding and
+scope verification. Record each actual result, and distinguish prepared clients
+from completed channel/Drive account authorization. Archive changes alone need
+no service restart. Source updates that require activation must wait for affected
+media/upload work to be idle.
+
 Report which hostname was checked or changed, what was verified at the origin
 and from the browser, and any step still pending. Scope changes to the requested
 hostnames and integrations.
