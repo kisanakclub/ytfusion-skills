@@ -32,6 +32,7 @@ credentials. Bind the credential to the resolved channel ID, not its display nam
 | Data API `subscriberCount`, `viewCount`, `videoCount` | Current reported channel totals, not growth within the selected period. Honor hidden subscriber status; do not imply exact subscriber precision. |
 | Analytics `views`, dimension `day` | Daily views within explicit start/end dates; sort and join by ISO date. This is not Studio's rolling realtime 48-hour report. |
 | `estimatedMinutesWatched` | Divide by 60 for hours; preserve precision before formatting. Show the exact period. This alone does not establish YPP-eligible public watch hours. |
+| Native-style Watch Hrs (365d) | Query the actual 365-day period with the existing grant, record its dates/availability and convert minutes to hours. Do not relabel a 30/57-day sum as a 365-day query. Failure is unavailable, not zero. Do not copy a Ready/YPP-eligible badge from a simple hours/subscriber threshold. |
 | `subscribersGained`, `subscribersLost` | Optional period metrics; net growth is gained minus lost for the same period. Keep separate from current subscriber total. |
 | `averageViewDuration` | Optional average in seconds. Query the aggregate for the selected period or weight compatible components correctly; do not average daily averages unweighted. |
 | `estimatedRevenue` | Optional estimate, with currency and coverage. Requires appropriate granted access; failure/absence is not proof of no monetization and not revenue zero. |

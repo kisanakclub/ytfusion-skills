@@ -36,30 +36,65 @@ allow routine refresh without the Mac or another Google login.
 
 ## Match channel-stats thoughtfully
 
-Read the installed `src/templates/channel_statistics.html` before designing.
-Preserve its recognizable compact channel table and dark neutral/teal visual
-language, rather than replacing it with a generic wall of oversized cards.
+Read the installed `src/templates/channel_statistics.html` before designing:
+header/filter/table/modal markup, final CSS overrides and the filter/sort/chart
+functions. Use its actual composition, density and interactions as the baseline.
+When the user supplies a screenshot, give that reference to the artifact builder
+as well as the source-based brief. Keep private screenshots out of this shared
+repo; their sample channels/values are not new account assignments or app data.
 Use English for dashboard labels by default, matching the owner's UI preference
 and native channel-stats; keep chat replies in the user's language. An explicit
-UI language choice overrides that default. A useful starting layout is:
+UI language choice overrides that default. Follow the native hierarchy:
 
-- Header: Channel Analytics, last successful update, reporting coverage, privacy
-  toggle and **Refresh**. Keep secondary explanations in a short expandable note.
-- Toolbar: search channel name/internal name, saved category/group filter when
-  such data exists, and period selector. Use 30 days initially; retain user choices.
-- Small summary strip: assigned/visible channels, current subscribers, selected
-  period views and watch hours. Show what is covered rather than fake totals.
-- Main sortable table: internal name if available, avatar/name/handle, subscribers,
-  videos, **24h\*** and **48h\*** views, selected-period views, watch hours and
-  trend sparkline/detail action. The short-period columns follow
-  [latest reported days](data-contract.md#latest-reported-day-and-two-day-columns),
-  with reporting dates and a compact visible note that they are not realtime.
-  Available earnings are secondary; use a clear unavailable label when access is
-  missing. Current worker status may be shown only when a native source exists.
-- Channel detail panel/dialog: larger daily chart, date/metric selector, exact
-  coverage, period totals and meaningful comparison where available. Keep channel
-  identity visible when switching charts. Optional video breakdown should use real
-  supported queries when requested, not fabricated starter data.
+- Compact header: title/icon and a small last-update line at left, Privacy and
+  the supported refresh action at right. Use the native restrained divider/accent.
+- One collapsed **Info & Tips** row for freshness, permissions and data definitions.
+  Do not fill the default page with repeated date/source paragraphs, revenue
+  warning panels, implementation details or four large summary cards.
+- One filter toolbar: Category dropdown, Search channels and a visible count.
+- The channel table is the main content. Follow native column order: internal
+  name when assigned, YouTube Channel (avatar/name/handle/link), Subs, Videos,
+  Watch Hrs (365d), 24h\*, 48h\*, Chart, Earnings 24h/Earnings, and operational
+  Status when a real source exists. Keep numbers aligned and typography compact.
+  Use chart icon buttons in dedicated cells rather than hiding charts behind a
+  generic Detail button and a long inline report.
+- Put periods, metric selection, detailed summaries and any optional daily table
+  inside the chart dialog. A 30-day initial graph is useful; preserve later choices.
+
+For 24h\*/48h\*, follow
+[latest reported days](data-contract.md#latest-reported-day-and-two-day-columns).
+Keep the non-realtime cue compact and dates available by tooltip/subtext without
+repeating paragraphs in every row. Show unavailable monetary/worker values as
+an em dash or concise state with an accessible explanation. Disable a revenue
+chart when its source is unavailable; do not fabricate zero revenue, monetization
+or worker status. Unsupported source fields are a data limitation, not a reason
+to remove filtering/chart architecture from a reusable multi-channel UI.
+
+### Filtering and chart interactions
+
+Native category metadata comes from `/api/categories` and the channel mapping in
+`/api/status`. In executor mode, use assigned/native metadata available to that
+instance; missing category is **Uncategorized**. Populate **All Categories** and
+category counts from the assigned channel list. A one-channel pilot still gets
+the filter; do not hardcode its category or infer one from its title. Category
+and case-insensitive search combine, with a correct **Showing X of Y** count.
+Search channel/internal names and handles. Preserve filters across sorting and
+refresh, and display a concise empty-filter result without dropping cached data.
+
+Make the row's Chart icon open an actual dialog/panel with channel identity,
+interactive daily chart, dated tooltips, close control and keyboard dismissal.
+Offer **7d / 14d / 30d / 90d / 180d / Available range**, with Views and Watch time
+working from real dated series. Earnings can have a separate native-style chart
+action when access exists. Use the [data contract](data-contract.md) for calendar
+windows, gaps, units and bounded-history labels. Never disable 90/180 days merely
+because the first snapshot fetched only 60 days: extend coverage on demand or
+fetch the required bounded history once, cache it and identify actual coverage.
+Do not call limited API history lifetime.
+
+Keep small period summaries inside the dialog; an optional daily table starts
+collapsed. Opening/changing a chart must not reset search, sort or privacy on the
+main table. Preserve context on close, restore focus to the opener, and handle
+Escape without leaking the dialog or blocking the page.
 
 Use readable tabular numerals, clear selected/sort states, restrained borders,
 and a table that stays usable on a narrow screen. Preserve keyboard access,
@@ -108,15 +143,21 @@ Use the actual Muse artifact viewer to check:
 
 1. The artifact opens from its saved Library location with real assigned-channel
    data, accurate dates and no credential material in the frontend/data payload.
-2. Search/filter and sorting work; opening a channel chart and changing periods
-   shows the corresponding series and correct totals. Unknown values remain
-   unknown. Verify a real total against the backend response. Check 24h\*/48h\*
+2. Search and category filtering work together, counts update and sorting keeps
+   the filter. Test chart-icon opening/closing, metric and 7/30/90/180-day changes,
+   dated tooltips and Escape. Unknown values remain unknown. Verify a chart total
+   and the separate 365-day watch-hours figure against their own API responses.
+   Check 24h\*/48h\*
    against their dated daily rows, independently of the selected chart period;
    include them in the dashboard's existing privacy behavior.
 3. The documented Refresh/Ask Muse action really updates the same artifact and
    records a new successful API retrieval time. A refreshed viewer alone is not
    evidence of a new API request.
-4. Reopening keeps the artifact, saved preferences and last valid snapshot, and
+4. Compare the rendered default page to the native/source screenshot: compact
+   header, collapsed info, filter toolbar and table; no unnecessary summary-card
+   strip, revenue banner or repeated technical prose. Check a narrow viewport
+   without clipping chart controls or causing whole-page horizontal overflow.
+5. Reopening keeps the artifact, saved preferences and last valid snapshot, and
    the chosen chat contains the artifact card or actual reopen link.
 
 Use temporary non-user fixtures only for states that cannot be safely observed;
