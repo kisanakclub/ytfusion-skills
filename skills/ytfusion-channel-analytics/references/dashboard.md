@@ -9,10 +9,14 @@ logic and persistent database. Verify the current documentation and private
 delivery before creating it; keep credential access in trusted VM execution.
 
 Name the persistent artifact for the instance's channel Analytics and keep it in
-**Library**. Create a separate Analytics side chat when requested, and give that
-chat the dashboard link/context for follow-up analysis. On the inspected host,
+**Library**. Present its artifact card in the user's chosen chat; use the main
+chat for coordination and refresh requests unless a side chat is requested.
+Keep any explicit later chat preference. When the user changes the destination,
+handoff the existing task and show the same artifact card there; do not create
+another dashboard or duplicate an in-flight build/refresh. A prior side chat may
+remain as history without becoming the required entry point. On the inspected host,
 artifacts do not have their own built-in side chat; these are separate surfaces.
-The main chat can announce completion once and link to them. If direct side-chat
+If a separate chat was requested, provide its dashboard context. If direct side-chat
 creation is unavailable, give the actual supported UI route; do not invent a chat
 URL or create a Codex thread. Do not require a new chat just to answer a quick question.
 
@@ -89,7 +93,7 @@ updates durable data, and updates the existing artifact. Disable duplicate
 concurrent refreshes; show progress, success time and per-channel failures. Do
 not label a button Refresh if it merely reloads unchanged embedded JSON. If the
 host supports only agent-driven refresh, label the real action **Ask Muse to
-update** and make that handoff work in the dedicated chat. Explicitly distinguish
+update** and make that handoff work in the chosen chat. Explicitly distinguish
 an interactive snapshot from a live updating app until the full refresh path is
 verified. Never add automatic periodic refresh merely to make the UI seem live.
 
@@ -113,7 +117,7 @@ Use the actual Muse artifact viewer to check:
    records a new successful API retrieval time. A refreshed viewer alone is not
    evidence of a new API request.
 4. Reopening keeps the artifact, saved preferences and last valid snapshot, and
-   the separate Analytics side chat or actual route to it is accessible.
+   the chosen chat contains the artifact card or actual reopen link.
 
 Use temporary non-user fixtures only for states that cannot be safely observed;
 keep fixture coverage distinct from live proof. Do not attach a public demo

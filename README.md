@@ -37,7 +37,8 @@ bukan uploader/scheduler siap jalan. Baca
 
 Membaca channel yang sudah terhubung dan menyiapkan dashboard privat di Muse,
 mengikuti tabel, filter dan grafik **channel-stats**. Dashboard disimpan di
-**Library** agar mudah dibuka lagi, serta chat Analytics terpisah untuk diskusi.
+**Library** agar mudah dibuka lagi, dengan kartu UI di main chat. Side chat khusus
+bisa digunakan bila diminta pengguna.
 Memakai koneksi instance yang ada; tidak perlu mengulang setup
 GCP atau menyalakan Mac untuk executor VM yang sudah terhubung.
 Lihat [instruksi skill](skills/ytfusion-channel-analytics/SKILL.md).
@@ -46,7 +47,7 @@ Lihat [instruksi skill](skills/ytfusion-channel-analytics/SKILL.md).
 Pasang skill skills/ytfusion-channel-analytics dari repo ini dan verifikasi
 discovery. Pakai skill itu untuk membuat dashboard privat Analytics channel
 yang ditugaskan pada instance ini, mirip UI channel-stats. Simpan di Library
-dan sediakan side chat khusus agar mudah kubuka lagi. Pakai data nyata dan
+dan tampilkan kartu UI-nya di main chat agar mudah kubuka lagi. Pakai data nyata dan
 koneksi yang ada, tunjukkan periode/cakupan dan waktu update, serta uji refresh.
 Jangan mempublikasikan datanya atau membuat jadwal berulang.
 ```

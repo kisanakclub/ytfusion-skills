@@ -1,6 +1,6 @@
 ---
 name: ytfusion-channel-analytics
-description: Read Analytics for connected YouTube channels and build or update a private, persistent Muse dashboard modeled on YtFusion channel-stats. Use for channel comparisons, views, watch time, subscribers, available revenue, interactive charts, Library access and a separate Analytics side chat.
+description: Read Analytics for connected YouTube channels and build or update a private, persistent Muse dashboard modeled on YtFusion channel-stats. Use for channel comparisons, views, watch time, subscribers, available revenue, interactive charts and access from Library or the user's chosen chat.
 ---
 
 # YtFusion Channel Analytics
@@ -14,8 +14,8 @@ do not repeat account setup when a valid connection already exists.
 - For a quick question, return the requested figures, dates and a short
   explanation. Do not create an app for every statistics question.
 - For a reusable UI, read [dashboard](references/dashboard.md). On Muse, prefer
-  one private interactive artifact in Library and a separate Analytics side chat, so channel
-  analysis does not depend on finding messages in the main conversation.
+  one private interactive artifact in Library, linked from the user's chosen chat.
+  Keep coordination in the main chat unless the user requests a separate thread.
   Reuse that artifact on later requests rather than creating another dashboard.
 - For data collection in either case, read [data contract](references/data-contract.md)
   and the installed `src/templates/channel_statistics.html` plus its handlers in
@@ -46,7 +46,8 @@ For a dashboard, deliver its stable reopenable location and verify it in the
 user-facing viewer, including a channel selection, date change and refresh.
 State whether refresh really fetches new API data or only reloads a snapshot.
 Persist the artifact identity, channel selection and data-source mapping in
-private instance context so future chats update the same dashboard.
+private instance context so future chats update the same dashboard. Changing the
+preferred chat changes delivery/context, not the artifact identity or running job.
 
 Read-only reporting and cache updates do not authorize uploads, channel/video
 edits, public sharing, new account access, or recurring tasks. When the user asks
