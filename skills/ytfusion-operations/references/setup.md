@@ -84,6 +84,18 @@ Verify final authenticated page URLs/content and API payloads, not HTTP 200 alon
 a redirect back to Login or a JSON connection-not-configured result is not
 workflow readiness. Separate installed dependencies from configured accounts.
 
+If native Google calls fail certificate verification behind a host egress proxy,
+inspect the actual HTTP transport before changing OAuth grants or app code. A
+working `requests` connector does not prove `googleapiclient`/`httplib2` uses the
+same trust bundle. Where the installed `httplib2.certs.where()` supports
+`HTTPLIB2_CA_CERTS`, set it to the existing host-maintained CA bundle in the private
+trial launcher **before import/startup**; `SSL_CERT_FILE` and
+`REQUESTS_CA_BUNDLE` alone do not configure that transport. Keep certificate
+verification enabled and do not download a new CA or patch upload logic for this
+runtime setting. Verify a fresh-process read-only call, then the running native
+server's own Google call after an idle controlled restart. This proves that
+connection path, not an actual video upload or every other transport.
+
 For a Muse UI-access problem, inspect the current browser and artifact SDK
 contracts before declaring all private UI impossible. The inspected artifact
 runtime serves builder-created apps through declared JSON actions; it exposes no
