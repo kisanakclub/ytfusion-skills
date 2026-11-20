@@ -46,7 +46,10 @@ UI language choice overrides that default. A useful starting layout is:
 - Small summary strip: assigned/visible channels, current subscribers, selected
   period views and watch hours. Show what is covered rather than fake totals.
 - Main sortable table: internal name if available, avatar/name/handle, subscribers,
-  videos, selected-period views, watch hours and trend sparkline/detail action.
+  videos, **24h\*** and **48h\*** views, selected-period views, watch hours and
+  trend sparkline/detail action. The short-period columns follow
+  [latest reported days](data-contract.md#latest-reported-day-and-two-day-columns),
+  with reporting dates and a compact visible note that they are not realtime.
   Available earnings are secondary; use a clear unavailable label when access is
   missing. Current worker status may be shown only when a native source exists.
 - Channel detail panel/dialog: larger daily chart, date/metric selector, exact
@@ -103,7 +106,9 @@ Use the actual Muse artifact viewer to check:
    data, accurate dates and no credential material in the frontend/data payload.
 2. Search/filter and sorting work; opening a channel chart and changing periods
    shows the corresponding series and correct totals. Unknown values remain
-   unknown. Verify a real total against the backend response.
+   unknown. Verify a real total against the backend response. Check 24h\*/48h\*
+   against their dated daily rows, independently of the selected chart period;
+   include them in the dashboard's existing privacy behavior.
 3. The documented Refresh/Ask Muse action really updates the same artifact and
    records a new successful API retrieval time. A refreshed viewer alone is not
    evidence of a new API request.

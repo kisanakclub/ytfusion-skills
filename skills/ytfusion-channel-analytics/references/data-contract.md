@@ -64,6 +64,24 @@ attempt every possible Analytics dimension for a simple dashboard.
 - Across channels, show selected count and valid reporting count. Do not sum
   unknowns as zero, mix currencies, or silently combine different report dates.
 
+### Latest reported day and two-day columns
+
+For channel-stats-style short summaries, expose sortable **24h\*** and **48h\***
+views columns. Keep a compact visible note: **Latest reported day / two days ·
+not realtime**, and show actual per-channel reporting dates in subtext or tooltips.
+These are compatibility labels for daily reports, not rolling hour windows.
+
+- Derive each channel's latest date from its full dated daily series, independently
+  of the chart's selected 7/14/30-day window. 24h\* is that day's views.
+- For 48h\*, require that latest date and the immediately preceding calendar date
+  in reporting time. Sum those two available daily values, preserving valid zeros.
+  A missing preceding date means unavailable or explicitly partial coverage, not
+  zero; do not silently combine nonconsecutive rows. If no report exists, both
+  summaries are unavailable with the channel's data state.
+- Preserve exact dates alongside values when refreshing. Different channels may
+  have different cutoffs; neither sorting nor changing the chart period should
+  change which dates these columns summarize. Do not infer hourly bars from them.
+
 ### Native compatibility caveats
 
 The inspected native code requests roughly 730 days, calls that sum
