@@ -43,12 +43,17 @@ Data API for channel/upload/API Live, Analytics API for reports, Drive API when
 the own project will serve Drive. A working built-in Drive connector may use a
 different project; do not replace it merely to make the project list uniform.
 
-Research usable hosting rather than presenting a closed menu or requiring a
-GitHub login. Existing hosting or Firebase Hosting Spark in the same Google
-account may reduce logins; Cloudflare/GitHub or another supported provider may
-fit better. Prepare a concrete solution within available access and cost. Do not
-add billing or buy services as an incidental setup step. Static branding pages
-and a working OAuth callback are different capabilities.
+For a new Muse branding site, use **Firebase Hosting on Spark as the first
+choice**, preferably in the assigned Google project/account, following the
+successful pilot. Check the current no-billing plan, access and terms, then
+prepare and deploy homepage/privacy/terms and verify their public HTTPS URLs.
+Do not make the user select from a hosting menu or research every provider first.
+Preserve an explicitly assigned working site. If Firebase is unavailable or
+cannot meet an actual requirement, diagnose that constraint and choose suitable
+existing hosting, Cloudflare, GitHub or another supported alternative. Do not
+add billing or buy services as an incidental setup step, or enable Google
+Analytics merely to host the pages. Static branding pages and a working OAuth
+callback are different capabilities; this preference does not choose a login route.
 
 Publish truthful homepage/privacy/terms pages, free of private mappings, tokens
 and draft-only notices. Describe Google and Muse/hosting processing accurately;

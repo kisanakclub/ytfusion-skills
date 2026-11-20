@@ -77,11 +77,16 @@ matching configuration; do not copy rclone's Desktop setup for every server.
 
 Prepare the public pages before attempting branding publication. Use existing
 working pages when suitable; do not impose GitHub Pages on every installation.
+For a **new Muse branding site**, the preferred first route is **Firebase Hosting
+Spark** in the assigned Google account/project, as demonstrated by the pilot.
+Attempt that supported no-billing route before asking the user to choose another
+provider. Preserve an explicitly assigned site; fall back when Firebase cannot
+satisfy a concrete access, plan, ownership or deployment requirement.
 
 | Available access | Preferred action |
 | --- | --- |
 | Existing app site or public VPS site under the user's control | Inspect and reuse/update its homepage, privacy, and terms through the supported site workflow |
-| Google owner login and suitable same-project Firebase Hosting access | Evaluate static Spark hosting to avoid an extra hosting login; verify the current no-billing plan and terms |
+| Google owner login and suitable same-project Firebase Hosting access | First choice for a new Muse branding site: deploy on Spark, verify the current no-billing plan/terms and public pages |
 | Cloudflare access and an assigned domain | Deploy a small static site to Cloudflare Pages and bind the assigned domain/subdomain |
 | GitHub access and a suitable Pages site | Deploy a separate static Pages site; use its accepted/verifiable URL or an assigned custom domain |
 | Neither usable hosting nor access | Prepare the site files privately, request the missing access/hosting choice, and continue independent project setup |

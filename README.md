@@ -17,9 +17,10 @@ Instalasi kosong mengikuti [panduan tambah channel dan koneksi Drive](skills/ytf
 termasuk pemilihan metode login, impor koneksi, serta pemeriksaan hasilnya.
 Jika perlu project sendiri, ikuti [panduan GCP, branding, dan publish](skills/ytfusion-operations/references/google-project.md).
 Agen menyiapkan project/API, halaman publik, client, dan pemasangannya sesuai
-tugas. Hosting dipilih dari yang bisa dipakai, termasuk Firebase Hosting,
-website yang sudah ada, Cloudflare Pages, atau GitHub Pages. Hasil publikasi
-Audience, branding dan verifikasi dicatat terpisah; tidak ada provider wajib.
+tugas. Untuk halaman branding Muse baru, pilihan utama adalah **Firebase Hosting
+Spark**, mengikuti pilot. Website yang sudah ditugaskan tetap dipakai; hosting
+lain menjadi cadangan bila Firebase tidak memenuhi kebutuhan nyata. Hasil
+publikasi Audience, branding dan verifikasi dicatat terpisah dari hosting.
 
 Untuk tugas Muse yang mengambil video final tanpa dashboard, tersedia
 [panduan executor Muse](skills/ytfusion-operations/references/muse-executor.md):
@@ -59,7 +60,8 @@ akun/project/channel dan keputusan tidak perlu dijelaskan ulang.
 Riset dan kerjakan solusi yang didukung dengan sedikit langkah manual dan
 login tambahan. Tanyakan hanya data/persetujuan yang memang masih diperlukan.
 Bila perlu project sendiri, siapkan API Data/Analytics/Drive sesuai tugas,
-branding publik, status In production dan client sesuai jalur login yang valid.
+branding publik (utamakan Firebase Hosting Spark untuk situs baru), status
+In production dan client sesuai jalur login yang valid.
 Simpan credential lewat jalur privat; jangan minta password/token/kode di chat.
 
 Sebelum upload, ikuti references/upload-workflow.md: metadata dan default
