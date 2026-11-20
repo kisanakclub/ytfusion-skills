@@ -71,7 +71,10 @@ establish that a channel is connected or a video was uploaded.
   into a diagnostic script to discover behavior.
 - Use the selected executor's supported Start, Pause, Resume, Stop, Retry, and
   review actions; native-app controls apply to native jobs. Re-read state
-  after timeouts. Reconcile an uncertain YouTube result before retrying upload;
+  after timeouts. Recover transient failures of already authorized work within
+  a bounded retry policy; do not ask permission again for each ordinary retry.
+  For Muse downloads, follow [automatic recovery](references/muse-executor.md#automatic-download-recovery).
+  Reconcile an uncertain YouTube result before retrying upload;
   do not create a second video or broadcast just because a response was lost.
 - Keep Google downloads, refresh tokens, stream keys, app passwords, and GitHub
   credentials out of chat, this repo, screenshots, and command output. Reuse the

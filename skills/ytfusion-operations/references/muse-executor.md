@@ -27,12 +27,14 @@ Source access does not establish that an independent executor is implemented.
 
 ## Capability evidence and first proof
 
-A read-only inspection of one Muse instance on 20 November 2026 found a Drive
-connector with documented binary download, Python upload libraries in the app
-venv, and a native recurring-task facility. Drive was not connected and actual
-download/upload was not tested. A public Google API request timed out after
-approval. The cloud browser reached Google's sign-in page but rejected a VM
-loopback URL. These are bounded observations, not guarantees for other instances.
+One Muse instance inspected on 20 November 2026 had a Drive connector, Python
+upload libraries in the app venv, and a native recurring-task facility. A later
+authorized Drive test wrote actual MP4 bytes directly to VM staging without Mac
+control or rclone, but stopped with a partial file after a reported runtime
+interruption; complete download, checksum, and upload were not verified. The
+exact interruption cause was not established. A public Google API request timed
+out after approval; the cloud browser reached Google's sign-in page but rejected
+a VM loopback URL. These are bounded observations, not host-wide guarantees.
 
 Inspect the current account before prescribing setup:
 
@@ -54,6 +56,46 @@ Next, when authorized, prepare the intended YouTube OAuth grant and test one
 assigned upload. Only after the transfer legs work should the recurring workflow
 be enabled. Preserve the user's explicit publication/privacy choice. A successful
 private upload does not prove scheduled/public publication or sustained Live.
+
+## Automatic download recovery
+
+Completing an authorized download includes ordinary recovery from transient
+failures. Do not stop merely to ask whether to retry the same file. Keep the same
+account, source/version, destination, and purpose; host approval cards and a
+user's explicit pause or retry limit still apply.
+
+- Before retrying, inspect the actual process and staging file so a surviving
+  transfer is not duplicated. Preserve the Drive file ID, version/fingerprint,
+  expected length/hash, local path, attempt count, and latest error privately.
+  Persist the attempt count across tasks/restarts rather than resetting it on
+  every invocation.
+- Prefer the transport's documented resume mechanism. Drive supports partial
+  blob downloads with `Range`, but the selected connector must actually expose
+  that operation. Validate the same source/version, returned range and length
+  before appending; never append a full response to a partial file. A connector
+  without a resume flag is not evidence that all Drive transports lack resume.
+- If resume is unavailable, a full retry of the same authorized download is
+  allowed. Check free space, write to a distinct partial path, and preserve the
+  existing partial file until the replacement is verified or authorized cleanup
+  applies. Do not relabel a partial file as complete or pass it to upload.
+- Follow the saved retry policy. If none exists, allow up to two additional
+  automatic attempts for a transient failure, with increasing delay and any
+  server-specified wait. Record the next eligible attempt time. Use a supported
+  continuation or an already authorized recurring task when necessary; saving
+  a retry note does not itself schedule another run.
+- Stop at the retry limit, or earlier for revoked/insufficient access, a changed
+  source, a denied approval, or evidence the same execution limit will recur.
+  Diagnose the concrete limit instead of endlessly restarting a large transfer.
+  Report only the user action actually needed. A new transport, credential,
+  schedule, or broader permission still needs its own applicable authorization.
+- After completion, compare length and the available Drive checksum, then check
+  media readability. Report success only after validation. Distinguish process
+  exit, tool-runtime restart, VM reboot, and timeout from actual evidence; an
+  empty log alone establishes none of their causes.
+
+These instructions guide the agent's retries; they do not install a supervisor
+or make a killed process resume by itself. For uploads, use the reconciliation
+and resumable-session rules below rather than blindly repeating `videos.insert`.
 
 ## Google access without rclone or a dashboard
 
