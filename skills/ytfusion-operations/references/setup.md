@@ -61,6 +61,37 @@ If the supported installer cannot operate on this host, report the concrete
 missing capability and the smallest next step; do not alter app authentication
 or silently substitute a different hosting scheme.
 
+## Native trial beside an existing executor
+
+When the user asks to try native YtFusion without replacing a working executor,
+keep the primary assignment, credentials, dashboard and job ledger intact. Save
+the trial's checkout/revision, service name, control commands and results in a
+separate private checkpoint; do not silently change `execution_mode` or migrate
+connections/queues. Reuse the existing native installation where appropriate.
+
+Inspect queues and active work before startup. Native startup can launch HDS
+dispatch/sync/cleanup loops independently of CentralScheduler, so leaving the
+scheduler off does not prove no jobs will run. Do not clear queue data to make a
+trial appear safe. Use one loopback-bound instance with no development auto-reload;
+for an explicitly temporary trial, keep its service manual rather than enabling
+boot startup or recurring tasks without that scope.
+
+Check backend responses through a legitimate VM-local authenticated session and
+check interactive UI separately. A cloud browser's blocked localhost route does
+not establish that the VM cannot call its own backend. Use supported host UI
+delivery when available; report the UI boundary accurately when it is not.
+Verify final authenticated page URLs/content and API payloads, not HTTP 200 alone:
+a redirect back to Login or a JSON connection-not-configured result is not
+workflow readiness. Separate installed dependencies from configured accounts.
+
+After confirming no jobs are affected, a controlled restart of the trial service
+can verify process supervision. It does not prove restart after VM replacement,
+idle/hibernation, or upload continuation. Read the host's current startup/service
+guidance before claiming those capabilities. Record the final running/stopped and
+enabled/disabled states, actual account/Drive gaps, and preserved primary mode.
+Installing a binary in a persistent user directory is not a tested reboot or
+replacement recovery path; retain that distinction in the trial notes.
+
 ## Connect the existing application
 
 Open the actual running dashboard and use its normal login. Verify the assigned
