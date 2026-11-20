@@ -1,5 +1,7 @@
 # Set up an operations instance
 
+For first-run Muse onboarding, begin with [Muse onboarding](muse-onboarding.md).
+
 For a Muse connector/API executor assignment, read [Muse executor](muse-executor.md)
 first. Obtain the app source as a workflow reference and reuse needed dependencies;
 the native server installation below is conditional on choosing native-app mode.
@@ -146,8 +148,13 @@ references here, never secret values. The app does not read this example format:
 native configuration must still be changed through native controls, and an agent's
 `execution_authorized` note is not an application security setting.
 
-Update only the relevant assignment fields when the user changes the task. Reuse
-connected accounts and native settings. Start with one upload at a time on a new
+Update only the relevant assignment fields when the user changes the task.
+For an executor, capture local staged-video disposal,
+Drive-source cleanup and source footage retention separately; do not treat the
+old `preserve_sources` example as a requirement to retain every VM download.
+Resolve an absent policy before disposal, preserve explicit Keep, and follow
+[recording and cleanup](upload-workflow.md#clean-the-assigned-local-copy-after-recording).
+Reuse connected accounts and native settings. Start with one upload at a time on a new
 assignment unless directed otherwise; do not reduce existing parallelism silently.
 Cleanup remains at the app's saved behavior on an existing workflow, within the
 user's authorized scope. Do not enable Drive deletion merely to free disk.

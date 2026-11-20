@@ -1,6 +1,6 @@
 ---
 name: ytfusion-operations
-description: Prepare YtFusion and its Google project/accounts, operate final-video workflows through YT Upload, Regular Studio, or Live, or evaluate an assigned Muse connector/API executor with recurring tasks. Use for Muse onboarding, first account connections, Drive-to-YouTube uploads, assigned queues, scheduled publication, and API or encoder-only live streams. Reuse the instance assignment and installed application instead of repeating setup.
+description: Set up a Muse or YtFusion operations instance, connect its Google project, Drive and YouTube accounts, and operate assigned final-video uploads, Regular Studio or Live. Use for first-run Muse onboarding, upload defaults and finishing, Drive history/cleanup, existing queues, and authorized recurring work. Reuse the private instance assignment instead of repeating setup.
 ---
 
 # YtFusion Operations
@@ -13,6 +13,8 @@ repository for domain/HTTPS deployment and managed Google-client installation.
 ## Start with the assignment
 
 1. Find the existing installation and the agent's saved instance assignment.
+   For first-run Muse setup read [Muse onboarding](references/muse-onboarding.md)
+   and carry out authorized preparation, not just a list of user instructions.
    Establish whether the assigned mode is the native app or a Muse connector/API
    executor. For the latter, read [Muse executor](references/muse-executor.md)
    before installing a server or prescribing native account-import flows.
@@ -27,10 +29,12 @@ repository for domain/HTTPS deployment and managed Google-client installation.
 
    | Task | Reference | Native entry point |
    | --- | --- | --- |
+   | New Muse instance or incomplete setup | [Muse onboarding](references/muse-onboarding.md) | Host skills, accounts and chosen executor |
    | Muse connector/API execution, capability proof, recurring upload tasks | [Muse executor](references/muse-executor.md) | Available host connectors, uploader, and scheduler |
    | Own GCP project, APIs, public branding pages, publishing, or clients | [Google project](references/google-project.md) | Google Cloud / site hosting / native client import |
    | First channel/Drive connection, additional account, or re-login | [Channels and Drive](references/accounts.md) | `/channel_manager`, `/add_channel`, `/gdrive-downloader` |
    | Upload final video packages from Drive or local output | [YT Upload](references/yt-upload.md) | `/fitur_tambahan/yt_upload` |
+   | Upload defaults, thumbnail/playlist, Drive history and cleanup | [Upload workflow contract](references/upload-workflow.md) | Native workflow or independent executor |
    | Operate a channel's Regular pipeline | [Regular Studio](references/regular-studio.md) | `/studio_dashboard` |
    | Live with YouTube API or encoder-only Live | [Live](references/live.md) | `/live_dashboard` or `/live_without_api` |
 
@@ -62,6 +66,9 @@ establish that a channel is connected or a video was uploaded.
   with one upload at a time, no automatic source deletion, no inferred publication
   schedule, and reports for completion or a failure needing attention. The user
   can customize these defaults; they do not override an existing installation.
+  Resolve local staging disposal separately from Drive-source deletion. When the
+  assignment requests post-upload cleanup, finish history sync and that cleanup;
+  preserving sources must not silently become retaining every disposable VM copy.
 - Bind channel IDs and Drive file/folder identities, not just display names.
   Multiple hosts must have distinct assigned inputs or use an actual shared
   coordination mechanism. Separate local queues do not provide a distributed lock.
@@ -95,5 +102,8 @@ public endpoint, or restart recovery until verified on that host.
 Report the useful outcome: which assigned work completed, its video/broadcast ID
 or link, publication time and timezone where relevant, and any concrete blocker.
 Distinguish downloaded, queued, uploaded, scheduled, published, encoder sending,
-and confirmed live. Documentation checks or fixture tests do not establish actual
+and confirmed live. For uploads, also report pending settings, thumbnail,
+playlist, recognized Drive history or assigned cleanup from the
+[workflow contract](references/upload-workflow.md). A returned video ID alone
+does not establish workflow completion. Documentation checks or fixture tests do not establish actual
 Muse installation, successful Google authorization, uploads, or live uptime.

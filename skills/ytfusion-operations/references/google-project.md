@@ -17,8 +17,10 @@ actual project ID separately from its editable display name.
 
 When a new project is within the setup request, select/create it in the correct
 account and check the selected project before each API/client operation. Preserve
-unrelated projects and clients. A new Muse host does not inherently need a new
-project, and another project is not a workaround for quota or authorization errors.
+unrelated projects and clients. For a new Muse instance follow
+[Muse onboarding](muse-onboarding.md): prepare a distinct project unless the user
+assigns an existing one. Existing instances reuse their assigned project.
+Another project is not a workaround for quota or authorization errors.
 Do not attach billing or buy a domain/hosting plan without the corresponding task.
 
 Choose the audience for the real authorizing accounts. **External** supports
@@ -39,7 +41,21 @@ In the selected project, enable the APIs needed by the installed application:
 | Installed channel statistics / analytics grant | YouTube Analytics API |
 | Google Drive connection and transfer | Google Drive API |
 
-Inspect `SCOPES` in `src/app.py`, Drive authorization in
+Record the actual service names `youtube.googleapis.com`,
+`youtubeanalytics.googleapis.com`, and `drive.googleapis.com` with their verified
+ENABLED/DISABLED states. Activate missing required APIs within the setup scope;
+do not ask again for routine configuration already authorized. Stop for actual
+new terms, security grants or billing under the host's rules. Enabling an API
+does not grant access to an account. A working Muse Drive connector can use its
+own project, so it does not prove Drive API is enabled in this project.
+
+After activation, test a relevant read endpoint with the actual grant. Distinguish
+`accessNotConfigured` (service disabled), insufficient scope/account access, and
+`liveStreamingNotEnabled` (channel eligibility). Data API covers Live resources;
+turning it on does not activate Live on a channel. Do not enable unrelated APIs
+or promise revenue access from a non-monetary Analytics grant.
+
+For native login, inspect `SCOPES` in `src/app.py`, Drive authorization in
 `src/google_oauth_routes.py`, and the configured native Drive client flow. Declare
 the scopes actually requested in **Google Auth Platform → Data Access** and save.
 Current channel login requests `openid`, `userinfo.email`, `youtube.force-ssl`,
@@ -47,6 +63,10 @@ Current channel login requests `openid`, `userinfo.email`, `youtube.force-ssl`,
 `drive` plus identity scopes. Re-check these on the installed version. Do not
 silently remove a required grant or add unrelated scopes copied from a generic
 rclone example. If broad scopes need review, record the requirement honestly.
+For an independent executor, choose scopes for its actual features and supported
+login route. If later using native Add Channel, reconcile and consent to the
+actual native request; its broader scopes are not limited by the earlier upload-
+only declaration. Keep this distinction in the assignment.
 
 The official [rclone own-client guide](https://rclone.org/drive/#making-your-own-client-id)
 is useful for Drive project/client setup, including publish prerequisites and
@@ -61,9 +81,19 @@ working pages when suitable; do not impose GitHub Pages on every installation.
 | Available access | Preferred action |
 | --- | --- |
 | Existing app site or public VPS site under the user's control | Inspect and reuse/update its homepage, privacy, and terms through the supported site workflow |
+| Google owner login and suitable same-project Firebase Hosting access | Evaluate static Spark hosting to avoid an extra hosting login; verify the current no-billing plan and terms |
 | Cloudflare access and an assigned domain | Deploy a small static site to Cloudflare Pages and bind the assigned domain/subdomain |
 | GitHub access and a suitable Pages site | Deploy a separate static Pages site; use its accepted/verifiable URL or an assigned custom domain |
 | Neither usable hosting nor access | Prepare the site files privately, request the missing access/hosting choice, and continue independent project setup |
+
+These are examples, not a closed provider list. Minimize user logins and manual
+work while choosing a supported solution. The pilot used Firebase Hosting Spark
+for public branding and reached In production without GitHub Pages or billing.
+Static Firebase Hosting does not itself execute a Python OAuth callback or store
+refresh tokens for a VM. Backend additions such as Functions/Cloud Run have
+different requirements and can require billing; check current
+[Firebase hosting guidance](https://firebase.google.com/docs/hosting/functions)
+before proposing them. Do not turn on billing to unblock a setup silently.
 
 With Cloudflare Pages, use its current
 [Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/)
@@ -84,11 +114,16 @@ Create coherent pages with the chosen app name and real contact details:
   and how the user can revoke access or request deletion. Describe the installed
   agent/hosting workflow truthfully; do not copy claims such as data never leaving
   a device when the agent, server, Drive, or YouTube receives it.
+  Name the actual processing services as appropriate; avoid guarantees about
+  third parties' advertising, analytics or retention that the operator cannot
+  make. Describe retained verification records and deletion requests accurately.
 - Terms: the actual service/use terms for this deployment, consistent with the
   requested private or public use. Do not invent an organization or certification.
 
 Open each final HTTPS URL without login, check the rendered content and links,
-and confirm deployment success. Files written locally, a pending build, a preview
+and confirm deployment success. Remove private-draft notices from the published
+pages; do not publish credentials or the private instance/account mapping.
+Files written locally, a pending build, a preview
 with authentication, or a URL returning an error is not a published branding site.
 
 ## Configure Branding and verify ownership when required
@@ -104,7 +139,7 @@ with the relevant project Owner/Editor account. For an owned custom domain,
 use its Domain property and the supplied DNS verification record. When using a
 hosted URL, use an available ownership method and verify that the property/domain
 is accepted for the actual OAuth application. Do not claim ownership of the
-shared parent `github.io` or `pages.dev`. If the hosted address cannot satisfy
+shared parent `github.io`, `pages.dev` or `web.app`. If the hosted address cannot satisfy
 the required check, use an assigned custom domain or existing verified site.
 Preserve successful verification records/tags and other owners' tokens.
 
@@ -128,7 +163,11 @@ is the callback. Static branding pages on GitHub Pages or Cloudflare Pages do no
 run YtFusion's Python callback. If Muse lacks a usable HTTPS app endpoint, prepare
 the supported local-login/auth-import path in [Channels and Drive](accounts.md),
 or report the concrete endpoint requirement. Do not register a static landing
-page as a pretend callback or promise Desktop eligibility on Linux Muse.
+page as a pretend callback. Native YtFusion's Linux server gates do not establish
+that every independent executor has identical login capabilities; evaluate the
+actual receiver/browser and Google's client-type requirements. See
+[Muse onboarding](muse-onboarding.md) for the proven local-login/transfer route
+and criteria for researching alternatives.
 
 Download the original client JSON privately when creating it, check its actual
 `web`/`installed` type and project ID without exposing the secret, then use the

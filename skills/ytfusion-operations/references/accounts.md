@@ -4,6 +4,9 @@ Use this reference when an installation starts empty, an assigned channel or
 Drive connection is missing, or the user requests another channel or re-login.
 Connect only what the assigned workflow needs. Installed OAuth clients and
 authorized channel/Drive accounts are separate things.
+For Muse onboarding, use [Muse onboarding](muse-onboarding.md) to choose from
+actual host capabilities. The native routes below are a proven option, not a
+requirement to run the dashboard on every Muse VM.
 
 ## Learn the installed connection flow
 
@@ -64,6 +67,14 @@ For an existing channel requiring a new grant, use native re-authentication or
 project-switch controls rather than deleting/recreating the channel. Connecting
 a channel does not start Studio, upload a trial video, or establish Live access.
 
+For a Muse executor using local authorization, transfer only the selected
+channel's matching token/client pair through supported private host transfer or
+the native export/import path. Keep the original connection intact. Verify
+`channels.list(mine=true)` from the **VM** matches the assigned YouTube channel
+ID and record actual scopes/refresh capability without exposing tokens. A Mac
+success banner alone does not prove VM access. If no private transfer is
+available, request the smallest supported handoff, never tokens in chat.
+
 ## Connect Google Drive
 
 1. Open **Google Drive** (`/gdrive-downloader`) and inspect **Koneksi Google Drive**.
@@ -98,6 +109,10 @@ state before an authorized account/client change and honor the app's guards.
 Multiple assigned source folders must be accessible to the configured connection.
 
 For YT Upload, connection readiness and workspace registration are separate.
+For an independent Muse connector, inspect the actual connector's account and
+binary read/write capabilities rather than forcing the native rclone import.
+Writing upload history requires a supported write operation on the assigned
+Drive workspace; download access alone does not establish that permission.
 Follow [YT Upload](yt-upload.md) for native workspace join/migration and package
 format. For Regular/Live, use their native downloader/media-library path instead
 of assuming every Drive file is an HDS package.

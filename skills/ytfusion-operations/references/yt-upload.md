@@ -4,6 +4,11 @@ This reference operates native YtFusion queues. For a user-assigned Muse executo
 using connectors/APIs without the dashboard, read [Muse executor](muse-executor.md).
 Do not force its connector to use the app's rclone connection or package format.
 
+Both modes must preserve the [upload workflow contract](upload-workflow.md).
+Read it before the first upload: AI/audience/category defaults, thumbnail and
+playlist finishing, recognized Drive history and selected cleanup are part of
+the workflow, not just title/description/tags plus an MP4 transfer.
+
 Open `/fitur_tambahan/yt_upload`. Read the installed
 `docs/HDS_UPLOAD_FORMAT_MIGRATION.md` for the current Drive package contract and
 `docs/YT_UPLOAD_QUEUE_RECOVERY_AUDIT.md` for scheduling and recovery behavior.
@@ -100,5 +105,9 @@ Do not delete original Drive media or local recovery files because a task merely
 disappeared from the active list.
 
 Report the final native job/video ID and any pending metadata action. An uploaded
+video also needs its durable receipt and assigned Drive history sync; a private
+agent ledger alone does not create the native “previously uploaded” marker.
+Report pending recording/cleanup separately and repair those steps without
+another video insertion. An uploaded
 video scheduled for tomorrow is upload-complete, not published today. Distinguish
 YouTube processing/publication from transfer completion and an accepted schedule.

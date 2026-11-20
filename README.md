@@ -17,86 +17,89 @@ Instalasi kosong mengikuti [panduan tambah channel dan koneksi Drive](skills/ytf
 termasuk pemilihan metode login, impor koneksi, serta pemeriksaan hasilnya.
 Jika perlu project sendiri, ikuti [panduan GCP, branding, dan publish](skills/ytfusion-operations/references/google-project.md).
 Agen menyiapkan project/API, halaman publik, client, dan pemasangannya sesuai
-tugas. Hosting dipilih dari yang bisa dipakai: website yang sudah ada,
-Cloudflare Pages, atau GitHub Pages; hasil publish/verifikasi dicatat terpisah.
+tugas. Hosting dipilih dari yang bisa dipakai, termasuk Firebase Hosting,
+website yang sudah ada, Cloudflare Pages, atau GitHub Pages. Hasil publikasi
+Audience, branding dan verifikasi dicatat terpisah; tidak ada provider wajib.
 
 Untuk tugas Muse yang mengambil video final tanpa dashboard, tersedia
 [panduan executor Muse](skills/ytfusion-operations/references/muse-executor.md):
 konektor Drive atau API, uploader YouTube resumable, catatan job privat, dan
-scheduler bawaan. Pemeriksaan satu instance menemukan fasilitas pendukungnya,
-tetapi unduh/upload nyata belum diuji. Panduan ini belum menyertakan helper
-uploader mandiri atau membuat jadwal otomatis.
+scheduler bawaan. Pilot 20 November 2026 membuktikan unduh Drive tervalidasi,
+upload private dari VM, baca Analytics, serta perbaikan pengaturan, thumbnail
+dan playlist. Sinkronisasi riwayat Drive, cleanup pasca-upload, penjadwalan
+berulang dan sustained Live belum terbukti dalam pilot itu. Ini paket instruksi,
+bukan uploader/scheduler siap jalan. Baca
+[onboarding Muse](skills/ytfusion-operations/references/muse-onboarding.md) dan
+[kontrak upload lengkap](skills/ytfusion-operations/references/upload-workflow.md).
 
 ## Mulai di Muse
 
-Copas perintah berikut ke Muse baru. Perintah ini meminta agen **mengambil source
-YtFusion dan skill**, memeriksa jalur eksekusi, lalu menyiapkan tugas awal beserta
-instalasi yang diperlukan. Ini bukan script installer otomatis dari repo skill.
+Copas perintah berikut ke Muse baru. Ganti tugas awal bila instance ditujukan
+untuk Regular/Live. Akun, project, channel, sumber dan jadwal ditentukan dari
+penugasan instance itu; tidak ada data pilot yang perlu disalin.
 
 ```text
-Siapkan instance ini untuk mengoperasikan YtFusion.
+Siapkan instance Muse ini untuk workflow YtFusion.
 
-1. Periksa instalasi dan profil penugasan yang sudah ada. Kalau belum ada,
-   ambil https://github.com/kisanakclub/ytfusion-skills dan baca
-   skills/ytfusion-operations/SKILL.md beserta references/setup.md.
-   Kalau sudah ada, gunakan checkout itu dan baca panduan yang sama.
-2. Untuk tugas upload final di Muse, baca references/muse-executor.md dan
-   periksa konektor/API serta scheduler yang tersedia. Ambil source dari
-   https://github.com/kisanakclub/Yt_FusionX untuk mempelajari logic dan
-   gunakan dependency yang diperlukan. Jika memilih alur aplikasi native,
-   install sesuai AGENTS.md dan panduan platform setelah memeriksa kecocokan
-   host. Pertahankan instalasi, data, dan konfigurasi yang sudah ada.
-3. Pasang/daftarkan skill melalui mekanisme yang benar-benar didukung agen ini
-   jika tersedia. Simpan petunjuk untuk menemukan skill dan profil pada tugas
-   berikutnya; jangan anggap clone saja sudah mengaktifkan skill otomatis.
-4. Tugas awal instance ini: persiapan upload video final dari Google Drive,
-   tanpa generate atau render HDS. Evaluasi jalur executor Muse terlebih
-   dahulu. Pelajari logic metadata, mapping channel, jadwal, riwayat, dan
-   pemulihan YtFusion yang relevan. Jangan anggap uploader mandiri sudah ada.
-5. Jika jalur terpilih memerlukan client Google sendiri dan belum ada project
-   yang ditugaskan, ikuti
-   references/google-project.md untuk menyiapkan project sendiri: aktifkan API
-   yang diperlukan, siapkan branding dan halaman publik di hosting yang bisa
-   dipakai, lakukan publish In production serta verifikasi yang diperlukan,
-   lalu buat dan pasang client Web/Desktop sesuai jalur login yang tersedia.
-   Periksa hasilnya; jangan berhenti pada memberikan link panduan.
-   Untuk aplikasi native, ikuti references/accounts.md. Untuk executor Muse,
-   gunakan koneksi yang benar-benar didukung konektor/uploader terpilih.
-   Pelajari UI dan handler login yang terpasang, pilih
-   metode yang cocok, lalu siapkan dan periksa koneksinya. Gunakan koneksi yang
-   sudah ada. Tanyakan hanya akses atau pilihan yang masih kurang: akun pemilik
-   GCP, channel, sumber Drive, jadwal/zona waktu, privasi, serta izin kerja
-   berkelanjutan. Arahkan login dan isian rahasia lewat UI yang sesuai.
-   Jangan minta token atau password ditempel ke chat.
-6. Simpan profil penugasan pribadi di luar kedua repo agar nanti cukup
-   dilanjutkan. Untuk profil baru, mulai satu upload bersamaan dan simpan
-   sumber video. Pertahankan pengaturan aplikasi yang sudah ada.
-7. Selesaikan pemasangan dan setup yang sudah bisa dilakukan. Laporkan
-   kesiapan dan kebutuhan yang benar-benar belum tersedia. Jalankan upload
-   atau Live setelah ada tugas/penugasan yang mengizinkannya.
-   Tugas berulang baru dibuat setelah diminta, sumber/tujuan jelas, dan jalur
-   transfer terbukti. Jadwal persisten tidak menjamin proses upload tahan putus.
+Ambil atau gunakan checkout https://github.com/kisanakclub/ytfusion-skills.
+Baca skills/ytfusion-operations/SKILL.md, references/muse-onboarding.md,
+dan references/setup.md. Pasang/daftarkan skill lewat mekanisme host yang
+tersedia, verifikasi ditemukan, dan simpan referensi versi terpasangnya.
+Ambil atau gunakan source https://github.com/kisanakclub/Yt_FusionX dan baca
+AGENTS.md. Pilih cara eksekusi dari kemampuan nyata host; pelajari logic
+workflow dan pasang dependency yang diperlukan, tanpa mewajibkan server
+aplikasi atau seluruh provider HDS untuk tugas upload final.
+
+Tugas awal: siapkan upload video final dari Google Drive ke YouTube, tanpa
+generate/render HDS. Selesaikan setup yang diizinkan; upload pertama menunggu
+penugasan video/channel dan izin upload. Buat project GCP baru untuk instance
+baru kecuali aku menunjuk project yang sudah ada. Pelihara profil privat agar
+akun/project/channel dan keputusan tidak perlu dijelaskan ulang.
+
+Riset dan kerjakan solusi yang didukung dengan sedikit langkah manual dan
+login tambahan. Tanyakan hanya data/persetujuan yang memang masih diperlukan.
+Bila perlu project sendiri, siapkan API Data/Analytics/Drive sesuai tugas,
+branding publik, status In production dan client sesuai jalur login yang valid.
+Simpan credential lewat jalur privat; jangan minta password/token/kode di chat.
+
+Sebelum upload, ikuti references/upload-workflow.md: metadata dan default
+aplikasi, AI/audience/category, thumbnail, playlist, lalu verifikasi hasil,
+receipt/penanda pernah upload di Drive dan cleanup. Setelan awal yang kuinginkan
+untuk job nanti: satu upload bersamaan, hapus hanya salinan staging milik job
+di VM setelah hasil serta riwayat Drive tercatat dan terverifikasi; simpan
+video asli, metadata dan thumbnail di Drive. Pertahankan pilihan eksplisit yang
+sudah ada dan minta penjelasan bila bertentangan. Jangan menghapus file sekarang.
+
+Lanjutkan langkah yang sudah diizinkan sampai selesai atau blocker nyata.
+Ikuti aturan host untuk terms, credential/grant baru dan tindakan sensitif.
+Jangan aktifkan billing, mulai publikasi/Live atau membuat jadwal berulang
+sebelum ditugaskan. Pilih pendekatan sendiri; jangan berhenti pada rencana
+atau mengunci satu provider. Laporkan hasil yang benar-benar terbukti dan
+hal yang masih perlu tindakan pengguna.
 ```
 
-Repo aplikasi Private memerlukan akses GitHub. Jika belum tersedia, agen
-mengarahkan login akun yang punya akses; repo skill tidak memberikan akses
-aplikasi atau akun Google. Ganti tugas pada poin 4 untuk instance Regular/Live,
-atau beri tugas tambahan setelah setup. Contoh perubahan penugasan:
+Repo aplikasi Private memerlukan akses GitHub yang sesuai; skill tidak memberikan
+akses akun atau repo tersebut. Login/2FA dilakukan melalui UI yang didukung.
+Untuk instance yang sudah disiapkan cukup beri tugas, misalnya:
+
+```text
+Lanjutkan sesuai profil instance ini. Ambil paket yang kutugaskan dari Drive,
+upload ke channel tujuan sebagai Private tanpa jadwal, dan selesaikan seluruh
+workflow termasuk riwayat Drive serta cleanup lokal yang sudah disepakati.
+```
+
+Untuk penugasan lain:
 
 ```text
 Instance ini khusus Live tanpa API dari video final di Drive. Gunakan profil
-penugasan yang sudah ada dan panduan Live. Siapkan sumber serta stream-nya;
-jangan mulai siaran dulu. Tanyakan hanya data yang masih kurang.
+yang sudah ada, baca referensi Live, dan siapkan sumber/encoder. Jangan mulai
+siaran sebelum kutugaskan. Tanyakan hanya informasi yang belum tersedia.
 ```
 
-Untuk melanjutkan, cukup beri tugas seperti “Lanjutkan tugas YtFusion sesuai
-profil instance ini; cek antrean yang sudah ada sebelum memulai pekerjaan baru.”
-Agen tetap memerlukan akses ke profil dan aplikasi pada sesi tersebut.
-
-Panduan ini belum membuktikan pemasangan atau Studio/Live berjalan di Muse.
-Kemampuan runtime, alamat dashboard/OAuth, penyimpanan, dan jaringan harus
-diperiksa pada instance sebenarnya. Menyalin skill bukan proses melatih model
-atau jaminan akses lintas chat; gunakan dukungan skill/memori agen yang tersedia.
+Menyalin skill bukan pelatihan model dan clone saja tidak mengaktifkan discovery.
+Gunakan dukungan skill/memori host, simpan assignment privat, serta verifikasi
+hasil pada instance yang sebenarnya. Pemasangan seluruh aplikasi, Regular Studio,
+render dan Live belum dibuktikan hanya oleh pilot upload.
 
 ## HDS Home Production
 

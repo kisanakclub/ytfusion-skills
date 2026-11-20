@@ -6,6 +6,9 @@ This is distinct from operating the native YtFusion dashboard. Preserve an
 existing native installation, credentials, and queues; do not reset or migrate
 them merely to evaluate this mode.
 
+For first setup, use [Muse onboarding](muse-onboarding.md). Select methods from
+actual capabilities and the user's goal, not a fixed host/provider recipe.
+
 ## Choose the execution mode from actual capabilities
 
 Read the instance assignment and inspect the host's available tools. Record
@@ -18,8 +21,10 @@ context once chosen. This field is not a YtFusion application setting.
   a private durable job ledger, and Muse's scheduler when authorized. The ledger
   owns these separate jobs. Do not claim they appear in YtFusion's native queue.
 
-For an agent-executor assignment, obtain the appropriate app source and study
-only relevant package/metadata, channel mapping, scheduling and recovery logic.
+For an agent-executor assignment, obtain the appropriate app source and follow
+the [upload workflow contract](upload-workflow.md): package import, job/UI
+defaults, payload, finishing, Drive history, cleanup and recovery. Reading only
+metadata text or a low-level upload helper is insufficient.
 Do not import `src/app.py` as a library, copy Private engines into the skill repo,
 or require a continuously running dashboard just to read the implementation.
 Reuse suitable dependencies already installed, normally the app's virtualenv.
@@ -27,14 +32,21 @@ Source access does not establish that an independent executor is implemented.
 
 ## Capability evidence and first proof
 
-One Muse instance inspected on 20 November 2026 had a Drive connector, Python
-upload libraries in the app venv, and a native recurring-task facility. A later
-authorized Drive test wrote actual MP4 bytes directly to VM staging without Mac
-control or rclone, but stopped with a partial file after a reported runtime
-interruption; complete download, checksum, and upload were not verified. The
-exact interruption cause was not established. A public Google API request timed
-out after approval; the cloud browser reached Google's sign-in page but rejected
-a VM loopback URL. These are bounded observations, not host-wide guarantees.
+The 20 November 2026 pilot demonstrated direct binary Drive download to VM staging
+through the built-in connector, full size/hash/media validation, and an authorized
+private resumable upload from that VM. Initial download interruption was traced
+to a VM reboot; a bounded full retry completed. Native local Desktop authorization
+and private transfer of the matching channel token/client pair enabled successful
+VM channel reads. After API activation, non-monetary Analytics reads succeeded.
+
+The first upload omitted finishing. The same video was repaired without re-upload:
+explicit not-for-kids declaration, package thumbnail and existing playlist were
+verified; Studio confirmed AI disclosure even though the read API omitted it.
+Data transfer success alone therefore did not establish workflow parity. Shared
+Drive upload-history synchronization and post-success staging deletion were not
+proven in that pilot. Recurring publication, restart-resume of an in-flight upload,
+Regular Studio/render, sustained Live and revenue reporting remain separate tests.
+These are observations from one instance, not host-wide guarantees.
 
 Inspect the current account before prescribing setup:
 
@@ -53,7 +65,8 @@ local checksum without claiming an unavailable remote-hash comparison. Do not
 create YouTube credentials or publish a video merely to test Drive access.
 
 Next, when authorized, prepare the intended YouTube OAuth grant and test one
-assigned upload. Only after the transfer legs work should the recurring workflow
+assigned upload including the [finishing/history/cleanup contract](upload-workflow.md).
+Only after the required workflow stages work should the recurring workflow
 be enabled. Preserve the user's explicit publication/privacy choice. A successful
 private upload does not prove scheduled/public publication or sustained Live.
 
@@ -111,7 +124,9 @@ uploader using the official API/library. Choose scopes for the actual features.
 `videos.insert` accepts alternative grants including `youtube.upload` and
 `youtube.force-ssl`; do not require both if an existing grant already suffices.
 Do not inherit unrelated partner/analytics scopes solely because the full app
-requests them. Follow [Google project setup](google-project.md) when clients or
+requests them. If the chosen native login actually asks for broader scopes, show
+that concrete request and obtain the required consent; do not describe it as an
+upload-only grant. Follow [Google project setup](google-project.md) when clients or
 branding are needed, adapting it to the selected login route rather than imposing
 a server Web callback on an executor without a reachable dashboard.
 
@@ -124,7 +139,14 @@ Do not weaken isolation or add a tunnel to evade a denied request.
 Record timeout, DNS/TLS failure, HTTP response, and explicit policy rejection
 separately. HTTP 000 or a timeout does not establish a permanent policy block.
 Public discovery access does not prove authenticated upload, large-file transfer,
-or media download works. Diagnose one concrete failed leg at a time.
+or media download works. Diagnose one concrete failed leg at a time. The pilot
+reached authenticated Data API calls via `youtube.googleapis.com` with the host's
+trusted system CA bundle while another Google hostname timed out. Inspect the
+actual proxy/transport and officially supported endpoint; do not disable TLS
+verification, strip approvals or hardcode that observation for every host.
+Runtime public egress may differ from the VM interface address. A dedicated VM
+does not establish a stable/exclusive public IP, and IP-check probes do not prove
+the source IP seen by YouTube or sharing across accounts.
 
 ## Recurring tasks and durable upload state
 
@@ -144,7 +166,8 @@ or transactional mechanism; a local lock does not coordinate separate hosts.
 When implementation is requested, the executor needs a durable ledger keyed by
 Drive file ID plus version/fingerprint, destination channel, and intended job
 identity. Track download status, local file identity, upload state, resulting
-video ID, publication intent/timezone, and retry/review state. Keep account tokens
+video ID, publication intent/timezone, finishing results, native-compatible Drive
+receipt/sync state, selected local/Drive cleanup and retry/review state. Keep account tokens
 in supported credential storage. Treat resumable session URIs as sensitive:
 persist them only in protected private state, never in chat, public ledgers or logs.
 
@@ -153,8 +176,11 @@ interruption and validate the same source before continuing. A library accepting
 `resumable=True` does not prove restart recovery has been implemented. Session
 expiration and ambiguous final outcomes need explicit handling. Reconcile saved
 video IDs and session results before a new insert; unknown outcome is a review
-state, not permission to insert another video. Persist success before optional
-thumbnail/playlist work so repairs do not re-upload the video.
+state, not permission to insert another video. Persist acceptance before
+thumbnail/playlist work so repairs do not re-upload the video. Follow the
+[workflow contract](upload-workflow.md) for recognized Drive history and cleanup;
+do not stop at a private agent ledger or retain disposable staging indefinitely
+when its post-success cleanup was assigned.
 
 A persistent schedule does not make an in-flight process survive VM/container
 restart. A subsequent invocation must recover from durable state. Keep completed
