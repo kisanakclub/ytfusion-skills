@@ -1,0 +1,4 @@
+interface:
+  display_name: "YtFusion Channel Analytics"
+  short_description: "Analytics channel dan dashboard privat di Muse"
+  default_prompt: "Pakai $ytfusion-channel-analytics untuk membuat dashboard privat channel yang terhubung, mengikuti tampilan channel-stats, dan simpan agar mudah dibuka kembali."

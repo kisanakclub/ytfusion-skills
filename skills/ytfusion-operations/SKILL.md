@@ -9,6 +9,8 @@ Respond in the user's language. Normally operate the installed YtFusion. This sk
 covers installation and final-media operations on Muse, a VPS, or a local device.
 Use `hds-home-production` for HDS generation. Reuse `ytfusion-domain-vps` in this
 repository for domain/HTTPS deployment and managed Google-client installation.
+For connected-channel reports or a reusable Muse Analytics dashboard, use
+[YtFusion Channel Analytics](../ytfusion-channel-analytics/SKILL.md).
 
 ## Start with the assignment
 
@@ -37,6 +39,7 @@ repository for domain/HTTPS deployment and managed Google-client installation.
    | Upload defaults, thumbnail/playlist, Drive history and cleanup | [Upload workflow contract](references/upload-workflow.md) | Native workflow or independent executor |
    | Operate a channel's Regular pipeline | [Regular Studio](references/regular-studio.md) | `/studio_dashboard` |
    | Live with YouTube API or encoder-only Live | [Live](references/live.md) | `/live_dashboard` or `/live_without_api` |
+   | Channel Analytics, comparisons and a private Muse dashboard | [Channel Analytics](../ytfusion-channel-analytics/SKILL.md) | `/channel-stats` or private artifact |
 
 4. When the requested setup needs a Google project/client or public branding,
    execute [Google project](references/google-project.md); choose usable hosting,

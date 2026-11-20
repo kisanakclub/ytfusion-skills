@@ -33,6 +33,29 @@ bukan uploader/scheduler siap jalan. Baca
 [onboarding Muse](skills/ytfusion-operations/references/muse-onboarding.md) dan
 [kontrak upload lengkap](skills/ytfusion-operations/references/upload-workflow.md).
 
+## YtFusion Channel Analytics
+
+Membaca channel yang sudah terhubung dan menyiapkan dashboard privat di Muse,
+mengikuti tabel, filter dan grafik **channel-stats**. Dashboard disimpan di
+**Library** agar mudah dibuka lagi, serta chat Analytics terpisah untuk diskusi.
+Memakai koneksi instance yang ada; tidak perlu mengulang setup
+GCP atau menyalakan Mac untuk executor VM yang sudah terhubung.
+Lihat [instruksi skill](skills/ytfusion-channel-analytics/SKILL.md).
+
+```text
+Pasang skill skills/ytfusion-channel-analytics dari repo ini dan verifikasi
+discovery. Pakai skill itu untuk membuat dashboard privat Analytics channel
+yang ditugaskan pada instance ini, mirip UI channel-stats. Simpan di Library
+dan sediakan side chat khusus agar mudah kubuka lagi. Pakai data nyata dan
+koneksi yang ada, tunjukkan periode/cakupan dan waktu update, serta uji refresh.
+Jangan mempublikasikan datanya atau membuat jadwal berulang.
+```
+
+Skill mencakup views, watch time, subscriber dan pendapatan yang memang dapat
+diakses. Statistik total, data harian, data realtime dan angka yang belum tersedia
+dibedakan. Ini panduan membangun dashboard dengan kemampuan host; memasang skill
+saja belum berarti artifact dan refresh API-nya sudah berjalan.
+
 ## Mulai di Muse
 
 Copas perintah berikut ke Muse baru. Ganti tugas awal bila instance ditujukan
@@ -130,6 +153,9 @@ Untuk Codex yang menyediakan skill-installer, gunakan permintaan:
 
     Gunakan skill-installer untuk memasang skill dari
     https://github.com/kisanakclub/ytfusion-skills/tree/main/skills/ytfusion-operations
+
+    Gunakan skill-installer untuk memasang skill dari
+    https://github.com/kisanakclub/ytfusion-skills/tree/main/skills/ytfusion-channel-analytics
 
 Untuk agen lain yang mendukung Agent Skills, pasang folder
 skill yang ingin dipakai pada lokasi yang didukung agen tersebut.
