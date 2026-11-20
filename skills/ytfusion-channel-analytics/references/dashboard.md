@@ -35,7 +35,9 @@ allow routine refresh without the Mac or another Google login.
 Read the installed `src/templates/channel_statistics.html` before designing.
 Preserve its recognizable compact channel table and dark neutral/teal visual
 language, rather than replacing it with a generic wall of oversized cards.
-Use the user's language. A useful starting layout is:
+Use English for dashboard labels by default, matching the owner's UI preference
+and native channel-stats; keep chat replies in the user's language. An explicit
+UI language choice overrides that default. A useful starting layout is:
 
 - Header: Channel Analytics, last successful update, reporting coverage, privacy
   toggle and **Refresh**. Keep secondary explanations in a short expandable note.
@@ -65,6 +67,13 @@ particular, don't copy native realtime/lifetime labels, a monetization badge
 derived from failed revenue access, or YPP eligibility inferred from watch time.
 
 ## Make the controls work
+
+When using the host's artifact builder, pass the metric/date contract along with
+the UI brief and structured channel records. Inspect its result: a polished build
+can still sum the last N rows instead of calendar dates or hardcode the first
+snapshot's channel count/history length. Show the selected start/end dates and
+actual availability; use a dynamic **Available range** choice for bounded history.
+The refresh path must rediscover assigned connections and render a channel list.
 
 Keep Google calls and credential refresh in the trusted backend. Send only the
 assigned channels' necessary data to the artifact. Store the last successful
