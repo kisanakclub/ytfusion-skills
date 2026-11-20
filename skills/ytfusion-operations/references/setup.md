@@ -84,6 +84,17 @@ Verify final authenticated page URLs/content and API payloads, not HTTP 200 alon
 a redirect back to Login or a JSON connection-not-configured result is not
 workflow readiness. Separate installed dependencies from configured accounts.
 
+For a Muse UI-access problem, inspect the current browser and artifact SDK
+contracts before declaring all private UI impossible. The inspected artifact
+runtime serves builder-created apps through declared JSON actions; it exposes no
+documented existing Python/ASGI-server mount or private route for native
+HTML/assets/API. Its contract forbids creating an artifact to work around a
+failing tool or host another integration. A working Analytics artifact therefore
+does not prove that native YtFusion UI can be attached to it. Do not invent a
+proxy, URL alias or browser shim to evade a loopback denial. Record the exact
+current capability boundary and any legitimate reachable-host alternative;
+deployment or broader access remains a separate scoped action.
+
 After confirming no jobs are affected, a controlled restart of the trial service
 can verify process supervision. It does not prove restart after VM replacement,
 idle/hibernation, or upload continuation. Read the host's current startup/service
