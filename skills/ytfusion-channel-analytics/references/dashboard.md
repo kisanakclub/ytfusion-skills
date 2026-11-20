@@ -116,6 +116,11 @@ can still sum the last N rows instead of calendar dates or hardcode the first
 snapshot's channel count/history length. Show the selected start/end dates and
 actual availability; use a dynamic **Available range** choice for bounded history.
 The refresh path must rediscover assigned connections and render a channel list.
+When adding category/internal-name or 365-day watch-hours fields, extend the
+snapshot action's validation, durable storage and readback together. An existing
+action may silently strip new fields. Write/read the actual snapshot and confirm
+the new values survive before relying on them in the UI; values passed only in a
+builder prompt do not establish persistence.
 
 Keep Google calls and credential refresh in the trusted backend. Send only the
 assigned channels' necessary data to the artifact. Store the last successful
