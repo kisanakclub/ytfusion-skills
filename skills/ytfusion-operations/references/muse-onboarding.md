@@ -11,6 +11,11 @@ user intervention. Setup alone does not authorize an upload, publication or Live
    [setup](setup.md). Install/register the required skill folders using Muse's
    supported mechanism and verify discovery. Record the source and installed
    skill revisions; updating a checkout alone does not update an installed copy.
+   Also inspect host-generated discovery metadata when search still shows old
+   capabilities. Refresh it through the supported registration mechanism, or
+   synchronize supported descriptive fields from `SKILL.md` while preserving
+   host policy/dependency fields. Matching source hashes alone does not update
+   a separate host catalog such as a generated `skill.yaml`.
 2. Inspect actual connectors, cloud browser, local computer control, execution,
    persistent storage, networking and job facilities. Choose native application
    operation or an independent executor with [Muse executor](muse-executor.md).
@@ -101,11 +106,29 @@ after each step. Group unresolved choices and prepare reviewable requests.
 Legal terms, new credentials/grants, security warnings and host approval cards
 follow the host's actual rules; a skill never grants or bypasses permission.
 
+Collect known setup inputs in one short batch: role, account/profile mapping,
+source/destination, branding contacts, privacy/timezone/cadence when assigned,
+and separate local/Drive cleanup. Save answers and use reasonable app defaults
+for routine choices. Prepare concrete approvals together when they are ready;
+do not demand blanket consent to grants/terms whose scope is not yet known.
+Explain available reusable host permission modes and their actual scope if the
+user wants fewer prompts, but never change approval settings or blocked apps
+as a side effect of onboarding. Reusable permission does not add tool abilities.
+
 Before asking the user to focus a window, copy a file or repeat login, inspect
 supported computer/file-transfer controls and use them when allowed. Confirm
 the right browser profile/window is visible; repeatedly waiting on an occluded
 or wrong window is not evidence the page failed. Do not convert a local control
 failure into a claim that all Muse instances lack that capability.
+
+In the pilot Mac tool, `open_app` could launch Chrome, but the documented browser
+control targeted existing windows without a profile selector and did not bring
+apps to the foreground. Do not assume another agent's window-raising API exists
+in Muse. When no supported profile-opening/focus route is available, ask once
+for the intended profile/window to be prepared for login; do other preparation
+first. This is a bounded initial handoff, not a requirement to keep the Mac in
+front for VM uploads. Verify current tools before carrying this limitation to
+another host/version; a locked/asleep Mac or blocked app is a separate condition.
 
 ## Finish with evidence, not a readiness promise
 
