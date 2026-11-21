@@ -132,10 +132,22 @@ Wire **Refresh** to a supported backend or agent action that fetches the APIs,
 updates durable data, and updates the existing artifact. Disable duplicate
 concurrent refreshes; show progress, success time and per-channel failures. Do
 not label a button Refresh if it merely reloads unchanged embedded JSON. If the
-host supports only agent-driven refresh, label the real action **Ask Muse to
-update** and make that handoff work in the chosen chat. Explicitly distinguish
-an interactive snapshot from a live updating app until the full refresh path is
-verified. Never add automatic periodic refresh merely to make the UI seem live.
+host supports only agent-driven refresh, verify an actual supported handoff before
+labelling a control **Ask Muse to update**. Inspect the current manifest/client SDK
+and action contract; listing this app's existing actions alone does not establish
+whether the host can dispatch an agent. An explanation-only toggle is not a
+refresh or a handoff. If dispatch/prefill is unavailable, use clearly labelled
+**Open main chat** / **Copy update request** actions and the host's official chat
+entry point, keeping the existing conversation. Distinguish copied text or a draft
+from a request submitted by the user; never show requested/running/success just
+because an instruction panel opened. Explicitly distinguish an interactive
+snapshot from a live updating app until the full refresh path is verified. Never
+add automatic periodic refresh merely to make the UI seem live.
+
+Advance the displayed retrieval time only from a successful real API fetch saved
+with the snapshot. Reopening the viewer, polling storage or importing old data
+must not replace that time with the current clock. Preserve the separate latest
+reporting date: fresh retrieval may still return delayed daily Analytics.
 
 Avoid re-querying 730 days on every click. Fetch a bounded useful initial range,
 cache/report its coverage, and extend on demand. Preserve the last valid snapshot
@@ -155,9 +167,12 @@ Use the actual Muse artifact viewer to check:
    Check 24h\*/48h\*
    against their dated daily rows, independently of the selected chart period;
    include them in the dashboard's existing privacy behavior.
-3. The documented Refresh/Ask Muse action really updates the same artifact and
-   records a new successful API retrieval time. A refreshed viewer alone is not
-   evidence of a new API request.
+3. Test the refresh control in the viewer. For a dispatch path, observe the actual
+   request/job in the chosen chat/backend, new API retrieval, durable snapshot
+   readback and the same artifact rendering the result. For a manual chat fallback,
+   test its real navigation/copy actions and the explicit submit step; do not claim
+   one-click refresh. A new banner, button toast or reloaded viewer is not evidence
+   of a new API request, nor is an updated clock over unchanged cached data.
 4. Compare the rendered default page to the native/source screenshot: compact
    header, collapsed info, filter toolbar and table; no unnecessary summary-card
    strip, revenue banner or repeated technical prose. Check a narrow viewport
