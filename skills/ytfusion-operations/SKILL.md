@@ -5,8 +5,11 @@ description: Set up a Muse or YtFusion operations instance, connect its Google p
 
 # YtFusion Operations
 
-Respond in the user's language. Normally operate the installed YtFusion. This skill
+Respond in the user's language and follow the assigned execution mode. This skill
 covers installation and final-media operations on Muse, a VPS, or a local device.
+For a Muse `agent_executor`, YtFusion is the workflow reference; obtaining its
+source/dependencies does not require starting its native backend or onboarding
+native Drive. Use native queues/UI/API when native operation is assigned.
 Use `hds-home-production` for HDS generation. Reuse `ytfusion-domain-vps` in this
 repository for domain/HTTPS deployment and managed Google-client installation.
 For connected-channel reports or a reusable Muse Analytics dashboard, use

@@ -77,6 +77,19 @@ Current bridge receipts use `ytfusion-upload-receipt/v1`, a deterministic
 time and applicable collection/project/export identity and result details.
 Read the actual builder/validator; do not invent a boolean in the editable JSON.
 
+Take `projectRef`, `projectId`, `draftName`, `sourceRevision`, and applicable
+`collectionId`/`sourceProjectRef` from the validated source package where present;
+use the installed normalization for legacy/manual packages. Keep its export
+identity, not a VM-local collection or a reference reconstructed from the title.
+The installed receipt builder handles collection-qualified references. Preserve
+the actual accepted video/channel/time and verified finishing facts; a timestamp
+from a later retry is not the original upload time.
+
+A raw video without YtFusion package identity still needs a durable file/version
+to video-ID mapping. Do not fabricate an HDS project receipt for it. Establish
+an actual supported package first when the assignment requires native project
+history or source-footage cleanup; otherwise report that history as not applicable.
+
 Use native recording/sync for native jobs. For a standalone executor, reuse the
 pure receipt builder/validation when available, or implement the inspected
 contract faithfully with the same stable identity. Deliver the append-only
@@ -93,12 +106,42 @@ Keep editable source metadata, original source video and immutable upload facts
 distinct. Metadata fields such as `sourceUploadHistory` are projections, not an
 excuse to overwrite the source or lose older receipts.
 
+Use one `<receiptId>.json` file per fact in that existing history folder. A
+connector's ordinary create-file operation is sufficient; an append endpoint is
+not required. Before retrying a timed-out create, find/read the intended receipt
+by parent, name and content identity. Reuse an equivalent existing fact; retain
+and review differing facts rather than overwriting, deleting or silently choosing
+one. Drive permits duplicate names, so a filename match alone is insufficient.
+
 Read the receipt back, validate identity and facts, and verify the native
 history/Inbox resolves the source as previously uploaded where native access is
 available. If only receipt readback/validation is available, state that evidence
 limit. Conflicting receipts require review; retain both evidence and media.
 If writing/sync fails, preserve the video ID and report **uploaded; history
 pending**. Retry the receipt operation, not the upload.
+
+### Metadata projection and cleanup on the source device
+
+The shared receipt is the upload fact. The original manifest's
+`sourceUploadHistory` snapshot may remain null or old after another device uploads;
+native readers combine it with shared receipts. Do not make rewriting every source
+JSON a mandatory post-upload step or invent `uploaded: true`. If an assigned
+metadata update is actually needed, use the installed writer/merge contract,
+preserve the file identity, package/export fields and concurrent user edits, then
+read it back. Updating text is not a substitute for the immutable upload receipt.
+
+On the source device, normal YtFusion receipt sync merges recognized facts into
+the matching project's history. Its reconciliation can move the matching project
+to `_pernah_upload` when source revision/ownership and activity checks pass.
+Saved cleanup intent then governs eligible footage/final files; a receipt alone
+does not grant deletion permission or create a cleanup plan.
+
+This source-side work requires the owning collection/device to be available and
+its existing sync/cleanup workflow to run. The executor VM must not start native
+YtFusion or delete remote source footage to simulate it. Report source cleanup as
+pending or not requested until the owning device provides evidence. Do not claim
+it completed merely because Drive accepted the receipt. Reopened upload status,
+changed/shared footage or active work must retain the native cleanup guards.
 
 ## Clean the assigned local copy after recording
 
@@ -125,6 +168,33 @@ On failed/ambiguous upload, pending finishing/history, changed/shared file or
 conflicting cleanup intent, retain media and record the blocker. Retry cleanup
 independently; cleanup failure must never create another video or erase its
 uploaded marker. Report bytes actually reclaimed, retained items and reasons.
+
+Keep these cleanup scopes separate in the private assignment:
+
+| Scope | Owner and completion evidence |
+| --- | --- |
+| VM MP4 and temporary copies | Executor-owned staged files; verify absence and reclaimed bytes after eligible cleanup |
+| Original final video/thumbnail/metadata on Drive | Assigned Drive-source policy only; preserve by default, independent of VM disposal |
+| Source project footage and local final files | Owning device's saved cleanup plan and native result; a VM receipt is only input to this workflow |
+
+## Resume unfinished post-upload work
+
+Persist separate results for upload acceptance, finishing, shared history, VM
+cleanup and any assigned source cleanup. After acceptance, save the video ID
+before optional work and never send this job back through `videos.insert`.
+
+| Remaining leg | Continuation |
+| --- | --- |
+| Thumbnail/playlist/status verification | Repair or inspect the same video; keep unknown fields explicit |
+| Shared history | Build/deliver/read back the real receipt and verify source identity; no second upload |
+| VM cleanup | Recheck the recorded file identity and other-job use, then resume only eligible disposal |
+| Source cleanup | Let the owning device sync and run its saved plan; preserve a pending handoff when unavailable |
+
+Save the per-leg outcome and next action after each change. Ordinary authorized
+retries should not require the user to repeat the assignment; honor host approval
+cards at the actual action and stop for a changed source, conflicting receipt,
+revoked access or an exhausted bounded retry policy. Report a failed write or
+cleanup as pending, not as a failed video upload or an all-done workflow.
 
 Completion reporting should distinguish: accepted/processed video; resolved
 settings; thumbnail; playlist; local receipt; Drive history; local cleanup; any

@@ -17,10 +17,12 @@ user intervention. Setup alone does not authorize an upload, publication or Live
    host policy/dependency fields. Matching source hashes alone does not update
    a separate host catalog such as a generated `skill.yaml`.
 2. Inspect actual connectors, cloud browser, local computer control, execution,
-   persistent storage, networking and job facilities. Choose native application
-   operation or an independent executor with [Muse executor](muse-executor.md).
-   For final-video work, source plus needed dependencies can suffice; a running
-   YtFusion server and a full HDS generation install are not prerequisites.
+   persistent storage, networking and job facilities. Follow an existing mode
+   choice. For a new Muse final-video uploader, prefer `agent_executor` when its
+   supported connectors/APIs meet the workflow; use native operation when assigned.
+   See [Muse executor](muse-executor.md). Source plus needed dependencies can
+   suffice; a running YtFusion server, native Drive onboarding and a full HDS
+   generation install are not prerequisites for an independent executor.
 3. Resolve only missing choices: instance role, GCP owner/browser profile,
    channel and account, Drive account/source, branding/contact, and task scope.
    GCP, channel and Drive accounts may differ. A profile name, Gmail tab or typed
@@ -66,8 +68,11 @@ External Testing token condition, not all possible token expiration/revocation.
 ## Connect Drive and YouTube with the available route
 
 Use a working built-in Drive connector if it can deliver binary bytes to this
-VM. Rclone, a Mac connector and the native Drive UI are alternatives, not universal
-requirements. Verify the assigned account can access the exact file/folder.
+VM. For upload assignments, also inspect its supported JSON receipt create/read
+operations and access to the existing workspace's history folder; download alone
+does not establish post-upload recording capability. Do not write a fake receipt
+as a probe. Rclone, a Mac connector and the native Drive UI are alternatives, not
+universal requirements. Verify access to the exact assigned file/folder.
 Enabling an API, installing client JSON and granting account access are separate.
 
 For YouTube, establish a supported complete route, then use the matching client:

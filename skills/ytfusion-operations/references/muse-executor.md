@@ -30,6 +30,19 @@ or require a continuously running dashboard just to read the implementation.
 Reuse suitable dependencies already installed, normally the app's virtualenv.
 Source access does not establish that an independent executor is implemented.
 
+Keep an explicit `agent_executor` decision across continuations. A connector or
+receipt failure is a leg to repair, not a reason to start the native backend,
+configure its Drive connection, or repeat GCP onboarding. Preserve any existing
+native installation; stop a separate trial only when requested and after checking
+its actual active jobs. Do not carry a trial's restrictions or pending approvals
+over as authorization for new executor work.
+
+Validate the assigned package/export using the installed pure format/identity
+helpers where applicable and retain its real source identities. An independent
+executor does not require a native HDS project catalog. Do not strip export
+markers, invent project folders or forge native import state to make a final
+video uploadable. Use those original identities in the shared receipt.
+
 ## Capability evidence and first proof
 
 The 20 November 2026 pilot demonstrated direct binary Drive download to VM staging
@@ -82,6 +95,9 @@ user's explicit pause or retry limit still apply.
   expected length/hash, local path, attempt count, and latest error privately.
   Persist the attempt count across tasks/restarts rather than resetting it on
   every invocation.
+  Track the actual downloader PID/task and exit result: a broad `pgrep -f` can
+  match the checking shell or monitor itself. Full file size alone does not
+  prove the writer exited or checksum/media verification passed.
 - Prefer the transport's documented resume mechanism. Drive supports partial
   blob downloads with `Range`, but the selected connector must actually expose
   that operation. Validate the same source/version, returned range and length
@@ -181,6 +197,13 @@ thumbnail/playlist work so repairs do not re-upload the video. Follow the
 [workflow contract](upload-workflow.md) for recognized Drive history and cleanup;
 do not stop at a private agent ledger or retain disposable staging indefinitely
 when its post-success cleanup was assigned.
+
+Inspect the current connector's create-file, readback, upload-path and approval
+contract before relying on shared history. Some require an absolute worker-home
+path rather than `/tmp`. Use the workflow contract's one-file-per-receipt delivery
+and per-leg continuation; no append API is required. Do not request a new OAuth
+grant or native rclone setup merely because an already connected writer needs
+its normal per-action approval.
 
 A persistent schedule does not make an in-flight process survive VM/container
 restart. A subsequent invocation must recover from durable state. Keep completed
