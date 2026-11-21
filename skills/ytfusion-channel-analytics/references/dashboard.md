@@ -137,8 +137,11 @@ labelling a control **Ask Muse to update**. Inspect the current manifest/client 
 and action contract; listing this app's existing actions alone does not establish
 whether the host can dispatch an agent. An explanation-only toggle is not a
 refresh or a handoff. If dispatch/prefill is unavailable, use clearly labelled
-**Open main chat** / **Copy update request** actions and the host's official chat
-entry point, keeping the existing conversation. Distinguish copied text or a draft
+**Open chat** / **Copy update request** actions and the host's official chat
+entry point, targeting the user's saved conversation and showing its name. An
+explicitly chosen Analytics thread overrides the default main chat; reuse its
+verified identity/link instead of creating a new thread or hardwiring `/`.
+Distinguish copied text or a draft
 from a request submitted by the user; never show requested/running/success just
 because an instruction panel opened. Explicitly distinguish an interactive
 snapshot from a live updating app until the full refresh path is verified. Never
