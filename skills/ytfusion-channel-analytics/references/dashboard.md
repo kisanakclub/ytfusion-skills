@@ -53,9 +53,14 @@ UI language choice overrides that default. Follow the native hierarchy:
   warning panels, implementation details or four large summary cards.
 - One filter toolbar: Category dropdown, Search channels and a visible count.
 - The channel table is the main content. Follow native column order: internal
-  name when assigned, YouTube Channel (avatar/name/handle/link), Subs, Videos,
+  name when assigned, YouTube Channel (avatar/name/handle/link), Monetization, Subs, Videos,
   Watch Hrs (365d), 24h\*, 48h\*, Chart, Earnings 24h/Earnings, and operational
   Status when a real source exists. Keep numbers aligned and typography compact.
+  Show **Monetization** as its own visible, sortable column beside channel identity:
+  **Monetized** for explicit `true`, **Not monetized** for explicit `false`, and
+  **Unknown** when absent/unavailable. Use readable text with restrained styling;
+  a dollar/question-mark icon or tooltip beside the channel name is insufficient.
+  Keep this channel status separate from revenue permission/errors and worker Status.
   Use chart icon buttons in dedicated cells rather than hiding charts behind a
   generic Detail button and a long inline report.
 - Put periods, metric selection, detailed summaries and any optional daily table
