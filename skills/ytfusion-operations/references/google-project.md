@@ -60,7 +60,13 @@ For native login, inspect `SCOPES` in `src/app.py`, Drive authorization in
 the scopes actually requested in **Google Auth Platform → Data Access** and save.
 Current channel login requests `openid`, `userinfo.email`, `youtube.force-ssl`,
 `youtubepartner`, and `yt-analytics.readonly`; current Web Drive requests full
-`drive` plus identity scopes. Re-check these on the installed version. Do not
+`drive` plus identity scopes. Optional **Enable earnings** also requests
+`https://www.googleapis.com/auth/yt-analytics-monetary.readonly` through the same
+YouTube Analytics API; include it in Data Access when that feature is assigned.
+Existing channel tokens need one-time additional consent for monetary access,
+not a new project/client JSON. Preserve the working connection until consent
+succeeds; API activation and In production alone do not grant the scope.
+Re-check these on the installed version. Do not
 silently remove a required grant or add unrelated scopes copied from a generic
 rclone example. If broad scopes need review, record the requirement honestly.
 For an independent executor, choose scopes for its actual features and supported

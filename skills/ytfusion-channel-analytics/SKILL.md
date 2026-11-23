@@ -19,7 +19,7 @@ do not repeat account setup when a valid connection already exists.
   Reuse that artifact on later requests rather than creating another dashboard.
 - For data collection in either case, read [data contract](references/data-contract.md)
   and the installed `src/templates/channel_statistics.html` plus its handlers in
-  `src/app.py`. Follow the native visual structure while keeping date, permission
+  `src/app.py` and `src/channel_analytics.py` when present. Follow the native visual structure while keeping date, permission
   and unavailable-data labels accurate.
 
 ## Work from the assigned connections

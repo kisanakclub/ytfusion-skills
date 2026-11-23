@@ -11,7 +11,7 @@ implementation has these entry points:
 | `GET /api/channel-statistics` | Cache payload: `success`, `channels`, `last_updated`; no cache is an empty list, not proof of no connected channels |
 | `POST /api/channel-statistics/refresh` | Fetch connected native channels, write cache, return channel results; per-channel errors may coexist with top-level success |
 | `GET /api/status`, `GET /api/categories` | Native worker/category context used by the page; optional when the executor does not run native workers |
-| `fetch_channel_statistics`, `fetch_channel_analytics` in `src/app.py` | Channel credentials, Data API identity/totals, Analytics reports and aggregation |
+| `fetch_channel_statistics`, `fetch_channel_analytics` in `src/app.py`; `src/channel_analytics.py` | Channel credentials, Data API identity/status/totals, dated independent Analytics reports and calendar aggregation |
 
 Use an existing authenticated session, preserve origin/CSRF checks and never import
 `src/app.py` into a helper just to call it. Inspect responses for per-channel
@@ -35,7 +35,8 @@ credentials. Bind the credential to the resolved channel ID, not its display nam
 | Native-style Watch Hrs (365d) | Query the actual 365-day period with the existing grant, record its dates/availability and convert minutes to hours. Do not relabel a 30/57-day sum as a 365-day query. Failure is unavailable, not zero. Do not copy a Ready/YPP-eligible badge from a simple hours/subscriber threshold. |
 | `subscribersGained`, `subscribersLost` | Optional period metrics; net growth is gained minus lost for the same period. Keep separate from current subscriber total. |
 | `averageViewDuration` | Optional average in seconds. Query the aggregate for the selected period or weight compatible components correctly; do not average daily averages unweighted. |
-| `estimatedRevenue` | Optional estimate, with currency and coverage. Requires appropriate granted access; failure/absence is not proof of no monetization and not revenue zero. |
+| Data API `status.isChannelMonetizationEnabled` | Use the explicit Boolean, when returned by `channels.list(part=snippet,statistics,status,mine=true)`. `true` = YPP monetization enabled, `false` = not enabled; absent = unknown. Do not infer membership from revenue, ad presence or hours/subscriber thresholds. |
+| `estimatedRevenue` | Optional estimate, with currency and coverage. Requires the granted `yt-analytics-monetary.readonly` scope and YPP access. Failure/absence is not proof of no monetization and not revenue zero. Valid returned zero stays zero. It is not finalized AdSense payments. |
 
 Use supported metric/dimension combinations from the current channel-report
 documentation. Keep optional monetary queries separate so an access failure or
@@ -83,27 +84,60 @@ These are compatibility labels for daily reports, not rolling hour windows.
   have different cutoffs; neither sorting nor changing the chart period should
   change which dates these columns summarize. Do not infer hourly bars from them.
 
-### Native compatibility caveats
+### Native version 2 contract
 
-The inspected native code requests roughly 730 days, calls that sum
-`views_all_time`, and derives `views_24h`/`views_48h` from the last one/two
-returned daily rows. Its formatted chart labels omit the year. It also folds
-several revenue failures into `is_monetized=false` and watch-time failures into
-zero. These fields are compatibility inputs, not trustworthy semantics for a
-new dashboard. Label them as bounded/latest reported-day data where provable;
-request a dated series when exact period calculations are needed. Do not guess
-missing years or silently relabel them as realtime/lifetime. Treat ambiguous
-revenue, watch-time failures and incomplete provenance as unavailable. This skill
-does not authorize patching or restarting the native app to fix those caveats.
+After updating source, inspect `src/channel_analytics.py` and the actual payload.
+Native `analytics.report_version == 2` includes:
+
+- `reports.views`, `reports.earnings`, `reports.watch_time`, each with its own
+  `status`, `error`, ISO `dates`/`values`, `requested_start`, `requested_end`,
+  `latest_reported_day`, `reported_days`, `available_total` and calendar `totals`.
+- Failure states distinguish `permission_required`, `api_disabled`, `unauthorized`,
+  `forbidden`, `quota_exceeded`, `unavailable` and legitimate `no_data`. A generic
+  403 does not prove non-YPP. A watch-time failure remains null, not zero.
+- Latest-day `views_24h`/`earnings_24h`, consecutive-day `*_48h`, and 7/14/30/90/180
+  calendar totals. A total with missing days is null. A graph may sum reported
+  days only if partial coverage is clearly labeled; do not describe it as a
+  complete calendar total.
+- `views_available` / `earnings_available` are bounded returned-data sums, up to
+  730 days. Views use `chart_labels`/`chart_values`; revenue uses independent
+  `earnings_chart_labels`/`earnings_chart_values`. Never align these by array index.
+- Channel-level `is_monetized` comes only from the Data API status field and is
+  nullable. It does not come from `analytics.is_monetized` or revenue access.
+
+The status field is exposed by Google's Discovery schema and generated Python
+client documentation; it may be absent from responses or narrative REST docs.
+Keep absence unknown and re-check current schema if support changes. It does not
+state payment eligibility, ad serving on a particular video, or payout amounts.
+
+Older native caches may contain `views_all_time` for only ~730 days, short labels
+without years, inferred `analytics.is_monetized=false`, or watch-time errors as
+zero. Do not reuse those guesses. Refresh the native cache after updating, or
+retrieve a dated series in the executor without starting native YtFusion. Updating
+this skill alone does not authorize native source edits, restarts or new grants.
 
 ## Access and recovery
 
 Verify YouTube Data API and YouTube Analytics API are enabled in the actual
 credential's project, and inspect granted scopes plus real API results. Normal
-Analytics commonly uses `yt-analytics.readonly`; monetary reports need appropriate
-monetary access such as `yt-analytics-monetary.readonly`. Current Google docs list
-additional authorization nuances: verify the actual failure before prescribing
-another login. Enabling an API does not expand an existing token's grant.
+Analytics uses `yt-analytics.readonly` (the monetary scope also covers user-activity
+reports). Estimated channel revenue requires the exact
+`https://www.googleapis.com/auth/yt-analytics-monetary.readonly` grant. The same
+YouTube Analytics API serves it: no additional GCP API/library, client JSON or
+AdSense API is required for this metric. Enabling an API or declaring a consent
+scope does not expand an old token's actual grant. Verify the actual failure
+before prescribing another login.
+
+When the user requests earnings and the grant is missing, explain one-time
+reauthorization with the existing client/channel; preserve working credentials
+until it succeeds. Native v2 exposes **Enable earnings** in channel-stats and uses
+`/re-authenticate/<internal-name>?earnings=true`. Ordinary Add Channel does not
+require monetary access; regular reauthentication preserves an already granted
+monetary scope. An executor must use its own supported reconnection/handoff and
+reimport the authorized connection when needed; a native relative URL in a Muse
+artifact would point to the wrong host. Do not auto-grant Google access or promise
+revenue on a channel that is not eligible. Keep upload/normal statistics usable
+without the optional monetary grant.
 
 Classify disabled API, insufficient scope, expired/revoked credentials, wrong
 channel, network error, and legitimate empty data separately. Keep unaffected
@@ -118,3 +152,6 @@ last successful data; avoid repeated login loops or a dashboard that spins forev
 - [Metrics and their units](https://developers.google.com/youtube/analytics/metrics)
 - [Supported channel reports](https://developers.google.com/youtube/analytics/channel_reports)
 - [Authorization](https://developers.google.com/youtube/reporting/guides/authorization)
+
+- [Data API generated channel status schema](https://googleapis.github.io/google-api-python-client/docs/dyn/youtube_v3.channels.html)
+- [Current YouTube Discovery schema](https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest)
