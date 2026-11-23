@@ -99,6 +99,23 @@ Native `analytics.report_version == 2` includes:
   calendar totals. A total with missing days is null. A graph may sum reported
   days only if partial coverage is clearly labeled; do not describe it as a
   complete calendar total.
+- `reports.earnings.periods.this_month` / `last_month`: Pacific calendar boundaries,
+  `value` (sum of reported daily API revenue), requested dates, latest reporting
+  day, `reported_days` / `expected_days`, `complete` and status. Flat fields
+  `earnings_this_month` / `earnings_last_month` mirror these values. They are not
+  rolling 30-day windows; missing reports/grants remain null. A valid zero remains
+  zero. On the first Pacific day of a month there may be no completed day yet.
+- `reports.rpm` / `rpm_engaged`: derived Estimated RPM using Views / Engaged views
+  respectively. A separate joint daily query requests
+  `estimatedRevenue,views,engagedViews`, so its numerators and denominators have
+  matching reporting dates/filter/currency. Its failure must not discard the
+  independent earnings history/month totals. Each report keeps `dates`, `values`,
+  `revenue_values`, `denominator_values`, basis, cutoff and status. Missing or zero
+  denominators yield null. Revenue zero with a positive denominator yields zero.
+  For a selected period, compute **sum(matched revenue) / sum(matched denominator)
+  × 1000**; never average/sum daily RPM values. Keep the basis explicit. Shorts
+  use Engaged views; a mixed channel estimate is not guaranteed to match Studio's
+  RPM. Do not substitute CPM or claim RPM is returned directly by the API.
 - `views_available` / `earnings_available` are bounded returned-data sums, up to
   730 days. Views use `chart_labels`/`chart_values`; revenue uses independent
   `earnings_chart_labels`/`earnings_chart_values`. Never align these by array index.
@@ -155,3 +172,5 @@ last successful data; avoid repeated login loops or a dashboard that spins forev
 
 - [Data API generated channel status schema](https://googleapis.github.io/google-api-python-client/docs/dyn/youtube_v3.channels.html)
 - [Current YouTube Discovery schema](https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest)
+
+- [YouTube RPM definition and view bases](https://support.google.com/youtube/answer/9314357?hl=en)

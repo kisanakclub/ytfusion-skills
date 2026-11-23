@@ -54,7 +54,8 @@ UI language choice overrides that default. Follow the native hierarchy:
 - One filter toolbar: Category dropdown, Search channels and a visible count.
 - The channel table is the main content. Follow native column order: internal
   name when assigned, YouTube Channel (avatar/name/handle/link), Monetization, Subs, Videos,
-  Watch Hrs (365d), 24h\*, 48h\*, Chart, Earnings 24h/Earnings, and operational
+  Watch Hrs (365d), 24h\*, 48h\*, Chart, Earnings 24h\*, Earnings this month,
+  Earnings last month, Earnings chart, and operational
   Status when a real source exists. Keep numbers aligned and typography compact.
   Show **Monetization** as its own visible, sortable column beside channel identity:
   **Monetized** for explicit `true`, **Not monetized** for explicit `false`, and
@@ -63,6 +64,12 @@ UI language choice overrides that default. Follow the native hierarchy:
   Keep this channel status separate from revenue permission/errors and worker Status.
   Use chart icon buttons in dedicated cells rather than hiding charts behind a
   generic Detail button and a long inline report.
+- When all-channel earnings totals are requested, use a compact summary strip
+  for **Total earnings (available history)**, **This month so far**, and **Last month**.
+  Totals cover all assigned channels, including those outside the current filter.
+  Show how many channels supplied data; unknown/unavailable grants do not become
+  zero. Keep USD/other currencies separate and show differing cutoffs/partial
+  coverage. Available history is bounded (native up to 730 days), not lifetime.
 - Put periods, metric selection, detailed summaries and any optional daily table
   inside the chart dialog. A 30-day initial graph is useful; preserve later choices.
 
@@ -88,9 +95,20 @@ refresh, and display a concise empty-filter result without dropping cached data.
 
 Make the row's Chart icon open an actual dialog/panel with channel identity,
 interactive daily chart, dated tooltips, close control and keyboard dismissal.
+Chart inspection should work across the plot area by the nearest reporting date
+on the horizontal axis, without requiring an exact point hit. Highlight the
+selected point and use a restrained vertical date guide. Keep tooltip date/value
+aligned with the selected real report; gaps must not become zero or interpolated
+observations. Preserve native mouse/touch interactions and privacy for monetary
+charts. Moving the cursor must use cached data, not trigger API requests.
 Offer **7d / 14d / 30d / 90d / 180d / Available range**, with Views and Watch time
 working from real dated series. Earnings can have a separate native-style chart
-action when access exists. Use the [data contract](data-contract.md) for calendar
+action when access exists. Add **Estimated RPM** to the chart's metric selector
+when that feature is requested. Offer an explicit **Views / Engaged views** basis
+in the RPM detail, with dates/units and a weighted period value. RPM uses its own
+matched daily monetary report; permission/no-data states remain distinct from
+zero. Keep monthly sums tied to calendar periods and their actual coverage.
+Use the [data contract](data-contract.md) for calendar
 windows, gaps, units and bounded-history labels. Never disable 90/180 days merely
 because the first snapshot fetched only 60 days: extend coverage on demand or
 fetch the required bounded history once, cache it and identify actual coverage.
@@ -104,8 +122,18 @@ Escape without leaking the dialog or blocking the page.
 Use readable tabular numerals, clear selected/sort states, restrained borders,
 and a table that stays usable on a narrow screen. Preserve keyboard access,
 labelled controls, focus visibility and text equivalents for chart values.
-Privacy mode should mask channel identity and sensitive amounts in the visible
-view; disclose it as a display aid, not access control or protection for exports.
+Privacy mode must hide monetary amounts in the channel table, all-channel totals,
+monthly columns, and every earnings/RPM surface: chart summary, plotted values, axes/tooltips and any daily table. Use a
+plain **`$$$$`** placeholder; keep unavailable/permission states distinct from
+zero. A revenue chart can show **Earnings · $$$$** instead of
+plotting amounts. Switching privacy on must also update an already open dialog;
+switching it off restores values without fetching, altering the snapshot, or
+resetting chart period/filter/sort. Verify with disposable UI fixtures containing
+both a nonzero amount and valid zero if the live grant has no revenue access;
+never write those fixture values into the user's snapshot or request new OAuth
+just to test privacy. Keep channel monetization status separate from earnings.
+Mask channel identity in table and dialog as already supported. Describe Privacy
+as a display aid, not access control or protection for exports.
 Empty data, loading, partial permission failure and last-known stale data need
 distinct concise states. A failure on one channel must not blank the whole page.
 
