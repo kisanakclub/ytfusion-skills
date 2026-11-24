@@ -106,6 +106,16 @@ different requirements and can require billing; check current
 [Firebase hosting guidance](https://firebase.google.com/docs/hosting/functions)
 before proposing them. Do not turn on billing to unblock a setup silently.
 
+When native YouTube API Setup offers Firebase, use its **Unduh website**
+to prepare the public files and Hosting configuration for the selected project.
+Review the pages and follow the README; the download has not deployed anything.
+Use a **Live** Spark Hosting site, not a preview channel with an expiry date.
+Live sites have no preview expiry, while Hosting quotas and account/project
+availability still apply. Check the public homepage/privacy/terms after deploy.
+For native Desktop login, skip VPS DNS/HTTPS and transfer the completed account
+connections if the runtime is remote. For Web login, keep the actual HTTPS VPS
+callback; the branding provider does not determine the OAuth client type.
+
 With Cloudflare Pages, use its current
 [Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/)
 or supported Git deployment route. For a custom hostname, register it in Pages

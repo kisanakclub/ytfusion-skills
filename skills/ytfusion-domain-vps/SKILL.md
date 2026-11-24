@@ -1,6 +1,6 @@
 ---
 name: ytfusion-domain-vps
-description: Inspect, install, or migrate YtFusion dashboard and public domains on existing VPS deployments. Use for YouTube API Setup (/domain-setup), saved Server Transfer connections, DNS, HTTPS, and Google OAuth callbacks for those deployments.
+description: Configure or migrate YtFusion YouTube API Setup on local devices and VPSs, including Firebase or owned-domain branding, Desktop/Web OAuth clients, setup profiles, DNS/HTTPS and Server Transfer connections.
 ---
 
 # YtFusion Domain and VPS
@@ -18,6 +18,17 @@ Use the overview's installed state first. The explicit **Wizard domain & HTTPS**
 action opens management; Google client import/install stays on localhost. The
 HTTPS label describes the current connection, while domain and Google review
 checks remain separate operations.
+
+## Setup profiles
+
+Profiles are installation-local setup notes. Automatic names follow the selected
+server/domain; **Ubah nama** and **Hapus** are beneath the profile selector.
+Legacy generic labels can be derived from the saved context, so identify a
+profile by its target and profile ID rather than assuming duplicate labels mean
+duplicate servers. Delete a profile only within the requested scope: its
+confirmation removes the setup note, while saved projects, credentials and VPS
+configuration remain. Empty drafts do not create saved profiles. Preserve a
+meaningful unsaved draft when switching profiles or returning after a reload.
 
 ## Identify the target and check its state
 
@@ -39,11 +50,18 @@ checks remain separate operations.
 
 ## Install or migrate when requested
 
-1. Establish the desired primary domain, dashboard hostname, and whether the
-   public homepage, privacy policy, and terms will also move. The wizard expects
-   the dashboard hostname to be a subdomain of the primary domain entered. For
-   a dashboard-only change, use the option to keep the existing public website
-   when it already serves the selected primary domain.
+1. Establish the runtime target, login location and public branding hosting
+   independently. Current setup profiles support local or VPS runtime, Desktop
+   login on the management computer or direct Web login on a VPS, and Firebase
+   Hosting or an owned domain for branding. Follow the installed UI; older
+   profiles retain their owned-domain/Web configuration. For an owned domain,
+   use separate dashboard hostnames or one hostname with homepage `/`, dashboard
+   `/dashboard`, and callback `/oauth2callback`. One shared hostname can target
+   only one VPS. A dashboard-only migration can keep the existing public site.
+   Before using the shared hostname layout, update/activate YtFusion on that VPS
+   so `/dashboard` exists, and update its helper when requested.
+   For Desktop login, continue with Google clients below; the DNS/HTTPS steps
+   here apply when configuring a public VPS dashboard.
 2. Use the wizard's DNS records and apply the relevant changes in the user's DNS
    provider, normally Cloudflare. Verify the new hostname points to the target
    before starting HTTPS setup. Preserve unrelated DNS records. If a web login,
@@ -77,9 +95,31 @@ creation, follow [Google project setup](../ytfusion-operations/references/google
 Execute the authorized setup and record the actual publishing/review state;
 reuse an assigned existing project rather than creating one per connection.
 
-Use **GCP** in the management device's YouTube API Setup to select the saved VPS
-and project, import its Google downloads, then install the Web client through
-SSH. Follow the installed UI when older versions have different controls.
+Use **Target → Branding → GCP → Akun** for Desktop login. Direct Web login adds
+DNS and HTTPS before GCP. Select the target/project and import the matching
+Google download. **Pasang untuk localhost** binds a Desktop client on the
+management computer without SSH; connect YouTube and Drive there, then transfer
+connections to the VPS if selected. The management computer need not stay on.
+Direct Web login uses the existing SSH client installer. Follow the installed
+UI when older versions have different controls.
+
+The GCP stage groups **Branding & website**, **API & publikasi**, and the matching
+**OAuth Desktop/Web client** in collapsible panels. Project identity stays above
+them; file references and review notes are under **Catatan & verifikasi lanjutan**.
+The project selector's **+ Project baru** adds a setup note; it does not create
+a Google Cloud project. API/Production checkboxes record observed Console state,
+not activation. Import the matching primary JSON, then use **Simpan JSON** and
+the install action; the other client type is optional. Prepared clients and
+completed account grants remain separate states.
+
+For Firebase branding, the GCP step can download a public website ZIP containing
+homepage/privacy/terms, Hosting configuration and deployment instructions.
+Downloading is preparation, not publication. Review the pages, use the assigned
+project's Spark plan without billing, deploy **Live**, and check all public URLs.
+Do not deploy a preview channel as the permanent branding site. Static Hosting
+does not run YtFusion or provide its Python OAuth callback. A Web login still
+needs a separate HTTPS application endpoint. Record actual Audience and review
+states rather than treating a live site as Google verification.
 
 - A Web application client serves both Add Channel and Google Drive on the VPS.
   Register the exact HTTPS callback shown by the wizard. The YouTube and Drive
@@ -89,9 +129,10 @@ SSH. Follow the installed UI when older versions have different controls.
   downloaded filename. Creating or replacing credentials is a separate action
   from importing an existing download.
 - Current localhost imports automatically archive original JSON bytes beneath
-  `secrets/gcp_client_archive/<dashboard-hostname>/<project-id>/`, named
-  `oauth-web.json` and `oauth-desktop.json`. The hostname identifies the chosen
-  VPS without depending on a provider nickname. Keep archives private and out
+  `secrets/gcp_client_archive/<target-label>/<project-id>/`, named
+  `oauth-web.json` and `oauth-desktop.json`. The label is the dashboard hostname,
+  `localhost`, or the profile/server identity for a VPS using local login.
+  Keep archives private and out
   of Git. They can be copied or moved for personal backup.
 - Setup and installed dashboards use managed snapshots under
   `secrets/google_oauth/` with `index.json` and hash-named JSON files. Preserve
