@@ -13,6 +13,8 @@ version change; retain the resolved policy so later jobs do not rediscover it.
 | Package normalization and stable identity | `src/hds_drive_format.py`, `src/hds_drive_upload_bridge.py`, relevant package I/O |
 | Import job/defaults | `yuAddStagedToQueue` in `src/static/js/yt_drive_jobs.js`; `yuJobFillFromProject`, `yuBulkAdd`, `yuLoadMeta`, `yuDefaultPlaylist` and cleanup controls in `src/templates/yt_upload.html`; queue overrides in `src/static/js/yt_channel_queue.js` |
 | Transfer, status payload and finishing | `upload_video`, `list_playlists`, metadata repair in `src/hds_youtube_upload.py`; `src/youtube_thumbnail_policy.py` |
+| Queues, schedule/recovery and completion | `src/hds_upload_dispatch.py`, `src/hds_upload_reschedule.py`, `src/hds_schedule_recovery.py`, `src/hds_upload_completion.py`; current docs/yt-upload-channel-queue-plan.md |
+| Original/Extend and measured duration | `src/hds_extended_duration.py`, `src/hds_video_duration.py`, `src/static/js/yt_video_duration.js` and the actual package/uploader fields |
 | Accepted result/history/Drive sync | journal callbacks, `_hds_record_upload_receipt` and `_hds_merge_drive_receipt` in `src/app.py` (read targeted definitions, never import the app); `make_receipt`, `save_receipt`, `sync_receipts` in the bridge |
 | History identity/location and cleanup | `src/hds_upload_collection.py`, `src/hds_upload_state.py`, `src/hds_drive_system.py`, `src/hds_upload_cleanup.py`, `UploadQueue._finalize_video_cleanup` |
 
@@ -40,6 +42,29 @@ explicit override, manifest or workflow default), destination channel ID, source
 file/version/hash, and thumbnail identity. Do not silently substitute an image or
 another channel when a declared resource is missing. Have the agent resolve and
 save this; do not make the user complete a technical checklist for every video.
+
+## Original, Extend and measured duration
+
+Keep the saved duration choice with the admitted job and receipt. Original uses
+the selected final file. An extended_duration package describes a derivative
+that must be prepared with its validated target/music settings before upload;
+do not silently upload its shorter source or extend an already-final video merely
+because a target duration is mentioned. Read the actual package/prepare contract
+and bind the input, derivative and selected music to this job. Originals remain
+intact; retry/Stop and cleanup must preserve ownership of the derivative.
+
+In agent_executor mode, perform extension only when it is part of the assignment
+and the required assets and supported preparation are available. Otherwise
+identify that missing preparation before upload and retain the package. A final
+video assignment is not permission to start HDS generation/rendering.
+
+Preserve measured original_duration_seconds when available, tied to the current
+source file identity. Keep unknown duration unknown; do not substitute an Extend
+target, plan estimate or transfer-time estimate. Read a local file during normal
+processing when needed, using the installed bounded probe. Listing a queue is
+not a reason to download/probe remote media or backfill every old package.
+Metadata-only edits retain the existing source measurement unless the source
+changes. Old history without a saved duration choice does not prove Original.
 
 ## Transfer and finish one video
 
@@ -178,6 +203,13 @@ Keep these cleanup scopes separate in the private assignment:
 | Source project footage and local final files | Owning device's saved cleanup plan and native result; a VM receipt is only input to this workflow |
 
 ## Resume unfinished post-upload work
+
+Visible completion follows the current native cleanly_complete contract when
+matching its behavior. State=done alone does not clear pending warnings, unknown
+remote outcomes, failed/pending metadata/history sync or retained/running cleanup.
+Keep unresolved legs actionable. Dismissing a fully completed card preserves
+the upload fact, receipts and duplicate-prevention mapping; physical cleanup
+still follows the assigned policy above.
 
 Persist separate results for upload acceptance, finishing, shared history, VM
 cleanup and any assigned source cleanup. After acceptance, save the video ID

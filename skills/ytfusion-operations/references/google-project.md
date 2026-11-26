@@ -31,13 +31,34 @@ be converted to External/Internal. Check current
 [Google Auth Platform guidance](https://support.google.com/cloud/answer/15544987?hl=en)
 rather than assuming a historical console layout.
 
+## Resolve runtime, branding and login independently
+
+For native setup, read the assigned docs/setup/DOMAIN_CLOUDFLARE.md and current
+domain_setup_options/google_oauth routes. A Firebase site, the machine running
+uploads, and the OAuth receiver are separate choices:
+
+| Assigned route | Client and endpoint |
+| --- | --- |
+| Local native login | Desktop client installed for localhost on the management device; public branding can use Firebase or an owned site |
+| VPS runtime with login on a local device | Desktop login on that device, then supported private connection transfer to the VPS; installing the client locally requires no VPS Web callback |
+| Direct login on an HTTPS VPS dashboard | Web client bound to that dashboard hostname and exact registered callback; branding can be elsewhere or share an owned hostname |
+| Muse agent_executor | Choose its supported receiver/browser or existing matching grant; native setup/install endpoints are conditional on choosing the native route |
+
+Desktop does not mean a callback on the Firebase site. A Web client does not
+become Desktop because its JSON filename says Drive. Read actual client types
+and preserve separate account grants. For native managed storage and original
+download archives, follow [Domain/VPS](../../ytfusion-domain-vps/SKILL.md).
+Setup profiles and '+ Project baru' are local notes, not Google Cloud resources;
+API/Production checkboxes are operator observations, not activation or grants.
+Confirm state from the Console, installed client binding and actual account read.
+
 ## Enable APIs and declare the actual scopes
 
 In the selected project, enable the APIs needed by the installed application:
 
 | Assigned feature | API |
 | --- | --- |
-| YouTube channel connection, upload, API Live | YouTube Data API v3 |
+| YouTube channel connection, upload, Publishing overview/schedule actions, API Live | YouTube Data API v3 |
 | Installed channel statistics / analytics grant | YouTube Analytics API |
 | Google Drive connection and transfer | Google Drive API |
 
@@ -54,6 +75,10 @@ After activation, test a relevant read endpoint with the actual grant. Distingui
 `liveStreamingNotEnabled` (channel eligibility). Data API covers Live resources;
 turning it on does not activate Live on a channel. Do not enable unrelated APIs
 or promise revenue access from a non-monetary Analytics grant.
+Publishing reads use Data API with the existing supported grant; a dashboard
+setup does not itself authorize schedule writes. Earnings/RPM use Analytics and
+the optional monetary grant, not a separate monetization/AdSense API. A returned
+revenue permission error is not proof that the channel is not monetized.
 
 For native login, inspect `SCOPES` in `src/app.py`, Drive authorization in
 `src/google_oauth_routes.py`, and the configured native Drive client flow. Declare
@@ -170,6 +195,13 @@ the requested available action and record whether the result is verified,
 published, pending review, or blocked by a specific requirement. Never substitute
 a screenshot of saved fields for verified/published status.
 
+Current [Google Branding guidance](https://support.google.com/cloud/answer/15549049?hl=en)
+distinguishes saved draft branding, a review result ready to publish, and the
+published brand. Finish the offered Publish branding action when assigned;
+Google's compliant review result has a seven-day window for publication.
+That deadline is separate from External Testing refresh-token expiry. A later
+name, logo or URL edit may create another draft; inspect what is actually live.
+
 ## Create the appropriate OAuth clients and install them
 
 | Needed login | Client and destination |
@@ -189,6 +221,11 @@ that every independent executor has identical login capabilities; evaluate the
 actual receiver/browser and Google's client-type requirements. See
 [Muse onboarding](muse-onboarding.md) for the proven local-login/transfer route
 and criteria for researching alternatives.
+
+For an independent Desktop flow, [Google's receiver requirements](https://developers.google.com/identity/protocols/oauth2/native-app#loopback-ip-address)
+apply to the actual browser and loopback listener on the authorizing machine.
+Linux support in Google's protocol does not remove native YtFusion's server
+UI gate, and a cloud browser's localhost does not reach a different VM.
 
 Download the original client JSON privately when creating it, check its actual
 `web`/`installed` type and project ID without exposing the secret, then use the
@@ -223,3 +260,21 @@ scope declarations, public URLs/deployment, ownership verification, publishing a
 review states, client types/callbacks, private credential references, and native
 connection results in the instance assignment/progress. Never store secret values
 there. Report concrete completed results and the smallest genuinely pending step.
+
+## Existing project, hostname or branding changes
+
+Use the assigned change, not a first-run reset. Changing a native default client
+affects new logins; existing channel grants keep their original client until a
+supported reauthorization/Switch GCP succeeds. A token issued to one client
+cannot be reassigned by editing its project ID or pairing it with another JSON.
+Preserve the working client/token and queues until the replacement is verified.
+For an executor, use its supported reconnection/private transfer and verify the
+same intended channel from the VM before changing the saved binding.
+
+A branding-only change reviews published pages, domain ownership and published
+Branding; it does not automatically require account login. A Web hostname change
+also needs the exact new callback and an activated receiver, retaining the old
+route during an assigned overlap. A Desktop route still uses its real loopback
+receiver. Record these decisions separately from API activation, Audience,
+branding/scope review and actual YouTube/Drive grants; don't repeat unrelated
+setup or infer an installed client from an archive.

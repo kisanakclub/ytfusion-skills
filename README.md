@@ -6,6 +6,11 @@ dari aplikasi dan dapat diperbarui sendiri.
 The workflow instructions use the Agent Skills format. The agent should answer
 in the user's language and use the tools available in its own environment.
 
+Untuk pemeliharaan source/panduan, ikuti
+[peta sinkronisasi skill](skills/ytfusion-operations/references/skill-maintenance.md).
+Perubahan fitur yang relevan diperiksa bersama panduan dan gambar acuannya;
+update repo, skill terpasang, dan penerapan executor/dashboard dicatat terpisah.
+
 ## YtFusion Operations
 
 Menyiapkan instalasi baru dan menjalankan tugas upload video final dari Drive,
@@ -41,7 +46,10 @@ bukan uploader/scheduler siap jalan. Baca
 ## YtFusion Channel Analytics
 
 Membaca channel yang sudah terhubung dan menyiapkan dashboard privat di Muse,
-mengikuti tabel, filter dan grafik **channel-stats**. Dashboard disimpan di
+mengikuti **channel-stats**: tab Statistics dan Publishing, tabel, filter,
+grafik, earnings/RPM serta riwayat/jadwal publikasi yang dapat dibaca.
+Repo menyertakan [screenshot UI anonim dan peta source](skills/ytfusion-channel-analytics/references/ui-reference.md)
+agar pengguna tidak perlu menyiapkan screenshot manual. Dashboard disimpan di
 **Library** agar mudah dibuka lagi, dengan kartu UI di main chat. Side chat khusus
 bisa digunakan bila diminta pengguna.
 Memakai koneksi instance yang ada; tidak perlu mengulang setup
@@ -80,8 +88,9 @@ AGENTS.md. Pilih cara eksekusi dari kemampuan nyata host; pelajari logic
 workflow dan pasang dependency yang diperlukan, tanpa mewajibkan server
 aplikasi atau seluruh provider HDS untuk tugas upload final.
 
-Tugas awal: siapkan upload video final dari Google Drive ke YouTube, tanpa
-generate/render HDS. Selesaikan setup yang diizinkan; upload pertama menunggu
+Tugas awal: siapkan Drive, channel YouTube, upload video final dan dashboard
+Channel Analytics sekaligus, tanpa generate/render HDS. Selesaikan setup yang
+diizinkan; upload pertama menunggu
 penugasan video/channel dan izin upload. Buat project GCP baru untuk instance
 baru kecuali aku menunjuk project yang sudah ada. Pelihara profil privat agar
 akun/project/channel dan keputusan tidak perlu dijelaskan ulang.
@@ -100,6 +109,17 @@ untuk job nanti: satu upload bersamaan, hapus hanya salinan staging milik job
 di VM setelah hasil serta riwayat Drive tercatat dan terverifikasi; simpan
 video asli, metadata dan thumbnail di Drive. Pertahankan pilihan eksplisit yang
 sudah ada dan minta penjelasan bila bertentangan. Jangan menghapus file sekarang.
+
+Pasang juga skills/ytfusion-channel-analytics dan verifikasi discovery. Baca
+referensi dashboard/data/Publishing dan buka screenshot UI bawaan skill; berikan
+gambar itu kepada pembuat artifact bersama acuan source channel-stats terbaru.
+Buat satu dashboard privat berbahasa Inggris di Library, dengan Statistics dan
+Publishing baca-saja, filter, grafik, earnings/RPM serta Privacy $$$$. Gunakan
+koneksi yang ditugaskan, tampilkan cakupan/izin yang belum tersedia, dan verifikasi
+fetch, penyimpanan serta viewer. Tampilkan kartu di chat pilihanku dan arahkan
+update ke chat khusus Channel Analytics bila itu tujuanku. Simpan versi source
+dan skill; update repo tidak otomatis mengubah dashboard. Jangan mengedit jadwal
+YouTube atau membuat refresh berulang sebagai bagian setup ini.
 
 Lanjutkan langkah yang sudah diizinkan sampai selesai atau blocker nyata.
 Ikuti aturan host untuk terms, credential/grant baru dan tindakan sensitif.

@@ -42,8 +42,12 @@ be the same Gmail. Do not ask again for choices already saved in the assignment.
    | Supported local Desktop flow | **Google login → Local device**; select a saved Desktop project or import its Desktop JSON once when requested by the form, then connect |
    | Existing authorization from a trusted installation | Use **Token files**, **Channel folder**, or the installed channel-transfer workflow as appropriate to the requested migration; preserve the matching client/token pair |
 
-   Linux Muse is treated as a server by the current app. A browser on that host
-   does not establish Desktop eligibility. If Web login lacks a configured project,
+   Native YtFusion currently treats Linux as a server and also checks the
+   request hostname; inspect installation_device and google_oauth context on
+   the assigned version. This native gate is distinct from an independent
+   executor's Google-supported Desktop receiver. A browser on a host alone
+   does not establish that it can reach that receiver.
+   If Web login lacks a configured project,
    HTTPS address, or registered callback, follow [setup](setup.md) and the sibling
    [domain/VPS skill](../../ytfusion-domain-vps/SKILL.md). Reuse an assigned client
    or supported existing authorization. When preparing a project is part of the

@@ -179,6 +179,28 @@ time. Observe the host's actual run budget; do not hardcode a budget seen in one
 account as a product guarantee. Prevent overlapping claims with a supported lock
 or transactional mechanism; a local lock does not coordinate separate hosts.
 
+Follow the [queue and schedule contract](yt-upload.md#queue-and-schedule-contract)
+when matching YT Upload behavior. Group jobs by assigned channel and publication
+mode, keep pause state per queue/group, and share the assigned transfer capacity
+(one at a time by default) across this instance. Native queue buttons/SQLite are
+not prerequisites for an executor; preserve these decisions in its own ledger.
+
+Resolve fixed/random day gaps and clock choices from the assignment. Persist
+the reviewed per-job timestamps and sampled gaps plus the pattern for later
+additions; do not redraw them on polling, retry, a new chat or VM restart.
+For public/private/unlisted work, distinguish earliest transfer time from actual
+publication; for scheduled YouTube work, persist publishAt and upload ahead when
+capacity permits. Estimates are not a publication deadline guarantee.
+
+Record the missed-run policy before recurring work. When following the native
+pattern, preserve clocks/gaps/order after a missed public calendar day and retain
+spacing for delayed interval jobs; do not drain all overdue jobs in one invocation.
+A same-day transfer delay alone is not a reason to skip the day. Resolve
+uncertain upload attempts before moving a group. A passed YouTube publishAt
+requires the assigned recovery/review decision, not changing visibility to public
+or silently discarding the publication intent. Save any reviewed replacement
+dates atomically and retain manual overrides.
+
 When implementation is requested, the executor needs a durable ledger keyed by
 Drive file ID plus version/fingerprint, destination channel, and intended job
 identity. Track download status, local file identity, upload state, resulting
@@ -186,6 +208,18 @@ video ID, publication intent/timezone, finishing results, native-compatible Driv
 receipt/sync state, selected local/Drive cleanup and retry/review state. Keep account tokens
 in supported credential storage. Treat resumable session URIs as sensitive:
 persist them only in protected private state, never in chat, public ledgers or logs.
+
+Handle cancellation against durable job identity/state: cancel waiting jobs
+without deleting Drive/YouTube media; pausing stops later claims while the active
+job finishes. Stopping an in-flight operation needs its supported cancellation
+and outcome reconciliation, not merely removing a scheduler entry. A saved
+video ID remains accepted work and finishing/history can still be pending.
+
+If the executor offers a completed list, dismiss only fully resolved results and
+retain its receipts, file/version-to-video mapping and recovery evidence.
+Pending warnings, history/metadata sync, unknown upload outcomes and assigned
+cleanup remain visible for follow-up. Removing a card does not mean deleting
+staging, cancelling a live job or making a video eligible for another upload.
 
 Use the resumable session protocol to query the server's accepted bytes after an
 interruption and validate the same source before continuing. A library accepting

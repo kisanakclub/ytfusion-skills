@@ -10,6 +10,7 @@ playlist finishing, recognized Drive history and selected cleanup are part of
 the workflow, not just title/description/tags plus an MP4 transfer.
 
 Open `/fitur_tambahan/yt_upload`. Read the installed
+`docs/yt-upload-channel-queue-plan.md` for current queues/timing/controls,
 `docs/HDS_UPLOAD_FORMAT_MIGRATION.md` for the current Drive package contract and
 `docs/YT_UPLOAD_QUEUE_RECOVERY_AUDIT.md` for scheduling and recovery behavior.
 Those documents describe a dated implementation; confirm relevant behavior in
@@ -53,6 +54,11 @@ package. Use the installed supported import/preparation path and the user's
 metadata; do not invent project ownership or force HDS generation/Master setup
 to upload a completed video.
 
+Preserve an explicit Original/Extend choice and actual source-duration metadata;
+read [media preparation](upload-workflow.md#original-extend-and-measured-duration)
+before transferring a package that requires extension. The target duration and
+an upload-time estimate are not the measured duration of the original file.
+
 For manual packages, current identity derives from workspace root and JSON path.
 After uploading, renaming/moving that JSON can create a different package identity.
 Use stable paths, distinct batches for duplicate names, and native review for
@@ -63,6 +69,48 @@ use **Google Drive → Migrasi / Hubungkan perangkat** and inspect its preview.
 Do not move the workspace manually, delete its registration, or assume another
 host's successful migration registered this one. Coordinate writers before an
 authorized migration. `_Workspace.json` and `_Upload Results` are operational data.
+
+## Queue and schedule contract
+
+Native queues belong to one channel and one publication mode. Reuse that queue
+by default; create a separate named queue when assigned. New queue creation or
+browser drafts do not start a transfer. Admission commits reviewed dates and jobs
+together. Server queues persist; unsent drafts remain browser-local. Independent
+Muse jobs use their private ledger, not invented native queue rows.
+
+| Mode | Meaning |
+| --- | --- |
+| Publish on upload | Public after upload/processing; the pattern governs earliest upload start, not an exact publication deadline |
+| Private / Unlisted | Earliest upload start and the explicit visibility; no inferred YouTube publishAt |
+| Schedule on YouTube | A future publishAt; transfer starts when capacity is available, without a second user-defined upload schedule |
+
+Days and clocks are separate choices. Current native server controls support
+fixed day gaps or inclusive random whole-day ranges from 1 to 365; equal bounds
+give a fixed gap. Random clock ranges apply to public/scheduled queues;
+private/unlisted retain their fixed clock. Local YouTube/Drive scheduling uses
+publication metadata and also supports random day ranges; legacy fractional
+fixed intervals on that local panel remain valid. Inspect the chosen mode and
+installed validation rather than imposing an OS-based scheduling restriction.
+
+Draw each gap/clock once for a reviewed plan. Save the exact timestamps and
+per-job interval_days as well as the chosen day_interval pattern for future
+additions. Polling, retries, restart or reopen must not redraw accepted dates.
+Append after the existing tail, preserve explicit per-video choices, and reject
+stale previews instead of overwriting an updated queue.
+
+The standard native host shares one download/upload/cleanup worker across queues;
+Pause/Resume belongs to the chosen queue and Pause lets the current video finish.
+Capacity reservations are advisory, not guaranteed completion times or a lock
+across independent hosts. Read [Muse scheduling](muse-executor.md#recurring-tasks-and-durable-upload-state)
+for implementing equivalent assignment behavior in a standalone executor.
+
+After a delay, use the current recovery path and preserve the chosen mode.
+Automatic native public patterns can move missed calendar-day slots together
+while retaining clock times, order and sampled gaps; a delay within the intended
+day alone does not skip that day. Private/unlisted interval queues preserve
+spacing after a late start. Scheduled publication has its own journal/recovery
+checks; do not convert a missed publication into immediate public upload.
+Keep manual overrides and uncertain prior attempts under their existing guards.
 
 ## Queue through the native workflow
 
@@ -98,6 +146,21 @@ as authority if this behavior changes.
 Pause normally holds following jobs; Stop requests cancellation of active work.
 Wait for native stopping/recovery status rather than killing a process. A saved
 `videoId` remains a real upload even if Stop skips remaining metadata steps.
+
+**Cancel** removes a waiting job without recreating a browser draft.
+**Cancel N** affects waiting jobs in that queue, leaving active work to finish;
+use **Pause after current** to prevent later work from starting.
+**Withdraw & edit** is the route for returning a non-running item to editing.
+Check the current journal result first when an earlier upload is uncertain.
+Cancellation does not delete Drive media or an existing YouTube upload.
+
+**Clear Completed** dismisses only selected clean results from the visible list.
+Use the current completion helper, not state=done alone: warnings, uncertain
+remote state, pending/failed metadata sync or cleanup need follow-up. Preserve
+the durable job/video/receipt and duplicate-prevention evidence. Clearing cards
+is separate from physical file cleanup. Deleting an empty queue only removes its
+definition; a queue with live jobs or completed history is not empty, including
+when those completed cards are hidden.
 
 Clean up only through the configured native lifecycle and the user's assignment,
 after the app establishes the outcome. Preserve receipts and unresolved attempts.

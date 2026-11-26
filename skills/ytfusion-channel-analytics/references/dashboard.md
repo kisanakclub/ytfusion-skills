@@ -36,18 +36,20 @@ allow routine refresh without the Mac or another Google login.
 
 ## Match channel-stats thoughtfully
 
-Read the installed `src/templates/channel_statistics.html` before designing:
-header/filter/table/modal markup, final CSS overrides and the filter/sort/chart
-functions. Use its actual composition, density and interactions as the baseline.
-When the user supplies a screenshot, give that reference to the artifact builder
-as well as the source-based brief. Keep private screenshots out of this shared
-repo; their sample channels/values are not new account assignments or app data.
+Open the [bundled screenshots and source map](ui-reference.md) before designing
+and give those images to the artifact builder alongside the data/behavior brief.
+Read the assigned source page plus its included partials and CSS/JS, not only
+the top-level template. Use the actual composition, density and interactions.
+The user should not need to supply screenshots for standard setup. An explicit
+user screenshot can refine the brief; keep private captures out of this repo.
+Synthetic sample channels/values are never account assignments or real app data.
 Use English for dashboard labels by default, matching the owner's UI preference
 and native channel-stats; keep chat replies in the user's language. An explicit
 UI language choice overrides that default. Follow the native hierarchy:
 
-- Compact header: title/icon and a small last-update line at left, Privacy and
-  the supported refresh action at right. Use the native restrained divider/accent.
+- Compact header: title/icon at left; Privacy, the active tab's supported refresh
+  action and its small last-update line grouped at right. Use the native restrained
+  divider/accent. Below it, preserve Statistics / Publishing tabs and shared filters.
 - One collapsed **Info & Tips** row for freshness, permissions and data definitions.
   Do not fill the default page with repeated date/source paragraphs, revenue
   warning panels, implementation details or four large summary cards.
@@ -72,6 +74,12 @@ UI language choice overrides that default. Follow the native hierarchy:
   coverage. Available history is bounded (native up to 730 days), not lifetime.
 - Put periods, metric selection, detailed summaries and any optional daily table
   inside the chart dialog. A 30-day initial graph is useful; preserve later choices.
+
+For a full channel-stats-style dashboard, include the read-only
+[Publishing overview](publishing.md) with its observed cadence, scheduled-video
+details and separate refresh/coverage. An explicitly narrower report can omit
+that tab. Do not implement schedule writes merely because native screenshots
+show the editor; those require an assigned operation and supported backend.
 
 For 24h\*/48h\*, follow
 [latest reported days](data-contract.md#latest-reported-day-and-two-day-columns).
@@ -209,10 +217,12 @@ Use the actual Muse artifact viewer to check:
    test its real navigation/copy actions and the explicit submit step; do not claim
    one-click refresh. A new banner, button toast or reloaded viewer is not evidence
    of a new API request, nor is an updated clock over unchanged cached data.
-4. Compare the rendered default page to the native/source screenshot: compact
-   header, collapsed info, filter toolbar and table; no unnecessary summary-card
-   strip, revenue banner or repeated technical prose. Check a narrow viewport
-   without clipping chart controls or causing whole-page horizontal overflow.
+4. Compare the rendered page with the bundled native references and any relevant
+   newer source: compact header, tabs, collapsed info, filters and table, without
+   repeated technical prose. Check a narrow viewport, chart and Privacy. Verify
+   Publishing details, its own refresh/time, coverage, zero/unavailable states
+   and WIB dates; tab/filter clicks must use saved data. Schedule-write controls
+   must match the assignment. The screenshots use synthetic data, not live proof.
 5. Reopening keeps the artifact, saved preferences and last valid snapshot, and
    the chosen chat contains the artifact card or actual reopen link.
 

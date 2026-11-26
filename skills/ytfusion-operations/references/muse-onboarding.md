@@ -45,6 +45,11 @@ Data API for channel/upload/API Live, Analytics API for reports, Drive API when
 the own project will serve Drive. A working built-in Drive connector may use a
 different project; do not replace it merely to make the project list uniform.
 
+Resolve runtime, branding host and login receiver independently using the
+[Google setup routes](google-project.md#resolve-runtime-branding-and-login-independently).
+Use the actual project/grants for upload, Publishing and Analytics readiness;
+saved setup checkboxes or client archives alone are not connection evidence.
+
 For a new Muse branding site, use **Firebase Hosting on Spark as the first
 choice**, preferably in the assigned Google project/account, following the
 successful pilot. Check the current no-billing plan, access and terms, then
@@ -139,6 +144,27 @@ for the intended profile/window to be prepared for login; do other preparation
 first. This is a bounded initial handoff, not a requirement to keep the Mac in
 front for VM uploads. Verify current tools before carrying this limitation to
 another host/version; a locked/asleep Mac or blocked app is a separate condition.
+
+## Channel dashboard during full first-run setup
+
+When the assigned first-run setup includes Channel Analytics, install/register
+the sibling ytfusion-channel-analytics skill and verify discovery. Read its
+SKILL.md, dashboard/data references, bundled UI screenshots and Publishing
+reference. Supply the images to the artifact builder; the user should not need
+to capture the native app. Compare with the assigned current source and its
+included assets before building the same private Library artifact.
+
+Full channel-stats-style setup includes Statistics and the read-only Publishing
+overview, English labels by default, filters, charts, available earnings/RPM,
+Privacy, separate refresh timestamps and the user's chosen Analytics chat.
+Record source/skill revisions and verify the delivered viewer. Missing revenue
+permission stays explicit; do not initiate a new grant just to fill a screenshot.
+An uploader-only assignment does not require creating this dashboard.
+
+On an assigned update, reconcile source/skill changes with the existing artifact;
+updating the repo or installed skill does not update the artifact automatically.
+Preserve its identity, snapshots, connections and chat preference. Schedule
+editing/upload actions remain separate from read-only dashboard setup.
 
 ## Finish with evidence, not a readiness promise
 

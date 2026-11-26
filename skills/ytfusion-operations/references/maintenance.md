@@ -5,6 +5,12 @@ the installed app, its edition and dependency profile. For a new installation,
 start with [setup](setup.md); for DNS/HTTPS and Google clients use the sibling
 [domain/VPS skill](../../ytfusion-domain-vps/SKILL.md).
 
+If assigned to change source/skills, follow the
+[skill maintenance map](skill-maintenance.md). For an installed Muse update,
+compare relevant workflow changes with its executor/artifact after syncing
+source and installed skills/discovery; fetching repositories alone does not
+apply those changes. Preserve the existing assignment and account connections.
+
 ## Find the target
 
 Read the installation's `AGENTS.md`, `docs/RELEASE_ACCESS_RUNBOOK.md`, platform

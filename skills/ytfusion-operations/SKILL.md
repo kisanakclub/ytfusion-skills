@@ -14,6 +14,10 @@ Use `hds-home-production` for HDS generation. Reuse `ytfusion-domain-vps` in thi
 repository for domain/HTTPS deployment and managed Google-client installation.
 For connected-channel reports or a reusable Muse Analytics dashboard, use
 [YtFusion Channel Analytics](../ytfusion-channel-analytics/SKILL.md).
+For an assigned source/skill maintenance change, read the
+[maintenance map](references/skill-maintenance.md) to keep relevant procedures,
+onboarding prompts and visual references aligned. Routine operations use the
+existing guides; they do not authorize editing or publishing either repository.
 
 ## Start with the assignment
 

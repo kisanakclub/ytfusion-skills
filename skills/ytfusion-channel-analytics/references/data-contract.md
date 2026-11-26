@@ -12,6 +12,8 @@ implementation has these entry points:
 | `POST /api/channel-statistics/refresh` | Fetch connected native channels, write cache, return channel results; per-channel errors may coexist with top-level success |
 | `GET /api/status`, `GET /api/categories` | Native worker/category context used by the page; optional when the executor does not run native workers |
 | `fetch_channel_statistics`, `fetch_channel_analytics` in `src/app.py`; `src/channel_analytics.py` | Channel credentials, Data API identity/status/totals, dated independent Analytics reports and calendar aggregation |
+| `GET /api/channel-publishing`; `POST /api/channel-publishing/refresh` | Separate cached publication/schedule overview and explicit per-channel refresh; see [Publishing](publishing.md) |
+| `src/channel_publishing.py`; `docs/channel-publishing.md` | Reviewed-upload coverage, observed cadence, WIB clocks and guarded schedule actions; not daily Analytics data |
 
 Use an existing authenticated session, preserve origin/CSRF checks and never import
 `src/app.py` into a helper just to call it. Inspect responses for per-channel

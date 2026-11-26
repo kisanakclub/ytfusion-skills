@@ -1,6 +1,6 @@
 ---
 name: ytfusion-channel-analytics
-description: Read Analytics for connected YouTube channels and build or update a private, persistent Muse dashboard modeled on YtFusion channel-stats. Use for channel comparisons, views, watch time, subscribers, available revenue, interactive charts and access from Library or the user's chosen chat.
+description: Read connected YouTube channel statistics and publishing schedules, and build or update a private Muse dashboard following current YtFusion channel-stats and bundled visual references. Use for channel comparisons, views, watch time, revenue, charts and publication cadence; schedule edits require a separate assigned action.
 ---
 
 # YtFusion Channel Analytics
@@ -13,14 +13,18 @@ do not repeat account setup when a valid connection already exists.
 
 - For a quick question, return the requested figures, dates and a short
   explanation. Do not create an app for every statistics question.
-- For a reusable UI, read [dashboard](references/dashboard.md). On Muse, prefer
-  one private interactive artifact in Library, linked from the user's chosen chat.
+- For a reusable UI, read [dashboard](references/dashboard.md) and open the
+  [visual references](references/ui-reference.md) before briefing the builder.
+  On Muse, prefer one private interactive artifact in Library, linked from the
+  user's chosen chat.
   Keep coordination in the main chat unless the user requests a separate thread.
   Reuse that artifact on later requests rather than creating another dashboard.
 - For data collection in either case, read [data contract](references/data-contract.md)
-  and the installed `src/templates/channel_statistics.html` plus its handlers in
-  `src/app.py` and `src/channel_analytics.py` when present. Follow the native visual structure while keeping date, permission
-  and unavailable-data labels accurate.
+  and the assigned source's `src/templates/channel_statistics.html`, its included
+  partials/assets and handlers. Statistics uses `src/channel_analytics.py`;
+  Publishing uses `src/channel_publishing.py` and
+  [publishing](references/publishing.md). Inspect the relevant current source
+  even when a saved screenshot or previous dashboard already exists.
 
 ## Work from the assigned connections
 
@@ -48,6 +52,10 @@ State whether refresh really fetches new API data or only reloads a snapshot.
 Persist the artifact identity, channel selection and data-source mapping in
 private instance context so future chats update the same dashboard. Changing the
 preferred chat changes delivery/context, not the artifact identity or running job.
+Record the source/skill revisions used to implement the dashboard. After an
+assigned update, compare the changed page, included assets and data contracts
+with the existing artifact, then update that artifact within the assigned scope.
+Pulling a repo or reinstalling a skill alone does not migrate a Muse dashboard.
 
 Read-only reporting and cache updates do not authorize uploads, channel/video
 edits, public sharing, new account access, or recurring tasks. When the user asks
