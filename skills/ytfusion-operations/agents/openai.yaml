@@ -1,4 +1,4 @@
 interface:
   display_name: "YtFusion Operations"
-  short_description: "Set up Muse and run complete YtFusion workflows"
-  default_prompt: "Use $ytfusion-operations to set up this Muse or continue my assigned YtFusion workflow, including upload settings, Drive history and cleanup."
+  short_description: "Set up, update and operate YtFusion on devices and VPSs"
+  default_prompt: "Use $ytfusion-operations to set up or maintain this YtFusion instance, or continue its assigned upload, Studio or Live workflow."

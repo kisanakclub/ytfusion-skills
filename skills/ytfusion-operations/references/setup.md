@@ -28,6 +28,24 @@ or embed one in the clone URL. Read `docs/setup/GITHUB_ACCESS.md` once available
 Use a Shared repository only when the user actually assigns that edition; do not
 change editions to work around access or dependency failures.
 
+For a production VPS that only receives updates, a unique read-only repository
+deploy key is also supported. Follow the installed `docs/setup/GITHUB_ACCESS.md`:
+generate the key as the application user on the VPS, register only its public
+half on the assigned repository, verify GitHub's host key, and persist the
+repository-specific transport settings used by the updater. A working assigned
+GitHub CLI login can be retained. Do not copy the management device's GitHub
+token or SSH private key onto a new host. SSH into the VPS and repository access
+from that VPS are separate connections.
+
+Before declaring a native installation ready for ordinary maintenance, follow
+[maintenance](maintenance.md#prove-independent-update-access): open a fresh
+application-user login without forwarded credentials, verify the origin and the
+updater's canonical repository URL, then run the installed updater while idle.
+Record whether it applied a new revision or was already current. A transferred
+clone or Git bundle can bootstrap installation, but does not establish that the
+VPS can subsequently update itself. Leave a short continuation command and the
+private key reference or login method in the instance assignment, without secrets.
+
 Read this skill and make it available through the host agent's supported skill
 mechanism, if provided. Reading `SKILL.md` explicitly can supply the procedure for
 the current task; cloning alone does not prove future automatic skill discovery.
@@ -228,6 +246,10 @@ waiting until its date, but preserve the queue and recovery state. Never reset
 `user_data`, channel auth, journals, or settings to complete an ordinary update.
 Verify the service and saved jobs afterward. Restarting a host does not prove
 byte-level upload resume or automatic restoration of a live encoder.
+
+Use [maintenance](maintenance.md) for the platform commands, GitHub access checks,
+restart verification and bounded bundle fallback. Keep personal host inventories
+and verification receipts in private instance state, outside this skill repository.
 
 On each continuation, read assignment → inspect native state → reconcile stable
 IDs and pending outcomes → perform the next authorized action → report a useful

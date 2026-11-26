@@ -1,6 +1,6 @@
 ---
 name: ytfusion-operations
-description: Set up a Muse or YtFusion operations instance, connect its Google project, Drive and YouTube accounts, and operate assigned final-video uploads, Regular Studio or Live. Use for first-run Muse onboarding, upload defaults and finishing, Drive history/cleanup, existing queues, and authorized recurring work. Reuse the private instance assignment instead of repeating setup.
+description: Set up or maintain YtFusion on a local device, VPS or Muse; configure GitHub update access and Google connections, and operate assigned final-video uploads, Regular Studio or Live. Use for installation, updates, first-run onboarding, existing queues, upload finishing and authorized recurring work. Reuse the instance assignment instead of repeating setup.
 ---
 
 # YtFusion Operations
@@ -25,8 +25,10 @@ For connected-channel reports or a reusable Muse Analytics dashboard, use
    before installing a server or prescribing native account-import flows.
    Read its `AGENTS.md` and inspect the relevant native connection, channel, queue,
    and worker status. Do not start a second installation or worker to find status.
-2. For a new host, missing connection, or installation/update request, read
-   [setup](references/setup.md). The app repository is
+2. For a new host or installation request, read [setup](references/setup.md).
+   For updating an existing local device/VPS, repairing GitHub access, or
+   restarting a service, read [maintenance](references/maintenance.md).
+   The app repository is
    `https://github.com/kisanakclub/Yt_FusionX`; this skill repository does not
    contain the application or an automatic installer.
 3. Read only the reference for the assigned workflow, then the matching installed
@@ -34,6 +36,8 @@ For connected-channel reports or a reusable Muse Analytics dashboard, use
 
    | Task | Reference | Native entry point |
    | --- | --- | --- |
+   | Install a local device/VPS and prove independent update access | [Setup](references/setup.md) | Installed platform setup and GitHub access guide |
+   | Update Mac/Ubuntu/Debian, repair GitHub access, or restart safely | [Maintenance](references/maintenance.md) | Installed platform updater and service |
    | New Muse instance or incomplete setup | [Muse onboarding](references/muse-onboarding.md) | Host skills, accounts and chosen executor |
    | Muse connector/API execution, capability proof, recurring upload tasks | [Muse executor](references/muse-executor.md) | Available host connectors, uploader, and scheduler |
    | Own GCP project, APIs, public branding pages, publishing, or clients | [Google project](references/google-project.md) | Google Cloud / site hosting / native client import |

@@ -13,6 +13,11 @@ Regular Studio, serta Live dengan API atau tanpa API. Agen membaca alur aplikasi
 yang sesuai tugasnya dan menyimpan penugasan pribadi tiap instance agar setup
 dasar tidak diulang. Lihat [instruksi skill](skills/ytfusion-operations/SKILL.md)
 dan [setup serta profil penugasan](skills/ytfusion-operations/references/setup.md).
+Setup mencakup bukti bahwa perangkat bisa update sendiri dari sesi baru.
+Untuk update Mac/Ubuntu/Debian dan perbaikan akses GitHub, gunakan
+[panduan maintenance](skills/ytfusion-operations/references/maintenance.md)
+dalam skill Operations yang sama. Akses SSH ke VPS dan akses repo dari VPS
+diperiksa terpisah; pengiriman bundle saja belum membuktikan update mandiri.
 Instalasi kosong mengikuti [panduan tambah channel dan koneksi Drive](skills/ytfusion-operations/references/accounts.md),
 termasuk pemilihan metode login, impor koneksi, serta pemeriksaan hasilnya.
 Jika perlu project sendiri, ikuti [panduan GCP, branding, dan publish](skills/ytfusion-operations/references/google-project.md).

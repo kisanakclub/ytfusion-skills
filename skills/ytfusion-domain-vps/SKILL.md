@@ -47,6 +47,9 @@ meaningful unsaved draft when switching profiles or returning after a reload.
   certificate check on the VPS is evidence about the origin, while public
   readiness requires reaching the hostname from the management device. A request
   to inspect or discuss ends after the checks and explanation.
+- For application installation/update or GitHub access repair, use
+  [Operations maintenance](../ytfusion-operations/references/maintenance.md).
+  Reusing a saved SSH connection does not establish GitHub access from that VPS.
 
 ## Install or migrate when requested
 
