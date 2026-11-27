@@ -54,16 +54,17 @@ Confirm state from the Console, installed client binding and actual account read
 
 ## Enable APIs and declare the actual scopes
 
-In the selected project, enable the APIs needed by the installed application:
+For a complete Drive/upload/Analytics setup, prepare all four APIs below in the actual client project. A narrower assignment can use only its required APIs:
 
 | Assigned feature | API |
 | --- | --- |
 | YouTube channel connection, upload, Publishing overview/schedule actions, API Live | YouTube Data API v3 |
 | Installed channel statistics / analytics grant | YouTube Analytics API |
+| Assigned thumbnail impressions / CTR overview and graphs | YouTube Reporting API, Reach Combined daily reports including traffic sources |
 | Google Drive connection and transfer | Google Drive API |
 
 Record the actual service names `youtube.googleapis.com`,
-`youtubeanalytics.googleapis.com`, and `drive.googleapis.com` with their verified
+`youtubeanalytics.googleapis.com`, `youtubereporting.googleapis.com`, and `drive.googleapis.com` with their verified
 ENABLED/DISABLED states. Activate missing required APIs within the setup scope;
 do not ask again for routine configuration already authorized. Stop for actual
 new terms, security grants or billing under the host's rules. Enabling an API
@@ -79,6 +80,10 @@ Publishing reads use Data API with the existing supported grant; a dashboard
 setup does not itself authorize schedule writes. Earnings/RPM use Analytics and
 the optional monetary grant, not a separate monetization/AdSense API. A returned
 revenue permission error is not proof that the channel is not monetized.
+For thumbnail CTR, verify `youtubereporting.googleapis.com` separately and reuse
+the Analytics read grant. Follow the Analytics skill's Reach data contract for
+job availability, initial report delay, historical coverage and incremental
+imports. Request this API when the assigned feature needs thumbnail Reach.
 
 For native login, inspect `SCOPES` in `src/app.py`, Drive authorization in
 `src/google_oauth_routes.py`, and the configured native Drive client flow. Declare
@@ -278,3 +283,15 @@ route during an assigned overlap. A Desktop route still uses its real loopback
 receiver. Record these decisions separately from API activation, Audience,
 branding/scope review and actual YouTube/Drive grants; don't repeat unrelated
 setup or infer an installed client from an archive.
+
+### Keep setup entry points aligned
+
+Native setup records Reporting alongside Data/Analytics/Drive. Preserve old
+project notes; an absent Reporting flag means not recorded, never verified
+enabled. The wizard checklist is an operator note, not a live API probe. After
+channel authorization, verify Data, Analytics, monetary access when assigned,
+and Reporting availability separately. Reuse matching grants/clients. In
+production does not prove brand/scope verification or report readiness. Record
+Project ID and its managing Gmail separately from channel and Drive accounts;
+provide project-specific activation links. Reporting preparation and historical
+retention follow the Channel Analytics data contract, not a blanket re-login.

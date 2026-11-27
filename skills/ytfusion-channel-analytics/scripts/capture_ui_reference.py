@@ -21,10 +21,12 @@ from jinja2 import Environment, FileSystemLoader
 from playwright.async_api import async_playwright
 
 SOURCE_FILES = (
-    'src/templates/base.html', 'src/templates/channel_statistics.html',
+    'src/app.py', 'src/templates/base.html', 'src/templates/channel_statistics.html',
     'src/templates/partials/channel_publishing.html',
     'src/static/css/channel_publishing.css', 'src/static/js/channel_publishing.js',
     'src/static/js/hds_time.js', 'src/channel_analytics.py', 'src/channel_publishing.py',
+    'src/static/css/channel_insights.css', 'src/static/js/channel_insights.js',
+    'src/channel_insights.py', 'src/channel_reach.py',
 )
 NOW = datetime(2026, 11, 27, 5, tzinfo=timezone.utc)
 sys.dont_write_bytecode = True
@@ -79,7 +81,7 @@ def fixtures(source):
                 if key.startswith('earnings_'):
                     report[key] = [] if key.endswith(('labels', 'values')) else None
         channels.append(dict(internal_name=name, title=title, channel_id='UC_SYNTHETIC_' + str(index),
-                             custom_url='@' + name.lower(), thumbnail_url='/avatar-' + str(index) + '.svg',
+                             google_project={'project_id':'example-studio-'+str(index),'owner':'owner@example.test'}, api_usage={'youtube':{'requests':1,'quota_units':1},'youtubeAnalytics':{'requests':2,'quota_units':2}}, custom_url='@' + name.lower(), thumbnail_url='/avatar-' + str(index) + '.svg',
                              subscriber_count=[12400, 5800, 740][index], video_count=[87, 42, 18][index],
                              is_monetized=[True, True, None][index], analytics=report))
         videos = []
@@ -109,7 +111,7 @@ async def capture(args):
         get_flashed_messages=lambda request: [], request={'app': {'state': {}}}, username='UI reference',
         installation_device=lambda: 'local', dashboard_home=lambda request: '/')
     channels, publications = fixtures(source)
-    errors, writes = [], []
+    errors, writes, detail_calls = [], [], []
     async with async_playwright() as playwright:
         options = {'headless': True}
         if args.browser:
@@ -123,7 +125,47 @@ async def capture(args):
         async def route(request):
             parsed = urlparse(request.request.url)
             path = parsed.path
-            if request.request.method != 'GET':
+            if path == '/api/channel-statistics/detail' and request.request.method == 'POST':
+                body = request.request.post_data_json
+                detail_calls.append(body)
+                section = body['section']
+                report = dict(status='available', fetched_at=NOW.isoformat(),
+                              requested_start='2026-10-27', requested_end='2026-11-25',data_through='2026-11-25',api='youtubereporting' if section=='reach' else 'youtubeAnalytics',project={'project_id':'example-studio','owner':'owner@example.test'},usage={'youtubeAnalytics':{'requests':1,'quota_units':1}})
+                if section == 'overview':
+                    report['metrics'] = dict(views=63800, estimatedMinutesWatched=267960,
+                                            averageViewDuration=252, averageViewPercentage=42.7)
+                elif section == 'audience':
+                    report.update(countries=[dict(country=code, views=count, percentage=percent, watch_hours=count*4.2/60)
+                        for code, count, percent in [('US',25520,40),('ID',15950,25),('GB',9570,15),('CA',6380,10)]],
+                        total_views=63800, unreported_views=6380)
+                elif section == 'reach':
+                    dates = channels[0]['analytics']['reports']['views']['dates']
+                    rates = [round(4.3+math.sin(i/7)*.8,2) for i in range(len(dates))]
+                    common = dict(status='available', dates=dates, latest_reported_day=dates[-1])
+                    report['reports'] = dict(
+                        impressions=dict(common, values=[16000+i*75 for i in range(len(dates))]),
+                        ctr=dict(common, values=rates, impression_values=[16000+i*75 for i in range(len(dates))],
+                                 weighted_values=[rate*(16000+i*75) for i,rate in enumerate(rates)]))
+                elif section == 'traffic':
+                    report.update(reach_status='available',reach_updated=NOW.isoformat(),apis=['youtubeAnalytics','youtubereporting'],estimate='1–2 Analytics queries; Reporting checks and new report downloads when needed.')
+                    definitions=[('SUBSCRIBER','Browse features',32602,73.9),('RELATED_VIDEO','Suggested videos',8083,18.3),('YT_SEARCH','YouTube search',1286,2.9),('NO_LINK_OTHER','Direct or unknown',808,1.8),('YT_CHANNEL','Channel pages',449,1.0)]
+                    if body.get('source'):
+                        definitions=[('what-to-watch','Home',32246,98.9),('my-subscriptions','Subscriptions',182,.6),('my-history','Watch history',85,.3),('watch-later','Watch later',62,.2),('PP','Personalized playlists',26,.1)]
+                    dates=channels[0]['analytics']['reports']['views']['dates'][-30:]
+                    report['sources']=[dict(code=code,label=label,views=count,percentage=percent,watch_hours=count*3.4/60,average_duration=204+i*25,average_percentage=36.5+i*3,reach=dict(impressions=count*5,ctr=6.7-i*.5),daily=[dict(day=day,views=round(count/30*(1+.4*math.sin(j/3+i)))) for j,day in enumerate(dates)]) for i,(code,label,count,percent) in enumerate(definitions)]
+                    if body.get('source'):
+                        report['detail_trend']=[dict(day=day,views=round(1080*(1+.4*math.sin(j/3)))) for j,day in enumerate(dates)]
+                        for row in report['sources']:
+                            row['daily']=[]
+                elif section == 'earnings':
+                    original=channels[0]['analytics']['reports']['earnings']
+                    first,last=body.get('start',original['requested_start']),body.get('end',original['requested_end'])
+                    selected=[(d,v) for d,v in zip(original['dates'],original['values']) if first<=d<=last]
+                    report.update(requested_start=first,requested_end=last,data_through=last,reports={'earnings':{**original,'dates':[d for d,v in selected],'values':[v for d,v in selected],'requested_start':first,'requested_end':last,'latest_reported_day':last}})
+                elif section == 'rpm':
+                    report['reports'] = {key:channels[0]['analytics']['reports'][key] for key in ('rpm','rpm_engaged')}
+                await request.fulfill(json={'success':True,'report':report})
+            elif request.request.method != 'GET':
                 writes.append(path)
                 await request.fulfill(status=405, json={'detail': 'Synthetic reference is read-only'})
             elif path.endswith('/chart.umd.min.js'):
@@ -157,14 +199,74 @@ async def capture(args):
         await page.route('**/*', route)
         await page.goto('http://reference.invalid/channel-stats')
         await page.locator('#statsTableBody tr').nth(2).wait_for()
+        assert not detail_calls, 'The table must not fetch modal reports'
+        assert await page.locator('#miniChartPeriod').input_value() == '90d'
+        await page.locator('#miniChartPeriod').select_option('7d')
+        assert await page.evaluate("miniChartTimeframe === '7d' && currentChartTimeframe === '30d'")
+        assert not detail_calls, 'Changing a mini-chart period must use the cache'
+        await page.locator('#miniChartPeriod').select_option('90d')
+        assert await page.locator('#statsTableBody tr:first-child td:nth-child(9)').evaluate('cell => {const c=cell.querySelector("canvas").getBoundingClientRect(), r=cell.getBoundingClientRect(); return c.left>=r.left && c.right<=r.right}')
         assert '27 Nov 2026' in await page.locator('#lastUpdated').inner_text()
         # Crop the unmodified page content; the full application sidebar is not part of a Muse artifact.
         area = page.locator('#mainWrapper > .container')
         await area.screenshot(path=str(output / 'statistics-desktop.png'))
         await page.locator('[aria-label="Open views chart"]').first.click()
+        await page.wait_for_function("document.getElementById('insightsOverview').textContent.includes('42.7%')")
         await page.clock.run_for(1500)
         assert await page.evaluate('!!currentChart && currentChart.data.datasets[0].data.length > 0')
+        assert await page.evaluate("currentChartTimeframe === '30d'")
         await page.locator('.chart-modal-content').screenshot(path=str(output / 'statistics-chart.png'))
+        await page.get_by_role('tab', name='Audience', exact=True).click()
+        await page.get_by_text('United States', exact=True).wait_for()
+        await page.locator('.chart-modal-content').screenshot(path=str(output / 'statistics-audience.png'))
+        await page.get_by_role('tab', name='Reach', exact=True).click()
+        await page.wait_for_function("!!currentChart && currentChartType === 'ctr' && currentChart.data.datasets[0].data.length > 0")
+        await page.clock.run_for(1200)
+        await page.locator('.chart-modal-content').screenshot(path=str(output / 'statistics-reach.png'))
+        await page.get_by_role('tab', name='Traffic', exact=True).click()
+        await page.get_by_role('button', name='Browse features →', exact=True).wait_for()
+        await page.clock.run_for(500)
+        await page.locator('.chart-modal-content').screenshot(path=str(output / 'statistics-traffic.png'))
+        await page.get_by_role('button', name='Browse features →', exact=True).click()
+        await page.get_by_role('cell', name='Home', exact=True).wait_for()
+        await page.locator('.chart-modal-content').screenshot(path=str(output / 'statistics-browse.png'))
+        before=len(detail_calls)
+        await page.get_by_role('button',name='← All traffic sources',exact=True).click()
+        await page.get_by_role('button',name='Browse features →',exact=True).wait_for()
+        assert len(detail_calls)==before, 'Returning from Browse uses the saved traffic report'
+        await page.locator('[aria-label="Report API information"]').click()
+        await page.locator('#reportApiInfo').screenshot(path=str(output / 'statistics-api-info.png'))
+        await page.locator('[aria-label="Report API information"]').click()
+        before=len(detail_calls)
+        await page.locator('#reportRefresh').click()
+        await page.get_by_role('button',name='Browse features →',exact=True).wait_for()
+        assert len(detail_calls)==before+1 and detail_calls[-1].get('refresh') is True
+        await page.get_by_role('tab', name='Reach', exact=True).click()
+        before = len(detail_calls)
+        await page.get_by_role('button', name='90d', exact=True).click()
+        await page.clock.run_for(300)
+        assert len(detail_calls) == before, 'Reach period change must reuse the downloaded report'
+        await page.locator('.chart-close-btn').click()
+        await page.locator('[aria-label="Open views chart"]').first.click()
+        await page.clock.run_for(300)
+        assert len(detail_calls) == before, 'Reopening the same overview must reuse its cache'
+        await page.set_viewport_size({'width':430, 'height':1000})
+        await page.clock.run_for(500)
+        await page.wait_for_function('''() => {const node=document.querySelector('.chart-modal-content'), r=node.getBoundingClientRect(); return r.left>=0 && r.right<=innerWidth && node.scrollWidth<=node.clientWidth+1}''')
+        await page.locator('.chart-modal-content').screenshot(path=str(output / 'statistics-chart-mobile.png'))
+        await page.set_viewport_size({'width':1600, 'height':1000})
+        before=len(detail_calls)
+        await page.get_by_role('button',name='Earnings',exact=True).click()
+        await page.get_by_role('button',name='Latest day',exact=True).click()
+        assert len(detail_calls)==before, 'Existing daily earnings serves a shorter interval'
+        await page.get_by_role('button',name='Custom dates',exact=True).click()
+        await page.locator('#insightsStart').fill('2026-11-01')
+        await page.locator('#insightsEnd').fill('2026-11-03')
+        await page.get_by_role('button',name='Apply',exact=True).click()
+        assert len(detail_calls)==before
+        await page.locator('#reportRefresh').click()
+        await page.wait_for_function("currentChartTimeframe==='custom' && currentChart.data.datasets[0].data.length===3 && !document.getElementById('reportRefresh').disabled")
+        assert detail_calls[-1]['section']=='earnings' and detail_calls[-1]['refresh'] is True
         await page.locator('.chart-close-btn').click()
         await page.locator('#privacyBtn').click()
         assert '$$$$' in await page.locator('#statsTableBody').inner_text()
@@ -183,6 +285,7 @@ async def capture(args):
     revision = subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True).strip()
     files = {name: hashlib.sha256((source / name).read_bytes()).hexdigest() for name in SOURCE_FILES}
     manifest = {'source_repository': 'https://github.com/kisanakclub/Yt_FusionX', 'source_commit': revision,
+                'source_has_local_changes': bool(subprocess.check_output(['git','-C',str(source),'status','--porcelain'],text=True).strip()),
                 'synthetic_data': True, 'source_sha256': files,
                 'images': sorted(path.name for path in output.glob('*.png'))}
     (output / 'source.json').write_text(json.dumps(manifest, indent=2) + '\n')

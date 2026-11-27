@@ -121,7 +121,7 @@ akun/project/channel dan keputusan tidak perlu dijelaskan ulang.
 
 Riset dan kerjakan solusi yang didukung dengan sedikit langkah manual dan
 login tambahan. Tanyakan hanya data/persetujuan yang memang masih diperlukan.
-Bila perlu project sendiri, siapkan API Data/Analytics/Drive sesuai tugas,
+Bila perlu project sendiri, siapkan API Data/Analytics/Reporting/Drive sesuai tugas,
 branding publik (utamakan Firebase Hosting Spark untuk situs baru), status
 In production dan client sesuai jalur login yang valid.
 Simpan credential lewat jalur privat; jangan minta password/token/kode di chat.

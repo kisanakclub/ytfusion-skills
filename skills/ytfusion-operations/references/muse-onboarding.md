@@ -46,7 +46,7 @@ user intervention. Setup alone does not authorize an upload, publication or Live
 
 Execute [Google project setup](google-project.md), including the API readiness
 table and actual account connections. Verify APIs before declaring completion:
-Data API for channel/upload/API Live, Analytics API for reports, Drive API when
+Data API for channel/upload/API Live, Analytics API for reports, Reporting API for thumbnail impressions/CTR and traffic reach, Drive API when
 the own project will serve Drive. A working built-in Drive connector may use a
 different project; do not replace it merely to make the project list uniform.
 
@@ -189,3 +189,12 @@ upload. Regular Studio, render and sustained Live need their own assigned proof.
 Maintain private operational evidence and assignment state. Skill authorship and
 repo publication belong to the maintainer unless the user explicitly delegates
 them; running this skill does not authorize Muse to rewrite its shared guidance.
+
+For full Analytics onboarding, also follow the current Channel Analytics data
+contract for Reporting activation, a reused Reach Combined job, pending/history
+coverage, manual cache refresh, and API/project identity. Collect the dynamic
+project manager/channel/Drive assignment once; no pilot Gmail or project is a
+default. Use the bundled native screenshots (including Traffic, Browse and API
+info) plus current source when briefing an artifact builder. Verify the actual
+executor/backend refresh action and the same existing private artifact; pulling
+the skill repo or swapping images alone does not implement these behaviors.

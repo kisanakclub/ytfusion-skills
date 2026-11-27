@@ -162,3 +162,10 @@ media/upload work to be idle.
 Report which hostname was checked or changed, what was verified at the origin
 and from the browser, and any step still pending. Scope changes to the requested
 hostnames and integrations.
+
+For complete GCP setup, the wizard records Data/Analytics/Reporting/Drive and
+In production before complete readiness; old notes retain an unrecorded Reporting
+state. These checks are observations, not live verification. Follow the linked
+Google-project guide and Analytics data contract for actual grants, a reused
+Reach Combined job and pending reports. Match API links/project-manager metadata
+to the active client; channel Gmail is not proof of project ownership.

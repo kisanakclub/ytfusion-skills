@@ -12,7 +12,9 @@ into an instance assignment or real snapshot.
 ![Native Statistics: compact header, tabs, filters, earnings summary and channel table](ui/statistics-desktop.png)
 
 Preserve the table-first density, restrained teal accents, aligned numbers,
-category/search controls and chart cells. The current header groups Privacy,
+category/search controls and chart cells. The Chart header has a shared interval
+selector with a 90d default; each row shows a cached views sparkline. The modal
+retains its separate period controls and 30d default. The current header groups Privacy,
 tab-specific Refresh and its retrieval time at the right. The app sidebar is
 cropped out; a Muse artifact does not need to reproduce unrelated app navigation.
 Keep unavailable revenue distinct from zero.
@@ -22,6 +24,29 @@ Keep unavailable revenue distinct from zero.
 Use a real chart dialog with period and metric controls. Hover/touch selects the
 nearest reporting date across the plot. Dates, units and permission states follow
 the data contract; an attractive screenshot alone is not proof of working charts.
+
+![Native Audience with country shares and watch time](ui/statistics-audience.png)
+
+![Native Reach with daily impressions CTR](ui/statistics-reach.png)
+
+Load Overview, Audience, Reach and Traffic details on demand with their own dated caches.
+Keep zero, withheld countries, pending Reach setup and API-disabled states distinct.
+
+![Native Traffic with source table and trends](ui/statistics-traffic.png)
+
+![Native Browse detail with valid total-source trend](ui/statistics-browse.png)
+
+![Clickable API, project and refresh usage information](ui/statistics-api-info.png)
+
+Keep the table/graph relationship, explicit refresh scope and per-report dates.
+The Browse table is an aggregate; its graph shows the valid total-source daily
+trend, not invented per-feature daily values. API details are progressively
+disclosed. Real unavailable/partial Reach states follow the data contract.
+
+![Native chart at a narrow viewport](ui/statistics-chart-mobile.png)
+
+Keep the modal, period controls and summary cards inside the viewport. Sparklines
+stay inside their column; the wide channel table scrolls within its container.
 
 ![Native Privacy state with hidden identities and monetary placeholders](ui/statistics-privacy.png)
 
@@ -62,6 +87,9 @@ Read these together:
   for the second tab and the shared header. Read referenced helpers as needed.
 - src/channel_analytics.py, src/channel_publishing.py, the matching src/app.py
   handlers and docs/channel-publishing.md for real data and action contracts.
+- src/channel_insights.py, src/channel_reach.py, src/static/js/channel_insights.js
+  and src/static/css/channel_insights.css for lazy detail requests, cache behavior,
+  thumbnail Reach and modal layout.
 
 When a UI-affecting source update is assigned, update the same artifact and
 inspect desktop, a narrow viewport, chart/Privacy and Publishing details. Keep

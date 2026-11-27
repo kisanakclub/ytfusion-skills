@@ -51,3 +51,10 @@ skill metadata without replacing host policy, then adapt the existing executor
 or artifact to the relevant contract changes and verify it on that host.
 Keep its identity, grants, ledger, snapshots and jobs. Updating a repo does not
 change a running worker, an installed skill copy or a generated Muse dashboard.
+
+When an API or Google setup contract changes, check the native wizard's API
+list, persisted project schema/defaults, project-specific links, Agent Setup
+prompts, README onboarding, Google project/accounts guides, and Muse onboarding.
+For Analytics cache/refresh changes also update its data contract, dashboard
+brief, screenshot/source manifest and the assigned executor/artifact. Keep
+recorded readiness distinct from activation, actual grants and available data.

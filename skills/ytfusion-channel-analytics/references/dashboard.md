@@ -64,8 +64,11 @@ UI language choice overrides that default. Follow the native hierarchy:
   **Unknown** when absent/unavailable. Use readable text with restrained styling;
   a dollar/question-mark icon or tooltip beside the channel name is insufficient.
   Keep this channel status separate from revenue permission/errors and worker Status.
-  Use chart icon buttons in dedicated cells rather than hiding charts behind a
-  generic Detail button and a long inline report.
+  Use compact clickable views sparklines in the Chart column. Its shared period
+  selector offers 7d/14d/30d/90d/180d, defaults to 90d and remembers the choice.
+  Draw from the cached daily series; missing dates remain gaps. Keep the canvas
+  inside its column and monetary values in their own cells. Sorting Chart uses
+  the selected interval. Earnings retain their dedicated chart button.
 - When all-channel earnings totals are requested, use a compact summary strip
   for **Total earnings (available history)**, **This month so far**, and **Last month**.
   Totals cover all assigned channels, including those outside the current filter.
@@ -74,6 +77,13 @@ UI language choice overrides that default. Follow the native hierarchy:
   coverage. Available history is bounded (native up to 730 days), not lifetime.
 - Put periods, metric selection, detailed summaries and any optional daily table
   inside the chart dialog. A 30-day initial graph is useful; preserve later choices.
+  Keep the mini-chart period independent of the modal's existing
+  Latest day/3d/7d/14d/30d/90d/180d/Available and custom-date controls. The modal opens at 30d.
+  Overview includes watch time, API average view duration and API average
+  percentage viewed, plus Views/Watch time/Earnings/RPM graph selection.
+  Audience shows countries, share of channel views and watch time. Traffic shows all source trends, exact source metrics, and Browse/Suggested drill-down. Use total-source trends when per-feature daily Analytics queries are unsupported. Reach shows
+  impressions and weighted thumbnail CTR with a graph selector. Fetch each
+  detail section on demand and retain its dated cache; see the data contract.
 
 For a full channel-stats-style dashboard, include the read-only
 [Publishing overview](publishing.md) with its observed cadence, scheduled-video
@@ -109,7 +119,7 @@ selected point and use a restrained vertical date guide. Keep tooltip date/value
 aligned with the selected real report; gaps must not become zero or interpolated
 observations. Preserve native mouse/touch interactions and privacy for monetary
 charts. Moving the cursor must use cached data, not trigger API requests.
-Offer **7d / 14d / 30d / 90d / 180d / Available range**, with Views and Watch time
+Offer **Latest reported day / 3d / 7d / 14d / 30d / 90d / 180d / Available / Custom dates**, with Views and Watch time
 working from real dated series. Earnings can have a separate native-style chart
 action when access exists. Add **Estimated RPM** to the chart's metric selector
 when that feature is requested. Offer an explicit **Views / Engaged views** basis
@@ -232,3 +242,19 @@ containing private channel data. Report the stable entry point, connected count,
 data cutoff and any feature not yet verified. The maintainer owns reusable skill
 changes; Muse may implement the private dashboard and report lessons, without
 rewriting this shared skill package on its own.
+
+## Manual refresh and dated snapshots
+
+Keep Refresh overview at page level and Refresh [current report] inside the
+modal. Detail caches survive channel/tab changes and overview refresh; old
+successful snapshots are displayed with their original dates until an explicit
+report refresh or an uncached range is requested. Country/search/graph cursor
+interactions reuse data. Keep Updated and Data through near the report; use
+Requested through if the API does not disclose an actual last day. API/project,
+recorded project manager, request estimates and last usage belong in a clickable
+info panel, not a confirmation dialog or a wall of text. Disable duplicate
+refresh while running, retain last good data on failure, and keep per-component
+coverage honest. Apply the same behavior in an independent Muse executor and
+its existing artifact. For an artifact that cannot call its backend directly,
+state how its refresh action dispatches to the assigned Analytics chat; never
+make a snapshot reload look like a new API fetch.

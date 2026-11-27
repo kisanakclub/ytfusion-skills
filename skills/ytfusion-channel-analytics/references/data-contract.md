@@ -10,8 +10,10 @@ implementation has these entry points:
 | `/channel-stats` | `src/templates/channel_statistics.html`: cached channel table, search/category filter, privacy toggle, sortable metrics and chart detail |
 | `GET /api/channel-statistics` | Cache payload: `success`, `channels`, `last_updated`; no cache is an empty list, not proof of no connected channels |
 | `POST /api/channel-statistics/refresh` | Fetch connected native channels, write cache, return channel results; per-channel errors may coexist with top-level success |
+| `POST /api/channel-statistics/detail` | Same-origin `X-Requested-With: YtFusion` request with required `channel`, `period`, `section`, optional Boolean `refresh`, custom `start`/`end`, and traffic `source`; manual aggregate/country/RPM/Reach/Traffic cache |
 | `GET /api/status`, `GET /api/categories` | Native worker/category context used by the page; optional when the executor does not run native workers |
 | `fetch_channel_statistics`, `fetch_channel_analytics` in `src/app.py`; `src/channel_analytics.py` | Channel credentials, Data API identity/status/totals, dated independent Analytics reports and calendar aggregation |
+| `src/channel_insights.py`, `src/channel_reach.py` | Connection-bound persistent detail cache, one-day Reach imports, revision replacement and weighted CTR |
 | `GET /api/channel-publishing`; `POST /api/channel-publishing/refresh` | Separate cached publication/schedule overview and explicit per-channel refresh; see [Publishing](publishing.md) |
 | `src/channel_publishing.py`; `docs/channel-publishing.md` | Reviewed-upload coverage, observed cadence, WIB clocks and guarded schedule actions; not daily Analytics data |
 
@@ -37,6 +39,7 @@ credentials. Bind the credential to the resolved channel ID, not its display nam
 | Native-style Watch Hrs (365d) | Query the actual 365-day period with the existing grant, record its dates/availability and convert minutes to hours. Do not relabel a 30/57-day sum as a 365-day query. Failure is unavailable, not zero. Do not copy a Ready/YPP-eligible badge from a simple hours/subscriber threshold. |
 | `subscribersGained`, `subscribersLost` | Optional period metrics; net growth is gained minus lost for the same period. Keep separate from current subscriber total. |
 | `averageViewDuration` | Optional average in seconds. Query the aggregate for the selected period or weight compatible components correctly; do not average daily averages unweighted. |
+| `averageViewPercentage` | API aggregate percentage viewed for the selected period. Do not derive it by dividing channel average duration by average video length. |
 | Data API `status.isChannelMonetizationEnabled` | Use the explicit Boolean, when returned by `channels.list(part=snippet,statistics,status,mine=true)`. `true` = **Monetized**, `false` = **Not monetized**; absent = **Unknown**. Show these in a dedicated Monetization column. Do not infer membership from revenue, ad presence or hours/subscriber thresholds. |
 | `estimatedRevenue` | Optional estimate, with currency and coverage. Requires the granted `yt-analytics-monetary.readonly` scope and YPP access. Failure/absence is not proof of no monetization and not revenue zero. Valid returned zero stays zero. It is not finalized AdSense payments. |
 
@@ -45,12 +48,109 @@ documentation. Keep optional monetary queries separate so an access failure or
 slower revenue availability does not discard newer views/watch-time data. Do not
 attempt every possible Analytics dimension for a simple dashboard.
 
+## Efficient overview and on-demand details
+
+The native table refresh passes `overview_only=True` to `fetch_reports`.
+It combines daily `views,estimatedMinutesWatched` in one query, preserves the
+365-day Watch Hrs window, and retains up to 730 days for graphs. Revenue remains
+an independent query. RPM becomes `on_demand`; a modal request gets the matching
+joint revenue/views/engagedViews series. The helper's default full-report mode
+remains available to existing callers. A successful native table refresh uses
+one Data API request plus one Analytics request, plus one monetary request when
+granted. A failed combined report can fall back to independent reports.
+
+Sections `overview`, `audience`, `earnings`, `rpm`, `reach`, `traffic` load on demand.
+The dashboard's Refresh overview does not check Reach jobs or invalidate modal
+snapshots. Returning to a channel/tab reads its successful snapshot, even when
+old. Refresh report explicitly refreshes only the selected channel/report/period.
+Pending Reporting snapshots also wait for explicit refresh. Concurrent requests
+coalesce; errors retain the last success and receive a short retry cooldown.
+
+Details live in private `user_data/channel_insights.sqlite3`, bound to the
+verified channel ID and OAuth connection. Never put secrets in this file's
+frontend response. A changed account/client cannot inherit another connection's
+cache. Cached daily data may serve multiple intervals; exact averages for a new
+period can still need one aggregate. Missing dates are not zero. A manual refresh
+can update an old daily basis for this channel without refreshing all channels.
+
+- Overview shares dashboard views/watch-time series; its exact period averages
+  are one query with views/watch time/average duration/average percentage.
+- Audience is one country query (paginate when necessary), with same-period
+  channel totals as denominator. Withheld countries stay unreported.
+- Earnings stays independent from basic activity and its dates/permissions.
+  RPM combines daily revenue/views/engagedViews in one query; cache at least the
+  requested range and a useful 90-day daily window, then reuse it for smaller
+  periods. Do not let a monetary failure erase valid activity data.
+- Traffic combines compatible metrics in one daily source query, plus one exact
+  source aggregate for the selected period. Paginate full results. Retain the
+  daily source data across date choices; do not query each metric/source in a loop.
+  Browse detail is `insightTrafficSourceType==SUBSCRIBER`; Suggested is
+  `RELATED_VIDEO` (also returned as `YT_RELATED`). These names are unrelated to
+  the viewer's subscribed status. Display Browse features / Suggested videos.
+  Detail tables load only on drill-down, use the required maxResults <= 25 with -views sorting, and are labeled top 25. Use the parent source total as the share denominator when available; a top-referrer sum is not the whole source total. `day,insightTrafficSourceDetail` was
+  rejected in the native live probe: show the valid total-source daily trend
+  with the exact per-feature aggregate table. Do not invent per-feature daily
+  series. Browse detail `PP` matched Personalized playlists in the pilot Studio
+  comparison; preserve unknown returned codes instead of guessing labels.
+
+## Thumbnail impressions and CTR
+
+Use **YouTube Reporting API**, `youtubereporting.googleapis.com`, and
+`channel_reach_combined_a1` for impressions/CTR including traffic source/detail.
+One Combined job can serve Reach, traffic totals and Browse/Suggested detail;
+do not create overlapping Basic/Traffic jobs just to fill each UI tab.
+Reuse a live matching job; keep any unrelated existing jobs. Verify activation
+and `reportTypes.list` availability with the actual channel grant. Reporting
+uses the Analytics read grant; activating it alone does not inherently require
+new clients, account setup, or reauthentication. Monetary access is separate.
+
+Combined CSVs include date/channel/video, traffic source/type detail, device/OS,
+`video_thumbnail_impressions`, `video_thumbnail_impressions_ctr`. Aggregate
+CTR as **sum(impressions × CTR percentage) / sum(impressions)**; preserve the
+percentage unit. Zero impressions give unavailable CTR. Validate ownership/day;
+new revisions replace the entire day, including empty files. Store report/job
+IDs and a cursor only after successful imports. Read result pages, download only
+new/revised required reports, and retain already imported data. Never persist
+credential-bearing download URLs or raw CSVs in frontend artifacts.
+
+Google generates daily files after a job is created; initial reports can take
+48 hours, with about 30 days of historical data. Download availability is limited
+(30/60 days depending on historical/regular files). A continuous long CTR history
+requires retaining reports before expiry; occasional manual use cannot recover
+arbitrarily old files. Do not promise 90 days immediately after activation.
+No new recurring archival task is implied by dashboard setup: schedule only
+when assigned. Preserve incomplete coverage and separate Reporting timestamps.
+Mark partial-period impressions/CTR and expose dates; don't present partial
+Reporting coverage as if it matched the full Analytics period.
+
+## Refresh information and project identity
+
+Keep API details behind a clickable info control. Show Updated (retrieval time)
+and Data through (actual latest returned day) for the visible data group.
+Aggregate responses don't disclose their last processed day; label Requested
+through when that day is unknown, rather than inventing an actual cutoff.
+Components can have different times: show series/summary/CTR dates in the info.
+
+API info includes refresh scope, API names, actual matched Project ID, recorded
+project manager email, estimated requests and last measured API calls. Match the
+active OAuth client; the account authorizing a channel is not proof of GCP
+ownership. Unknown manager/project stays unknown. Link API activation to the
+matched project. Estimates are not remaining quota or billing: keep usage per
+API/project, count pagination/retries, and do not assign a made-up Reporting
+quota-unit cost. Refreshing the overview normally uses one Data call and one or
+two Analytics queries per channel, with independent permission/fallback states.
+
+Official references: [Analytics reports](https://developers.google.com/youtube/analytics/channel_reports),
+[Reporting dimensions](https://developers.google.com/youtube/reporting/v1/reports/dimensions#traffic-sources),
+[Reach Combined](https://developers.google.com/youtube/reporting/v1/reports/channel_reports#reach-combined),
+[report imports and retention](https://developers.google.com/youtube/reporting/v1/reports).
+
 ### Dates, gaps and comparisons
 
 - Analytics reporting days use Pacific time (`America/Los_Angeles`, including
   daylight saving), not the VM or user's local calendar. Display retrieval times
   in the user's timezone, separately from the reporting-day timezone.
-- Default to a 30-day calendar selection ending yesterday in reporting time unless
+- Default to a 30-day selection anchored to the latest known reported day unless
   a saved/user-selected period exists. Show requested start/end and actual latest
   returned report date. The API can lag: a successful request made today does not
   imply data through today or yesterday. Revenue can have a different cutoff.
