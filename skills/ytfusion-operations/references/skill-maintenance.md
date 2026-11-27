@@ -9,6 +9,7 @@ they do not require editing repositories.
 | Source change | Guides to review |
 | --- | --- |
 | YT Upload queue/modes, timing, cancellation, retry | [YT Upload](yt-upload.md), [Muse executor](muse-executor.md); current docs/yt-upload-channel-queue-plan.md and dispatch/reschedule handlers |
+| Drive Inbox/Upload Queue/History UI or Space-to-executor contract | [Upload Workspace](../../ytfusion-upload-workspace/SKILL.md), its [workspace contract](../../ytfusion-upload-workspace/references/workspace.md) and [native captures/source map](../../ytfusion-upload-workspace/references/ui-reference.md) |
 | Payload/defaults, Original/Extend, receipt, history or cleanup | [Upload workflow](upload-workflow.md); package, uploader, receipt and completion helpers |
 | Channel Statistics, Publishing, chart or metrics | [Analytics skill](../../ytfusion-channel-analytics/SKILL.md), its data/dashboard/Publishing references and [visual source map](../../ytfusion-channel-analytics/references/ui-reference.md) |
 | Google project/API/scopes, OAuth, branding, domain setup | [Google project](google-project.md), [Accounts](accounts.md), [Domain/VPS](../../ytfusion-domain-vps/SKILL.md), [Muse onboarding](muse-onboarding.md) |

@@ -1,0 +1,4 @@
+interface:
+  display_name: "YtFusion Upload Workspace"
+  short_description: "Drive Inbox dan antrean upload privat di Muse"
+  default_prompt: "Pakai $ytfusion-upload-workspace untuk membuat atau memperbarui Space YT Upload privat dengan Drive Inbox, Upload Queue dan History, mengikuti source native serta gambar rujukan skill."

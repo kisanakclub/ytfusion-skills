@@ -14,6 +14,9 @@ Use `hds-home-production` for HDS generation. Reuse `ytfusion-domain-vps` in thi
 repository for domain/HTTPS deployment and managed Google-client installation.
 For connected-channel reports or a reusable Muse Analytics dashboard, use
 [YtFusion Channel Analytics](../ytfusion-channel-analytics/SKILL.md).
+For a Muse Space showing real Drive packages, a persistent held/upload queue and
+History, use [Upload Workspace](../ytfusion-upload-workspace/SKILL.md). Its UI and
+worker bridge are verified separately from actual upload authorization.
 For an assigned source/skill maintenance change, read the
 [maintenance map](references/skill-maintenance.md) to keep relevant procedures,
 onboarding prompts and visual references aligned. Routine operations use the
@@ -44,6 +47,7 @@ existing guides; they do not authorize editing or publishing either repository.
    | Update Mac/Ubuntu/Debian, repair GitHub access, or restart safely | [Maintenance](references/maintenance.md) | Installed platform updater and service |
    | New Muse instance or incomplete setup | [Muse onboarding](references/muse-onboarding.md) | Host skills, accounts and chosen executor |
    | Muse connector/API execution, capability proof, recurring upload tasks | [Muse executor](references/muse-executor.md) | Available host connectors, uploader, and scheduler |
+   | Muse Drive Inbox, persistent visual queue and upload History | [Upload Workspace](../ytfusion-upload-workspace/SKILL.md) | Private Space actions/store and the assigned executor |
    | Own GCP project, APIs, public branding pages, publishing, or clients | [Google project](references/google-project.md) | Google Cloud / site hosting / native client import |
    | First channel/Drive connection, additional account, or re-login | [Channels and Drive](references/accounts.md) | `/channel_manager`, `/add_channel`, `/gdrive-downloader` |
    | Upload final video packages from Drive or local output | [YT Upload](references/yt-upload.md) | `/fitur_tambahan/yt_upload` |

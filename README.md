@@ -70,6 +70,30 @@ diakses. Statistik total, data harian, data realtime dan angka yang belum tersed
 dibedakan. Ini panduan membangun dashboard dengan kemampuan host; memasang skill
 saja belum berarti artifact dan refresh API-nya sudah berjalan.
 
+## YtFusion Upload Workspace
+
+Untuk melihat video di Drive dan menyiapkan antrean secara visual, pasang
+[Upload Workspace](skills/ytfusion-upload-workspace/SKILL.md). Satu Space privat
+berisi **Drive Inbox**, **Upload Queue** dan **History**, memakai source native
+serta [screenshot anonim bawaan](skills/ytfusion-upload-workspace/references/ui-reference.md).
+Operations tetap mengatur akun dan kontrak upload/finishing/receipt/cleanup.
+
+```text
+Pasang skills/ytfusion-upload-workspace dan verifikasi discovery. Gunakan untuk
+membuat satu Space privat YT Upload di Library dengan Drive Inbox, Upload Queue
+dan History. Buka gambar rujukan skill dan baca source native terbaru. Pakai
+koneksi/penugasan yang sudah ada; tampilkan metadata dan riwayat nyata. Buktikan
+pilihan video bisa disimpan sebagai draft/held queue, bertahan setelah reload,
+dan dibaca executor lewat dry-run yang tidak mengeksekusi job. Jangan upload,
+mengubah Drive, membuat jadwal berulang, menyalakan native, atau mengubah izin
+eksekusi sebagai bagian pembuatan UI ini. Tampilkan kartu Space di chat ini.
+```
+
+UI persisten, sambungan worker dan upload nyata adalah tiga bukti terpisah.
+Skill berisi panduan dan capture helper, bukan server/executor siap produksi.
+Tombol operasional mengikuti kemampuan yang benar-benar dipasang pada instance;
+draft dan pengaturan tanggal tidak otomatis mengizinkan upload.
+
 ## Mulai di Muse
 
 Copas perintah berikut ke Muse baru. Ganti tugas awal bila instance ditujukan

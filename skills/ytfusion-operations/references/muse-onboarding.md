@@ -16,6 +16,10 @@ user intervention. Setup alone does not authorize an upload, publication or Live
    synchronize supported descriptive fields from `SKILL.md` while preserving
    host policy/dependency fields. Matching source hashes alone does not update
    a separate host catalog such as a generated `skill.yaml`.
+   If a visual Drive Inbox/queue is requested, also install
+   [Upload Workspace](../../ytfusion-upload-workspace/SKILL.md). Its bundled
+   native captures and persistent held-queue/worker proof avoid asking the user
+   for screenshots or treating a new Space as an already authorized uploader.
 2. Inspect actual connectors, cloud browser, local computer control, execution,
    persistent storage, networking and job facilities. Follow an existing mode
    choice. For a new Muse final-video uploader, prefer `agent_executor` when its

@@ -30,6 +30,12 @@ or require a continuously running dashboard just to read the implementation.
 Reuse suitable dependencies already installed, normally the app's virtualenv.
 Source access does not establish that an independent executor is implemented.
 
+When the user requests a visual Drive Inbox/queue, use
+[Upload Workspace](../../ytfusion-upload-workspace/SKILL.md). Establish the host's
+actual Space-to-worker bridge, persist stable held jobs and verify a read-only
+worker round trip before exposing execution controls. An existing one-off pilot
+script does not become a queue executor merely because a Space was added.
+
 Keep an explicit `agent_executor` decision across continuations. A connector or
 receipt failure is a leg to repair, not a reason to start the native backend,
 configure its Drive connection, or repeat GCP onboarding. Preserve any existing
