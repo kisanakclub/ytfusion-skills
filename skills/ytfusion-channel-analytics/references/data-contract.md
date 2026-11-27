@@ -107,6 +107,16 @@ and `reportTypes.list` availability with the actual channel grant. Reporting
 uses the Analytics read grant; activating it alone does not inherently require
 new clients, account setup, or reauthentication. Monetary access is separate.
 
+Keep VM network permission, transport health, API activation and report readiness
+as separate states. A host approval or TLS handshake timeout does not prove that
+an API is disabled. Use the VM's supported proxy and trusted CA configuration,
+bounded timeouts/retries and a single read probe when diagnosing transport;
+never disable TLS verification. If an installed transport cannot use the VM's
+network path, adapt the executor transport while preserving this data/cache
+contract. Pending or failed Reach must not block Overview, Audience, Traffic or
+UI work that can use saved data. Honor the host's network approvals without
+silently replacing one-time approval with persistent site access.
+
 Combined CSVs include date/channel/video, traffic source/type detail, device/OS,
 `video_thumbnail_impressions`, `video_thumbnail_impressions_ctr`. Aggregate
 CTR as **sum(impressions × CTR percentage) / sum(impressions)**; preserve the

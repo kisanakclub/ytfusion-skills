@@ -198,3 +198,11 @@ default. Use the bundled native screenshots (including Traffic, Browse and API
 info) plus current source when briefing an artifact builder. Verify the actual
 executor/backend refresh action and the same existing private artifact; pulling
 the skill repo or swapping images alone does not implement these behaviors.
+
+Check the assigned VM's network transport before diagnosing Google setup from a
+timeout. Some VM tools use an approved proxy path that an SDK does not pick up
+automatically. Preserve TLS verification and use bounded requests; keep network
+approval, API activation, OAuth grants and report availability distinct. A Reach
+connection failure does not block other reports or the cached dashboard. Resume
+from durable checkpoints after a host response failure rather than repeating
+account setup, completed fetches or artifact creation.
