@@ -102,6 +102,13 @@ Current bridge receipts use `ytfusion-upload-receipt/v1`, a deterministic
 time and applicable collection/project/export identity and result details.
 Read the actual builder/validator; do not invent a boolean in the editable JSON.
 
+An accepted upload counts as previously uploaded whether private, unlisted,
+public, or scheduled for later publication. Do not wait for public visibility
+to record its receipt. Downloaded media or a held queue draft is not an upload.
+When an earlier upload exists only in the private ledger, reconcile its saved
+YouTube video ID and source identity, then complete the missing shared-history
+leg for that same upload; never create another video to repair its Drive status.
+
 Take `projectRef`, `projectId`, `draftName`, `sourceRevision`, and applicable
 `collectionId`/`sourceProjectRef` from the validated source package where present;
 use the installed normalization for legacy/manual packages. Keep its export
