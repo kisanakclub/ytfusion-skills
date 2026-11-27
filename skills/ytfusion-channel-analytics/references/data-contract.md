@@ -133,8 +133,9 @@ Components can have different times: show series/summary/CTR dates in the info.
 
 API info includes refresh scope, API names, actual matched Project ID, recorded
 project manager email, estimated requests and last measured API calls. Match the
-active OAuth client; the account authorizing a channel is not proof of GCP
-ownership. Unknown manager/project stays unknown. Link API activation to the
+active OAuth client; for a legacy client, its matching original JSON can identify
+the project and reuse that project's unambiguous recorded manager. The account
+authorizing a channel is not proof of GCP ownership. Unknown manager/project stays unknown. Link API activation to the
 matched project. Estimates are not remaining quota or billing: keep usage per
 API/project, count pagination/retries, and do not assign a made-up Reporting
 quota-unit cost. Refreshing the overview normally uses one Data call and one or
