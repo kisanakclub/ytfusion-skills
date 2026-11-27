@@ -1,6 +1,6 @@
 {
   "source_repository": "https://github.com/kisanakclub/Yt_FusionX",
-  "source_commit": "1a0767ab7d15969433cc55ae5e9f1e9f5b57aec0",
+  "source_commit": "0dd838b56e77a89a9e8427562ff6f4ba0ea7a796",
   "source_has_local_changes": false,
   "synthetic_data": true,
   "source_sha256": {
@@ -15,8 +15,8 @@
     "src/channel_publishing.py": "3cc7434218276ccf6ab9a83d1f5adfe9a3e565b6caeb1eca273ae4daa7bc13d2",
     "src/static/css/channel_insights.css": "9b58ce2e5a940049af9194327188c83b296e8db68df7ed3c955591729ba5c0fe",
     "src/static/js/channel_insights.js": "a1ad3c1d702c14164d8befafc6296e4c7b71dc0dcf15dd862b3f8064bdbe440c",
-    "src/channel_insights.py": "7cdcf1c27a9832e85c635fcc134bb13c907c747609f9cb3cf06a41adc0dfaaeb",
-    "src/channel_reach.py": "26812ab7863560300d500ad2c9c6103dd263515ecd5571acf9cdf0df34e7c628"
+    "src/channel_insights.py": "c2ee9a82f40c77b149f5099976f01ec3230e40002e876108479311c61d1a3251",
+    "src/channel_reach.py": "89f38dadb494a21ab83104aacbbe73401160f1ce952d17ecd9e01c8081ae8361"
   },
   "images": [
     "publishing-desktop.png",
