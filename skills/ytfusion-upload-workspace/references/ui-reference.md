@@ -9,8 +9,12 @@ or Google requests. The fixtures illustrate composition, not live upload proof.
 
 Keep the native density: compact title/actions, workspace navigation, status
 filters, source facets and aligned rows. Keep the page range and previous/next
-controls beside the result count. Put thumbnail/title and source labels
-before file size/status. Use a restrained Drive accent for source actions and
+controls beside the result count. Show **Newest in Drive** as the default
+sort in the existing filter row. Show the Drive arrival timestamp in a sortable
+**Masuk Drive** column, with a labeled row on narrow screens. Put thumbnail/title
+and source labels before file size/status. For queued packages, show the
+worker and YouTube destination in Status, plus the upload start and scheduled
+publish time in WIB when available. Use a restrained Drive accent for source actions and
 YouTube/VPS accent for queue actions; avoid large summary cards or long setup
 explanations. UI labels are English. Muse uses **Drive Inbox / Upload Queue /
 History**; its own shell replaces the unrelated YtFusion sidebar.

@@ -6,7 +6,7 @@ assets; no app import, server, live queue, account or credential is loaded.
 """
 import argparse
 import asyncio
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -24,6 +24,7 @@ SOURCE_FILES = (
     'src/static/js/yt_queue_schedule.js', 'src/static/js/yt_upload_clock.js',
     'src/static/js/yt_queue_order.js', 'src/static/js/yt_upload_progress.js',
     'src/static/js/yt_completed_groups.js', 'src/static/js/hds_upload_sync.js',
+    'src/static/js/yt_project_activity.js', 'src/static/css/yt_project_activity.css',
     'src/static/css/yt_drive_inbox.css', 'src/static/css/yt_channel_queue.css',
     'src/static/css/yt_queue_schedule.css',
 )
@@ -44,6 +45,7 @@ def fixtures():
                         youtube=dict(title=title, description='Fictional reference video.', tags=['design'],
                                      category='22', privacy='private'))
         row = dict(manifest=manifest, manifestPath=f'Studio/Metadata/{index}.json',
+                   driveCreatedAt=(NOW - timedelta(hours=index)).isoformat(),
                    root='Synthetic Drive', matchCount=1,
                    video=dict(id=f'synthetic-file-{index}', name=f'{title}.mp4',
                               size=(index + 2) * 320000000), thumbnail=dict(id=f'thumb-{index}'))
@@ -77,6 +79,7 @@ def fixtures():
                         projectRef=dict(projectType='batch', batchKey='Quiet Spaces', projectKey=f'project-{index}'),
                         youtube=dict(rows[0]['manifest']['youtube'], title=title))
         rows.append(dict(rows[0], manifest=manifest, manifestPath=f'Studio/Metadata/{index}.json',
+                         driveCreatedAt=(NOW - timedelta(hours=index)).isoformat(),
                          video=dict(id=f'synthetic-file-{index}', name=f'{title}.mp4', size=320000000)))
     return rows, dict(jobs=jobs, queues=queues, paused=[], reservations=[])
 
@@ -177,6 +180,11 @@ async def capture(args):
         await page.wait_for_function("_yuMode === 'vps' && yuChannelReady && !document.querySelector('.yu-workspace').inert")
         await page.evaluate("yuShowWorkspace('drive')")
         await page.wait_for_function("_yuDriveRows.length === 56 && !window._yuDriveLoading")
+        assert await page.locator('#yuInboxSort').input_value() == 'newest'
+        assert await page.locator('[data-yu-sort=arrival]').inner_text() == 'Masuk Drive'
+        assert await page.locator('.yu-inbox-arrival time').first.inner_text() == '27 Nov, 12:00 WIB'
+        assert 'Aurora Studio' in await page.locator('.yu-inbox-queue-destination').first.inner_text()
+        assert 'Mulai upload' in await page.locator('.yu-inbox-queue-destination').first.inner_text()
         assert await page.locator('#yuInboxPagination').is_visible()
         assert await page.locator('#yuDriveRows .yu-library-row').count() == 50
         assert not await page.locator('#yuDriveMsg').inner_text()

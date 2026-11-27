@@ -50,7 +50,18 @@ source; do not convert its failure into a missing-video state.
 Follow native facets: **All**, **Ready**, **In queue**, **Uploaded**, **Needs action**;
 search title/source/profile/batch; source folder/profile/batch filters; sort and
 selection count. Filtering changes the visible list, never actual queue order.
-Use page controls for long lists. Native Inbox renders 50 rows per page. Keep
+Open the Inbox on **Newest in Drive**. Sort by the creation time of the
+metadata file when the index has it, with the manifest's recorded creation time
+as fallback. Show the same date in the **Drive added** column (native
+**Masuk Drive**), with a labeled row on mobile. The column header switches between
+newest and oldest. Put undated packages after dated results. Editing a title,
+thumbnail, or upload status does not give a package a new arrival date. In the
+Status cell for a queued video, show its assigned worker and YouTube channel
+from the queue or the package-scoped device report. Display **Upload start** and
+**Scheduled publish** separately when recorded. Use the assignment's timezone
+and display it. Identify stale worker reports as last known.
+Native Inbox renders 50 rows per page from the cached inventory. Browsing and
+sorting that inventory require no additional Drive calls. Keep
 search, filters, sort, and status totals scoped to the complete inventory. Store
 selection by package identity across pages, show selections outside the page or
 filters in the count, and apply bulk select to all matching eligible packages. Uploaded/conflicting/missing/unknown-source items must not silently become
