@@ -112,6 +112,7 @@ async def capture(args):
         installation_device=lambda: 'local', dashboard_home=lambda request: '/')
     channels, publications = fixtures(source)
     errors, writes, detail_calls = [], [], []
+    pending_reach = False
     async with async_playwright() as playwright:
         options = {'headless': True}
         if args.browser:
@@ -146,6 +147,10 @@ async def capture(args):
                         impressions=dict(common, values=[16000+i*75 for i in range(len(dates))]),
                         ctr=dict(common, values=rates, impression_values=[16000+i*75 for i in range(len(dates))],
                                  weighted_values=[rate*(16000+i*75) for i,rate in enumerate(rates)]))
+                    if pending_reach:
+                        report.update(status='pending', reports={}, data_through=None,
+                            next_check_at=(NOW+timedelta(hours=1)).isoformat(),
+                            message='YouTube is preparing daily Reach reports. Refresh this report later; the first report can take 48 hours.')
                 elif section == 'traffic':
                     report.update(reach_status='available',reach_updated=NOW.isoformat(),apis=['youtubeAnalytics','youtubereporting'],estimate='1–2 Analytics queries; Reporting checks and new report downloads when needed.')
                     definitions=[('SUBSCRIBER','Browse features',32602,73.9),('RELATED_VIDEO','Suggested videos',8083,18.3),('YT_SEARCH','YouTube search',1286,2.9),('NO_LINK_OTHER','Direct or unknown',808,1.8),('YT_CHANNEL','Channel pages',449,1.0)]
@@ -246,6 +251,15 @@ async def capture(args):
         await page.get_by_role('button', name='90d', exact=True).click()
         await page.clock.run_for(300)
         assert len(detail_calls) == before, 'Reach period change must reuse the downloaded report'
+        pending_reach = True
+        await page.locator('#reportRefresh').click()
+        await page.wait_for_function("document.getElementById('reportRefresh').disabled && document.getElementById('insightsStatus').textContent.includes('Last checked')")
+        assert 'Check again after' in await page.locator('#insightsStatus').inner_text()
+        await page.locator('.chart-modal-content').screenshot(path=str(output / 'statistics-reach-pending.png'))
+        before = len(detail_calls)
+        await page.get_by_role('button', name='7d', exact=True).click()
+        await page.clock.run_for(300)
+        assert len(detail_calls) == before and await page.locator('#reportRefresh').is_disabled()
         await page.locator('.chart-close-btn').click()
         await page.locator('[aria-label="Open views chart"]').first.click()
         await page.clock.run_for(300)

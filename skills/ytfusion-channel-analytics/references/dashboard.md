@@ -179,6 +179,13 @@ dated snapshot privately, so opening Library is fast and does not repeat every
 Google API query. Filters/sorting/chart selection should use cached data when
 possible; preserve selection and scroll position while refreshing.
 
+Distinguish loading a saved report from refreshing Google data. Show Last checked
+for pending Reach, with Check again after from `next_check_at`. Keep its check
+control unavailable until that time; a local timer may re-enable it but must not
+fetch. The executor also enforces this one-hour delay across periods/sessions.
+Other tabs stay usable. Preserve the host's existing Update via chat handoff
+where direct refresh is unavailable; opening that panel does not send a request.
+
 Wire **Refresh** to a supported backend or agent action that fetches the APIs,
 updates durable data, and updates the existing artifact. Disable duplicate
 concurrent refreshes; show progress, success time and per-channel failures. Do

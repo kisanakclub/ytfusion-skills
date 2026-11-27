@@ -66,8 +66,14 @@ old. Saved selections survive browser reloads and an overview refresh that
 advances its reporting date; do not silently reinterpret a saved relative period
 as a request for new data. Refresh report explicitly refreshes only the selected
 channel/report/period and advances its saved date window.
-Pending Reporting snapshots also wait for explicit refresh. Concurrent requests
-coalesce; errors retain the last success and receive a short retry cooldown.
+Pending Reporting snapshots also wait for explicit refresh. Pending Reach
+responses expose `next_check_at`: a one-hour recheck delay shared across periods
+and browser sessions. Before that deadline, even explicit refresh returns the
+saved pending result with its original `fetched_at` and no Google report request;
+the guard runs before any daily-basis refresh. Re-enable the control after the
+deadline without automatically fetching. This does not delay other sections or
+successful reports. Concurrent requests coalesce; errors retain the last success
+and receive a short retry cooldown.
 
 Details live in private `user_data/channel_insights.sqlite3`, bound to the
 verified channel ID and OAuth connection. Never put secrets in this file's

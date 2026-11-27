@@ -29,6 +29,13 @@ the data contract; an attractive screenshot alone is not proof of working charts
 
 ![Native Reach with daily impressions CTR](ui/statistics-reach.png)
 
+![Pending Reach with its last check and earliest next manual check](ui/statistics-reach-pending.png)
+
+Pending Reach shows Last checked and Check again after; its check control stays
+disabled for one hour. That time permits another manual check, not an automatic
+fetch or a promise that Google has prepared the report. Cached reads show Loading
+rather than Refreshing, and other report tabs remain usable.
+
 Load Overview, Audience, Reach and Traffic details on demand with their own dated caches.
 Keep zero, withheld countries, pending Reach setup and API-disabled states distinct.
 

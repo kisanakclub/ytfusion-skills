@@ -1,6 +1,6 @@
 {
   "source_repository": "https://github.com/kisanakclub/Yt_FusionX",
-  "source_commit": "a56a16e8e5b01505bb17111993412a28a0ba893e",
+  "source_commit": "11d4f755febbc183e6161d0394ad34000a2a230f",
   "source_has_local_changes": false,
   "synthetic_data": true,
   "source_sha256": {
@@ -14,8 +14,8 @@
     "src/channel_analytics.py": "66ca1bd55a7d625146b14902a829a14359fabae740bd79f95e2c7bad4325539a",
     "src/channel_publishing.py": "3cc7434218276ccf6ab9a83d1f5adfe9a3e565b6caeb1eca273ae4daa7bc13d2",
     "src/static/css/channel_insights.css": "9b58ce2e5a940049af9194327188c83b296e8db68df7ed3c955591729ba5c0fe",
-    "src/static/js/channel_insights.js": "a1ad3c1d702c14164d8befafc6296e4c7b71dc0dcf15dd862b3f8064bdbe440c",
-    "src/channel_insights.py": "8f87a9e72bbf22a7ee8fcf3b64af1f2d1a4aa41031dcfeeadc93b7902e2022ee",
+    "src/static/js/channel_insights.js": "34d4c4e2ce8ac0f6c08bc5ee248c8f836d17da8cded5c9db0c981ea52a64ccfa",
+    "src/channel_insights.py": "7f95446cf69da5daff05eb6bb905de42ff464722adf8abeaea841918e7298385",
     "src/channel_reach.py": "89f38dadb494a21ab83104aacbbe73401160f1ce952d17ecd9e01c8081ae8361"
   },
   "images": [
@@ -28,6 +28,7 @@
     "statistics-chart.png",
     "statistics-desktop.png",
     "statistics-privacy.png",
+    "statistics-reach-pending.png",
     "statistics-reach.png",
     "statistics-traffic.png"
   ]
