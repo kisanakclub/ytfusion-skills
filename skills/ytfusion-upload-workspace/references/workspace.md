@@ -50,8 +50,10 @@ source; do not convert its failure into a missing-video state.
 Follow native facets: **All**, **Ready**, **In queue**, **Uploaded**, **Needs action**;
 search title/source/profile/batch; source folder/profile/batch filters; sort and
 selection count. Filtering changes the visible list, never actual queue order.
-Show hidden selected items in the count. Bulk select applies to matching eligible
-rows. Uploaded/conflicting/missing/unknown-source items must not silently become
+Use page controls for long lists. Native Inbox renders 50 rows per page. Keep
+search, filters, sort, and status totals scoped to the complete inventory. Store
+selection by package identity across pages, show selections outside the page or
+filters in the count, and apply bulk select to all matching eligible packages. Uploaded/conflicting/missing/unknown-source items must not silently become
 ready. One source's failure does not erase the last successful Inbox snapshot.
 Keep retrieval time and partial/failed status separate from successful empty data.
 

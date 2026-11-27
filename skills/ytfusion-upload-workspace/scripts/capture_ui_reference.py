@@ -70,6 +70,14 @@ def fixtures():
                          position=index, created=NOW.timestamp(), updated=NOW.timestamp(),
                          run_at=NOW.timestamp() + (index + 2) * 86400, estimate_minutes=25,
                          payload=payload, result={}, progress={}))
+    for index in range(len(rows), 56):
+        title = f'Quiet Spaces · Episode {index + 1}'
+        manifest = dict(rows[0]['manifest'], jobId=f'synthetic-package-{index}',
+                        projectId=f'synthetic-project-{index}', projectName=f'project-{index}',
+                        projectRef=dict(projectType='batch', batchKey='Quiet Spaces', projectKey=f'project-{index}'),
+                        youtube=dict(rows[0]['manifest']['youtube'], title=title))
+        rows.append(dict(rows[0], manifest=manifest, manifestPath=f'Studio/Metadata/{index}.json',
+                         video=dict(id=f'synthetic-file-{index}', name=f'{title}.mp4', size=320000000)))
     return rows, dict(jobs=jobs, queues=queues, paused=[], reservations=[])
 
 
@@ -167,9 +175,10 @@ async def capture(args):
         await page.route('**/*', route)
         await page.goto('http://reference.invalid/preview')
         await page.wait_for_function("_yuMode === 'vps' && yuChannelReady && !document.querySelector('.yu-workspace').inert")
-        await page.evaluate("yuShowWorkspace('drive'); _yuDriveRows = []; window._yuDriveLoading = false;")
-        # Render only fixture rows through the unmodified native renderer.
-        await page.evaluate("(rows)=>{_yuDriveRows=rows;yuCollectionLoaded=true;yuCollectionLoadingState('ready');document.getElementById('yuDriveRows').innerHTML=rows.map(yuDriveLibraryRow).join('');yuFilterDriveRows();}", rows)
+        await page.evaluate("yuShowWorkspace('drive')")
+        await page.wait_for_function("_yuDriveRows.length === 56 && !window._yuDriveLoading")
+        assert await page.locator('#yuInboxPagination').is_visible()
+        assert await page.locator('#yuDriveRows .yu-library-row').count() == 50
         assert not await page.locator('#yuDriveMsg').inner_text()
         area = page.locator('.yu-page')
         await area.screenshot(path=str(output / 'drive-inbox-desktop.png'))
@@ -191,6 +200,8 @@ async def capture(args):
         await browser.close()
     manifest = dict(source_repository='https://github.com/kisanakclub/Yt_FusionX',
                     source_commit=subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True).strip(),
+                    source_has_local_changes=bool(subprocess.check_output(
+                        ['git', '-C', str(source), 'diff', 'HEAD', '--name-only', '--', *SOURCE_FILES], text=True).strip()),
                     synthetic_data=True,
                     source_sha256={name: hashlib.sha256((source / name).read_bytes()).hexdigest() for name in SOURCE_FILES},
                     images=sorted(path.name for path in output.glob('*.png')))

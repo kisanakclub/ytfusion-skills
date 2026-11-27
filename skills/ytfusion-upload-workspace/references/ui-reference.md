@@ -8,7 +8,8 @@ or Google requests. The fixtures illustrate composition, not live upload proof.
 ![Native Drive Inbox: compact tabs, facets, filters, selectable video rows](ui/drive-inbox-desktop.png)
 
 Keep the native density: compact title/actions, workspace navigation, status
-filters, source facets and aligned rows. Put thumbnail/title and source labels
+filters, source facets and aligned rows. Keep the page range and previous/next
+controls beside the result count. Put thumbnail/title and source labels
 before file size/status. Use a restrained Drive accent for source actions and
 YouTube/VPS accent for queue actions; avoid large summary cards or long setup
 explanations. UI labels are English. Muse uses **Drive Inbox / Upload Queue /
@@ -55,7 +56,7 @@ Inspect changed templates/assets and refresh the visual baseline if needed.
 - `src/app.py`: inspect only the relevant `/api/hds/yt_upload/drive_inbox`,
   `channel_queue`, `status_refresh`, History/receipt and worker handlers. The
   native authenticated routes are not automatically available to a Space.
-- `src/hds_upload_dispatch.py`, `hds_youtube_upload.py`, `hds_drive_bridge.py`
+- `src/hds_upload_dispatch.py`, `hds_youtube_upload.py`, `hds_drive_upload_bridge.py`
   and `docs/yt-upload-channel-queue-plan.md`: backend behavior reference. Reuse
   appropriate installed pure identity/format helpers; do not copy Private engines
   to this repo or fabricate native state for an independent executor.
