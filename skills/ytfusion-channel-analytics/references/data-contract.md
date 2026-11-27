@@ -62,7 +62,10 @@ granted. A failed combined report can fall back to independent reports.
 Sections `overview`, `audience`, `earnings`, `rpm`, `reach`, `traffic` load on demand.
 The dashboard's Refresh overview does not check Reach jobs or invalidate modal
 snapshots. Returning to a channel/tab reads its successful snapshot, even when
-old. Refresh report explicitly refreshes only the selected channel/report/period.
+old. Saved selections survive browser reloads and an overview refresh that
+advances its reporting date; do not silently reinterpret a saved relative period
+as a request for new data. Refresh report explicitly refreshes only the selected
+channel/report/period and advances its saved date window.
 Pending Reporting snapshots also wait for explicit refresh. Concurrent requests
 coalesce; errors retain the last success and receive a short retry cooldown.
 
