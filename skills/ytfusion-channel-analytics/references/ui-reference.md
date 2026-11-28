@@ -7,6 +7,41 @@ the native templates with synthetic channels and metrics, not a public demo or
 live account evidence. Do not copy sample identities, amounts or worker states
 into an instance assignment or real snapshot.
 
+## Reuse the current native CSS
+
+The assigned YtFusion checkout is the visual source of truth. Read the current
+template structure and CSS, including inline styles and the final cascade:
+`src/templates/base.html` for theme/font/common controls,
+`src/templates/channel_statistics.html`, `src/static/css/channel_insights.css`,
+`src/static/css/channel_publishing.css`, and
+`src/templates/partials/management_teal_theme.html`. Follow template load order;
+a base rule may be superseded by a later feature or theme rule.
+
+Import the relevant source styles into the artifact build and transfer required
+inline rules/custom properties. Match native class/element structure in the host
+components so the rules apply. Scope global selectors to the artifact root and
+adapt shell/data bindings. A VM-local `/static` URL does not host CSS for the
+artifact: supply current files through supported builder inputs or their exact
+CSS contents with source paths/revision. Keep those as generated build assets;
+do not maintain a second stylesheet in this skill repo. On an assigned UI
+update, regenerate from the updated checkout rather than patching an old copy.
+
+Preserve native font/fallback, type size/weight/line-height, theme, control
+shapes, spacing, radii, table widths and responsive rules. Verify font
+availability; a family declaration alone does not prove its face loaded. Do not
+introduce a new heading font, pill controls or card system by builder preference.
+Reuse the native chart library where supported, or match its typography, colors,
+grid, strokes and tooltips in the host chart. Keep API/cache behavior unchanged.
+
+Compare same-size desktop/narrow screenshots and representative computed styles:
+header/filter/earnings height, table text, dialog width, topic/date controls,
+primary strip and plot. Include long titles, empty/pending states and Privacy.
+Remove duplicate footer totals in favor of native compact coverage. Functional
+QA alone is not visual acceptance. Record specific host-driven differences.
+Derive numeric values from the current source, not a fixed token table copied
+into this guide. Source CSS, installed skill and delivered artifact are separate
+verification steps; a repo pull alone does not update a dashboard.
+
 ## Statistics
 
 ![Native Statistics: compact header, tabs, filters, earnings summary and channel table](ui/statistics-desktop.png)

@@ -35,6 +35,10 @@ one does not require rewriting the other's instructions.
    when their baseline changes. Inspect the source and images before briefing
    a builder; the user should not need to supply screenshots for normal setup.
    Preserve real-data/permission/privacy requirements regardless of the fixture.
+   Muse UI builds reuse the assigned app's current CSS/template styles; derive
+   generated artifact assets from that source, not a separate skill stylesheet.
+   Check final inline/theme overrides, computed typography/geometry and same-size
+   captures as well as data behavior when closing a visual update.
    For prompt changes, align the app entry point, README and onboarding reference.
 4. Validate changed manifests, relative links and examples. Execute a changed
    helper on disposable data; visually inspect refreshed images. Use existing

@@ -160,6 +160,14 @@ reference, plus its development-principles reference and the source's
 to capture the native app. Compare with the assigned current source and its
 included assets before building the same private Library artifact.
 
+For both Channel Analytics and YT Upload Workspace, follow each UI reference's
+source CSS procedure: use the assigned app's current styles/inline theme as
+artifact build inputs, with matching component classes. Pass actual style
+files/text to the builder, not screenshots alone. Keep CSS authoritative in
+YtFusion, with generated copies only in build output. Compare typography,
+colors, density and geometry at equal desktop/narrow viewports. An installed
+guide or working data does not prove that the delivered visuals match native.
+
 Full channel-stats-style setup includes Statistics and the read-only Publishing
 overview, English labels by default, filters, charts, available earnings/RPM,
 Privacy, separate refresh timestamps and the user's chosen Analytics chat.

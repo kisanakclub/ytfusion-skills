@@ -49,7 +49,9 @@ Membaca channel yang sudah terhubung dan menyiapkan dashboard privat di Muse,
 mengikuti **channel-stats**: tab Statistics dan Publishing, tabel, filter,
 grafik, earnings/RPM serta riwayat/jadwal publikasi yang dapat dibaca.
 Repo menyertakan [screenshot UI anonim dan peta source](skills/ytfusion-channel-analytics/references/ui-reference.md)
-agar pengguna tidak perlu menyiapkan screenshot manual. Dashboard disimpan di
+agar pengguna tidak perlu menyiapkan screenshot manual. CSS/tema diambil dari
+checkout YtFusion yang ditugaskan sebagai input build; screenshot memeriksa
+hasilnya. Repo skill tidak memelihara salinan CSS terpisah. Dashboard disimpan di
 **Library** agar mudah dibuka lagi, dengan kartu UI di main chat. Side chat khusus
 bisa digunakan bila diminta pengguna.
 Memakai koneksi instance yang ada; tidak perlu mengulang setup
@@ -77,6 +79,8 @@ Untuk melihat video di Drive dan menyiapkan antrean secara visual, pasang
 berisi **Drive Inbox**, **Upload Queue** dan **History**, memakai source native
 serta [screenshot anonim bawaan](skills/ytfusion-upload-workspace/references/ui-reference.md).
 Operations tetap mengatur akun dan kontrak upload/finishing/receipt/cleanup.
+Workspace memakai CSS/template native dari checkout yang sama, dengan kelas
+komponen yang sesuai dan pemeriksaan visual; sumber CSS tetap di YtFusion.
 
 ```text
 Pasang skills/ytfusion-upload-workspace dan verifikasi discovery. Gunakan untuk

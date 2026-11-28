@@ -19,6 +19,9 @@ Adding metrics must preserve manual collection boundaries and cached navigation.
   explanation. Do not create an app for every statistics question.
 - For a reusable UI, read [dashboard](references/dashboard.md) and open the
   [visual references](references/ui-reference.md) before briefing the builder.
+  Follow [source CSS reuse](references/ui-reference.md#reuse-the-current-native-css):
+  use the assigned checkout's actual styles as artifact build inputs, with
+  matching component classes. Screenshots verify the result.
   On Muse, prefer one private interactive artifact in Library, linked from the
   user's chosen chat.
   Keep coordination in the main chat unless the user requests a separate thread.

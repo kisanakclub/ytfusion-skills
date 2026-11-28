@@ -21,6 +21,10 @@ transfer/finishing/receipt/cleanup procedures.
    [native visual references](references/ui-reference.md), and inspect their
    relevant current source. Give the builder the images and data/action brief;
    the user should not need to supply screenshots.
+   Use [native CSS as build input](references/ui-reference.md#reuse-the-current-native-css),
+   including current inline/theme rules and matching component classes. Verify
+   visual parity as well as working data/actions. Keep the assigned app checkout
+   authoritative rather than maintaining a second CSS source in the skill.
 3. Establish which host-supported Space actions, persistent storage and worker
    read/write routes actually work. Prefer direct UI actions when supported.
    Do not assume a snapshot-only limit from an older artifact or promise that

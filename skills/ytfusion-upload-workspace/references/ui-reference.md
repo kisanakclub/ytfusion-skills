@@ -5,6 +5,40 @@ Open these captures and give them to the Space builder with the
 template/assets with fictional accounts and packages, without a running backend
 or Google requests. The fixtures illustrate composition, not live upload proof.
 
+## Reuse the current native CSS
+
+Build from the assigned YtFusion checkout's actual styles and template structure.
+Read `src/templates/base.html` for native theme/font/fallback/common controls,
+then `src/templates/yt_upload.html` inline styles and its linked
+`src/static/css/yt_drive_workspace.css`, `yt_drive_inbox.css`,
+`yt_channel_queue.css`, `yt_queue_schedule.css` and relevant final overrides.
+Follow template load order; inspect other includes when the shown surface uses
+them. Import/copy current styles as artifact build inputs, transfer necessary
+inline/theme rules and use the corresponding native classes/structure in host
+components. Scope global selectors and adapt native role/body selectors to the
+artifact root. Preserve the Muse shell and existing storage/worker bindings.
+
+A VM-local `/static` URL cannot serve the artifact's stylesheet. Use supported
+builder files or exact CSS text with source paths/revision. These are generated
+artifact assets: regenerate from the updated app on an assigned UI update, and
+do not maintain another stylesheet in this skill repo. Screenshots verify the
+result rather than stand in for the actual source styles.
+
+Keep native font/fallback, text size/weight/line-height, neutral panels, restrained
+source/action colors, row density, control shapes, spacing and responsive rules.
+Verify the font actually available; avoid a different decorative heading font
+or new pill/card system. Compare same-size desktop/narrow screenshots and
+computed styles for header/tabs, filters, Inbox rows, status/timing, channel
+queue cards and detail panels. Derive values from current source, not a fixed
+second token table. Check long titles, empty/partial data and draft/held states.
+Working queue actions alone do not establish visual parity; report actual host
+limitations and distinguish source, installed skill and delivered workspace.
+
+A visual-only update preserves Inbox/queue/History snapshots, source/job IDs,
+receipts, draft/held acknowledgement, selection and execution flags. It does not
+authorize a Drive scan, media transfer, draft mutation, scheduling or native-app
+startup merely to populate or test the design.
+
 ![Native Drive Inbox: compact tabs, facets, filters, selectable video rows](ui/drive-inbox-desktop.png)
 
 Keep the native density: compact title/actions, workspace navigation, status

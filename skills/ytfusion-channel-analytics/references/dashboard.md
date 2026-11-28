@@ -40,6 +40,11 @@ Open the [bundled screenshots and source map](ui-reference.md) before designing
 and give those images to the artifact builder alongside the data/behavior brief.
 Read the assigned source page plus its included partials and CSS/JS, not only
 the top-level template. Use the actual composition, density and interactions.
+Use [current source CSS as artifact build input](ui-reference.md#reuse-the-current-native-css)
+with matching component classes and source-derived inline/theme rules. Supply
+the actual styles to the builder, then compare computed typography/geometry and
+same-size screenshots. Keep CSS authoritative in the app checkout; a functional
+redesign with a different visual system does not establish visual parity.
 The user should not need to supply screenshots for standard setup. An explicit
 user screenshot can refine the brief; keep private captures out of this repo.
 Synthetic sample channels/values are never account assignments or real app data.

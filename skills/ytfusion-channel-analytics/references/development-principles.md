@@ -35,6 +35,11 @@ essential rules together with the bundled data/dashboard/UI references:
   reports on failure and late-result guards. Cache-only reads cannot renew an
   expired credential or silently refresh expired resource metadata.
 - Build a compact responsive English UI from the current synthetic references.
+  Reuse the assigned source's actual CSS/inline theme in artifact build inputs,
+  preserving native type, theme, dimensions and cascade. Generated style assets
+  are refreshed from the app on an assigned update, not maintained as another
+  skill stylesheet. Follow the UI reference's source CSS procedure and verify
+  same-size screenshots/computed styles as well as functionality.
   Lead Overview with Views, Engaged views, Watch time and subscriber change, then
   the chart; averages/runtime/Reach sit below. Keep counts inline and secondary
   definitions/retrieval dates in tooltips, without duplicate large footer cards.
