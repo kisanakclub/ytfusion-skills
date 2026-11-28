@@ -139,6 +139,10 @@ referensi dashboard/data/Publishing dan buka screenshot UI bawaan skill; berikan
 gambar itu kepada pembuat artifact bersama acuan source channel-stats terbaru.
 Buat satu dashboard privat berbahasa Inggris di Library, dengan Statistics dan
 Publishing baca-saja, filter, grafik, earnings/RPM serta Privacy $$$$. Gunakan
+prinsip docs/CHANNEL_STATISTICS_PRODUCT_PRINCIPLES.md dan referensi development-principles
+di skill Analytics: kelompok tambahan manual, Content memakai Load/Refresh Catalog,
+Performance dan Earnings terpisah per halaman, serta Views/Engaged views tampil
+bersama. Jangan scan seluruh katalog atau ambil semua laporan saat setup. Gunakan
 koneksi yang ditugaskan, tampilkan cakupan/izin yang belum tersedia, dan verifikasi
 fetch, penyimpanan serta viewer. Tampilkan kartu di chat pilihanku dan arahkan
 update ke chat khusus Channel Analytics bila itu tujuanku. Simpan versi source

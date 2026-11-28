@@ -155,13 +155,24 @@ another host/version; a locked/asleep Mac or blocked app is a separate condition
 When the assigned first-run setup includes Channel Analytics, install/register
 the sibling ytfusion-channel-analytics skill and verify discovery. Read its
 SKILL.md, dashboard/data references, bundled UI screenshots and Publishing
-reference. Supply the images to the artifact builder; the user should not need
+reference, plus its development-principles reference and the source's
+`docs/CHANNEL_STATISTICS_PRODUCT_PRINCIPLES.md`. Supply the images to the artifact builder; the user should not need
 to capture the native app. Compare with the assigned current source and its
 included assets before building the same private Library artifact.
 
 Full channel-stats-style setup includes Statistics and the read-only Publishing
 overview, English labels by default, filters, charts, available earnings/RPM,
 Privacy, separate refresh timestamps and the user's chosen Analytics chat.
+Include the modal Content catalog with independent Catalog / Performance /
+Earnings Load/Refresh. Optional groups start unloaded; do not scan the full
+catalog or prefetch every report during setup. Load one uploads page at a time,
+batch its performance metrics, reuse saved Reach, and preserve per-period caches.
+Plot Views and Engaged views together; expose subscriber total/growth and the
+separately loaded original-video-length card. Use Overview/Content/Reach/Traffic/
+Audience/Revenue, with Earnings/RPM in Revenue and Impressions/CTR in Reach.
+Lead Overview with Views, Engaged views, watch time and subscriber change before
+the graph; place viewing averages/runtime/saved Reach below. Verify the current
+contracts instead of copying a pilot account, sample data or fixed Gmail.
 Record source/skill revisions and verify the delivered viewer. Missing revenue
 permission stays explicit; do not initiate a new grant just to fill a screenshot.
 An uploader-only assignment does not require creating this dashboard.

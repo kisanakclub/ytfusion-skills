@@ -19,13 +19,82 @@ tab-specific Refresh and its retrieval time at the right. The app sidebar is
 cropped out; a Muse artifact does not need to reproduce unrelated app navigation.
 Keep unavailable revenue distinct from zero.
 
+The main header uses a small framed action group: a bright teal Refresh button,
+secondary Privacy and an info icon, with the timestamp beneath the action row.
+Use equal-height controls, consistent inset padding, and a fine divider above
+the left-aligned timestamp row; keep the info control aligned with the buttons.
+Keep the group compact (under 80px high), including on mobile; avoid a large card
+or an ungrouped line of controls and metadata.
+
+![Compact header action group](ui/statistics-header.png)
+
+Tips expands from the filter row,
+and earnings totals form a thin strip with per-channel coverage. Keep the table
+near the top instead of stacking large control cards. Connected Gmail addresses
+appear below channel names and in dialog headers. Non-Gmail saved identities
+display Brand; unknowns remain Email not saved. Mask them and Studio links in
+Privacy. Sample account identities in these images are synthetic.
+
 ![Native chart dialog with period controls, dated series and metric selection](ui/statistics-chart.png)
+
+![Overview with loaded average video length and cached Reach state](ui/statistics-overview-loaded.png)
+
+![Selectable daily net-subscriber chart](ui/statistics-subscribers.png)
+
+Views and Engaged views are simultaneous lines, with one date tooltip and
+distinct legend colors. Show total subscribers separately from net growth.
+Average video length has its own Load/Refresh and explicit video-count coverage.
+Overview starts with Views, Engaged views, Watch time and Subscribers change,
+with total subscribers as context. Engaged views includes its same-period
+percentage of Views; no extra query.
+Last 48h* uses the latest two reported daily dates, with the dates and a visible
+non-realtime cue; it is not the Studio rolling-hour feed.
+The graph follows this single compact primary
+row. Average view duration, average viewed, original runtime and saved Reach
+appear below as supporting metrics. Do not lead with original runtime or repeat
+the totals in large footer cards. Definitions/retrieval dates use tooltips.
+Impressions/CTR are saved Reach summaries: Pending is visible without a new
+Reporting request. Preserve these data boundaries in the Muse artifact.
+
+![Revenue groups Earnings and Estimated RPM](ui/statistics-revenue.png)
+
+![RPM denominator control inside Revenue](ui/statistics-revenue-rpm.png)
+
+![Revenue navigation at a narrow viewport](ui/statistics-revenue-mobile.png)
+
+Tabs are topics: Overview / Content / Reach / Traffic / Audience / Revenue.
+Views, Watch time and Subscribers are graph metrics inside Overview. Earnings
+and Estimated RPM belong in Revenue; Impressions and CTR stay inside Reach.
+Country/demographics/viewing groups stay in Audience. Keep narrow tab navigation
+scrollable without squeezing labels; select Revenue when opening an earnings
+chart from the channel table. Grouping never implies a Refresh all cascade.
+Every tab uses the same responsive frame dimensions. Header and navigation remain
+visible while the body scrolls; Content uses internal horizontal table scrolling.
 
 Use a real chart dialog with period and metric controls. Hover/touch selects the
 nearest reporting date across the plot. Dates, units and permission states follow
 the data contract; an attractive screenshot alone is not proof of working charts.
 
 ![Native Audience with country shares and watch time](ui/statistics-audience.png)
+
+![Audience with independently loaded demographics and viewing habits](ui/statistics-audience-loaded.png)
+
+![Optional Audience cards at a narrow viewport](ui/statistics-audience-mobile.png)
+
+Keep additional groups compact: Demographics pairs age/gender; Viewing habits
+pairs devices/subscriber watch time. Each group owns Load data / Refresh and its
+own timestamp/range. Empty groups stay unloaded until explicitly requested;
+switching tabs/periods or the header refresh must not fetch them. Country average
+duration/percentage enrich the existing table query. Overview adds net subscribers
+and a daily subscriber metric without another query.
+
+![Top five own videos with original length and viewing performance](ui/statistics-top-videos.png)
+
+The optional Top videos group sits below Overview. Preserve title links, modest
+thumbnails, separate original length / average viewing duration, aligned metrics
+and its own Load / Refresh. Include Engaged views from that same Analytics query,
+plus saved per-video impressions/CTR with pending/partial coverage labels and
+Reach's separate control. It uses five ranked rows, not a full channel scan.
 
 ![Native Reach with daily impressions CTR](ui/statistics-reach.png)
 
@@ -41,7 +110,25 @@ Keep zero, withheld countries, pending Reach setup and API-disabled states disti
 
 ![Native Traffic with source table and trends](ui/statistics-traffic.png)
 
+![Long Traffic report with navigation still visible](ui/statistics-traffic-scrolled.png)
+
+![Traffic with explicit pending Impressions/CTR cells](ui/statistics-traffic-pending.png)
+
+![Last 48h selection and same-period Engaged percentage](ui/statistics-overview-48h.png)
+
+Missing Reach values have compact readable states and explanations, not bare
+dashes. Keep Pending, Not loaded, No data, Not reported and access failures
+distinct; reported zero impressions differs from an actual zero CTR.
+
 ![Native Browse detail with valid total-source trend](ui/statistics-browse.png)
+
+![Suggested video titles with clickable watch URLs](ui/statistics-suggested.png)
+
+![Suggested-video detail in a narrow viewport](ui/statistics-suggested-mobile.png)
+
+Use titles as links without separate URL labels or arrows, two-line title
+wrapping and aligned metrics. Unknown titles keep their exact link. Optional
+title metadata has its own cached Data API lookup; it does not refresh Analytics.
 
 ![Clickable API, project and refresh usage information](ui/statistics-api-info.png)
 
@@ -59,6 +146,40 @@ stay inside their column; the wide channel table scrolls within its container.
 
 Use the native $$$$ monetary placeholder and mask identity in the dialog too.
 The written privacy contract also covers open charts, summaries and tooltips.
+
+## Content inside the channel dialog
+
+![Catalog loaded without automatically loading Performance or Earnings](ui/statistics-content-catalog.png)
+
+![Content with explicit page Performance and saved Reach](ui/statistics-content.png)
+
+![Content at a narrow viewport](ui/statistics-content-mobile.png)
+
+![Content columns scrolled while video identity stays pinned](ui/statistics-content-scroll-right.png)
+
+![Visible per-video earnings and Engaged share](ui/statistics-content-earnings.png)
+
+![Unloaded period explains how to fetch its metrics](ui/statistics-content-empty-period.png)
+
+![Initial Content state points to the header Load action](ui/statistics-content-unloaded.png)
+
+Keep Catalog, Performance and Earnings independently loaded and timestamped.
+Default to newest uploads and one bounded page, with loaded-page search/sort,
+Previous/Next over saved pages and explicit Load older uploads. The same responsive
+dialog keeps the table internally scrollable without changing size. Do not fetch
+period metrics merely because metadata is shown or the period changes. Show
+original length separately from average viewing duration, and preserve unknown,
+pending, partial, unavailable and valid-zero values. Use the current data contract
+and development principles for the real backend behavior.
+Content's reporting interval starts at Available (up to 730 days); other topics
+start at 30d. The two windows, including custom dates, restore independently.
+
+Keep Earnings visible next to Views/Engaged views, with its permission/unloaded
+state and the local Engaged/Views percentage. Use a bounded viewport with sticky
+header/video cells, a synchronized top scrollbar, explicit left/right controls
+and page navigation above the table. The header refresh is limited to current
+page Performance and previously loaded Earnings combined in one query; one missing Catalog page is
+loaded first. Date changes stay cache-only and provide an actionable explanation.
 
 ## Publishing
 

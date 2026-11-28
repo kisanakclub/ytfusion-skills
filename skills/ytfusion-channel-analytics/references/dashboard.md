@@ -78,9 +78,14 @@ UI language choice overrides that default. Follow the native hierarchy:
 - Put periods, metric selection, detailed summaries and any optional daily table
   inside the chart dialog. A 30-day initial graph is useful; preserve later choices.
   Keep the mini-chart period independent of the modal's existing
-  Latest day/3d/7d/14d/30d/90d/180d/Available and custom-date controls. The modal opens at 30d.
-  Overview includes watch time, API average view duration and API average
-  percentage viewed, plus Views/Watch time/Earnings/RPM graph selection.
+  Latest day/Last 48h*/3d/7d/14d/30d/90d/180d/Available and custom-date controls. The modal opens at 30d; Content starts at Available with its own remembered window.
+  Topic tabs are Overview, Content, Reach, Traffic, Audience and Revenue.
+  Overview leads with Views / Engaged views / Watch time / subscriber change,
+  with current subscriber total as context, followed by the graph. Its graph
+  metrics are Views / Watch time / Subscribers. Place API average view duration,
+  average percentage viewed, optional original runtime and saved Reach below
+  the graph. Revenue owns Earnings / Estimated RPM and the denominator control;
+  opening the table's earnings chart selects Revenue directly.
   Audience shows countries, share of channel views and watch time. Traffic shows all source trends, exact source metrics, and Browse/Suggested drill-down. Use total-source trends when per-feature daily Analytics queries are unsupported. Reach shows
   impressions and weighted thumbnail CTR with a graph selector. Fetch each
   detail section on demand and retain its dated cache; see the data contract.
@@ -119,10 +124,10 @@ selected point and use a restrained vertical date guide. Keep tooltip date/value
 aligned with the selected real report; gaps must not become zero or interpolated
 observations. Preserve native mouse/touch interactions and privacy for monetary
 charts. Moving the cursor must use cached data, not trigger API requests.
-Offer **Latest reported day / 3d / 7d / 14d / 30d / 90d / 180d / Available / Custom dates**, with Views and Watch time
+Offer **Latest reported day / Last 48h* / 3d / 7d / 14d / 30d / 90d / 180d / Available / Custom dates**, with Views and Watch time
 working from real dated series. Earnings can have a separate native-style chart
 action when access exists. Add **Estimated RPM** to the chart's metric selector
-when that feature is requested. Offer an explicit **Views / Engaged views** basis
+within Revenue when that feature is requested. Offer an explicit **Views / Engaged views** basis
 in the RPM detail, with dates/units and a weighted period value. RPM uses its own
 matched daily monetary report; permission/no-data states remain distinct from
 zero. Keep monthly sums tied to calendar periods and their actual coverage.
@@ -185,6 +190,15 @@ control unavailable until that time; a local timer may re-enable it but must not
 fetch. The executor also enforces this one-hour delay across periods/sessions.
 Other tabs stay usable. Preserve the host's existing Update via chat handoff
 where direct refresh is unavailable; opening that panel does not send a request.
+
+Suggested-video detail rows show only a readable title linking to the canonical
+YouTube watch URL, with no separate URL line or external-link arrow. Preserve exact video IDs;
+never title-case or replace underscores in them. Clamp long titles to two lines
+in a bounded first column and keep other metrics aligned. Escape external titles
+and construct links only from valid IDs, with safe new-tab attributes. Fallback
+to the exact ID/link when metadata is unavailable; core information must not
+depend on hovering. Keep optional Data API title lookup separate from Analytics
+snapshot times and reuse its private metadata cache across date windows.
 
 Wire **Refresh** to a supported backend or agent action that fetches the APIs,
 updates durable data, and updates the existing artifact. Disable duplicate
@@ -251,6 +265,71 @@ changes; Muse may implement the private dashboard and report lessons, without
 rewriting this shared skill package on its own.
 
 ## Manual refresh and dated snapshots
+
+Additional cards are explicit opt-in groups: Demographics (age + gender),
+Viewing habits (devices + subscriber watch time), and Top videos. Each has
+Load data before its first fetch, then its own Refresh and retrieval/range label.
+Opening the modal, switching periods or refreshing the header never fetches
+these groups from Google. Read saved snapshots only; a missing period stays
+unloaded. Do not introduce a Refresh all details cascade. Group compatible cards
+so age/gender share one query and device/subscriber watch time share one query.
+Top videos fetches five ranked rows and batched metadata only when requested.
+Average video length is a separate compact Overview card with its own Load /
+Refresh and known/returned video count; it is not the average of the top five.
+Preserve bounded Top 200 and missing-duration coverage when applicable.
+Use one thin primary strip before the graph and supporting averages/Reach after
+it, rather than large cards. Keep counts inline and put verbose definitions/
+retrieval times in tooltips. Graph coverage is a concise footer, not duplicate
+large totals. Topic tabs and metric buttons are separate navigation levels.
+Keep one stable responsive dialog size for every tab/state, a persistent header/
+tab bar and a scrolling body; wide tables scroll within that body. Show the
+Engaged/Views same-period percentage inline, with unavailable zero denominators.
+Last 48h* means two reported dates, with actual dates and a visible non-realtime
+cue. Missing Impressions/CTR cells use the cached state/reason instead of a bare
+dash; distinguish no saved row, zero impressions and a valid 0.0% CTR.
+Overview shows total subscribers separately from gained/lost/net, and exposes
+the subscriber graph even when an old cache needs an explicit refresh. Views
+and Engaged views are two simultaneous lines with a shared tooltip, not a mode
+picker. Its Impressions/CTR cards only read saved Reach data and expose Pending,
+unloaded or partial coverage; use Reach's own control to check Google.
+Preserve these controls and cache semantics in the Muse artifact/executor.
+
+Content is a separate per-channel modal tab for available uploads, beyond the
+top-five summary. Use the current native Content captures: compact Catalog /
+Performance / Earnings controls with independent Load/Refresh and timestamps,
+one loaded-page search/sort bar, a dense scrolling video table and explicit
+Load older uploads. Keep catalog collection (50 IDs max per action), page metrics
+and money separate in the executor as well as the UI. Opening Content is a cache
+read, not setup-time permission to scan every video. A period change reads its
+saved performance or stays unloaded; page navigation over loaded pages is cached.
+Per-video impressions/CTR read the existing Reach index. Comments are current
+catalog totals, not selected-period comments. Follow development-principles and
+the data contract for exact fields, privacy, ownership and query combinations.
+
+Content has one page-local header Load/Refresh: Performance plus already-loaded
+Earnings for the selected page/period, combined in one compatible query when
+both requested and granted, with one Catalog page first only if absent.
+Catalog refresh remains explicit for new uploads. Keep Earnings visible near
+Views/Engaged views with Not loaded/permission/empty states; show Engaged share
+as a local same-period percentage. Missing-period text directs the user to
+Refresh Content rather than leaving unexplained blanks. Pin the video column
+and table header, keep a top horizontal scrollbar with left/right controls, and
+put page navigation above the bounded table. Panning is local and remembers
+its position without refreshing data.
+Content defaults to Available (bounded up to 730 days), independently from other
+topics' 30d window; restore each period/custom date selection when switching.
+Cache Google's direct period aggregate, rather than claiming exact smaller-range
+totals from daily sums/weighted averages. Group refreshes remain independent;
+an access/metric rejection of the combined query allows one basic fallback only.
+
+Keep main actions in a compact subtly framed group with a bright teal primary
+Refresh and a timestamp below the action row, Tips behind an explicit
+toggle, filters in one responsive row, and earnings totals in a thin strip with
+channel coverage visible and longer cutoff details in tooltips. Display the
+connected account beside channel identity in Statistics and report headers,
+with Studio links and full Privacy handling. Show Gmail/Googlemail values,
+other saved identities as Brand, and missing metadata as Email not saved.
+The project manager in API information is a separate field.
 
 Keep Refresh overview at page level and Refresh [current report] inside the
 modal. Detail caches survive channel/tab changes and overview refresh; old

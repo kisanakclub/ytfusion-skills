@@ -1,6 +1,6 @@
 ---
 name: ytfusion-channel-analytics
-description: Read connected YouTube channel statistics and publishing schedules, and build or update a private Muse dashboard following current YtFusion channel-stats and bundled visual references. Use for channel comparisons, views, watch time, revenue, charts and publication cadence; schedule edits require a separate assigned action.
+description: Read connected YouTube channel statistics, video catalogs and publishing schedules, and build or update a private Muse dashboard following current YtFusion channel-stats and bundled visual references. Use for channel comparisons, video performance, views, watch time, revenue, charts and publication cadence; schedule edits require a separate assigned action.
 ---
 
 # YtFusion Channel Analytics
@@ -10,6 +10,10 @@ instance assignment and credentials. Build the requested report or dashboard;
 do not repeat account setup when a valid connection already exists.
 
 ## Choose the surface
+
+For dashboard setup or development, follow [the development principles](references/development-principles.md)
+and the assigned source's `docs/CHANNEL_STATISTICS_PRODUCT_PRINCIPLES.md`.
+Adding metrics must preserve manual collection boundaries and cached navigation.
 
 - For a quick question, return the requested figures, dates and a short
   explanation. Do not create an app for every statistics question.
@@ -40,6 +44,9 @@ do not repeat account setup when a valid connection already exists.
 3. Refresh within the task scope, keep the last successful snapshot per channel,
    and isolate channel failures. A connected account is not proof that Analytics
    or revenue permissions are available. Distinguish absent data from zero.
+   Optional Demographics, Viewing habits, Top videos and Average video length stay cache-only
+   until their own Load/Refresh is requested; a general refresh must not expand
+   into all optional reports. Follow the data contract and bundled UI references.
 4. If a required connection/API/grant is actually missing, explain that precise
    blocker. When installed, reuse `ytfusion-operations` for account/project setup;
    do not create clients, broaden grants or reauthenticate merely to build a UI.

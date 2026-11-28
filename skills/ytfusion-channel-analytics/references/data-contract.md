@@ -11,6 +11,7 @@ implementation has these entry points:
 | `GET /api/channel-statistics` | Cache payload: `success`, `channels`, `last_updated`; no cache is an empty list, not proof of no connected channels |
 | `POST /api/channel-statistics/refresh` | Fetch connected native channels, write cache, return channel results; per-channel errors may coexist with top-level success |
 | `POST /api/channel-statistics/detail` | Same-origin `X-Requested-With: YtFusion` request with required `channel`, `period`, `section`, optional Boolean `refresh`, custom `start`/`end`, and traffic `source`; manual aggregate/country/RPM/Reach/Traffic cache |
+| `POST /api/channel-statistics/content` | Same guard; `channel`, `period`, optional `action` (peek/catalog/more/performance/earnings/performance_earnings), integer zero-based `page`, custom `start`/`end`; independent paged catalog and report collection |
 | `GET /api/status`, `GET /api/categories` | Native worker/category context used by the page; optional when the executor does not run native workers |
 | `fetch_channel_statistics`, `fetch_channel_analytics` in `src/app.py`; `src/channel_analytics.py` | Channel credentials, Data API identity/status/totals, dated independent Analytics reports and calendar aggregation |
 | `src/channel_insights.py`, `src/channel_reach.py` | Connection-bound persistent detail cache, one-day Reach imports, revision replacement and weighted CTR |
@@ -21,6 +22,15 @@ Use an existing authenticated session, preserve origin/CSRF checks and never imp
 `src/app.py` into a helper just to call it. Inspect responses for per-channel
 and per-metric errors. Native refresh can fetch more channels than assigned: keep
 unassigned records out of the artifact's server response and exported data.
+
+Statistics rows include locally recorded `account_email` from the channel's
+authorization metadata (`config.json:gcp_email` in native). This is separate from
+`google_project.owner`; do not infer a manager Gmail for a Brand identity. Show
+Gmail/Googlemail values in the table and dialog header, other saved identities
+as Brand by user preference, and missing values as Email not saved. This display
+convention is not proof of ownership. Mask the account and Studio link in Privacy.
+Reading saved metadata makes no userinfo/Google request and does not rewrite
+report retrieval times.
 
 For an independent executor, inventory actual assigned connections instead of
 assuming native folders exist. Keep credential loading/refresh in the trusted
@@ -51,7 +61,7 @@ attempt every possible Analytics dimension for a simple dashboard.
 ## Efficient overview and on-demand details
 
 The native table refresh passes `overview_only=True` to `fetch_reports`.
-It combines daily `views,estimatedMinutesWatched` in one query, preserves the
+It combines daily `views,estimatedMinutesWatched,subscribersGained,subscribersLost,engagedViews` in one query, preserves the
 365-day Watch Hrs window, and retains up to 730 days for graphs. Revenue remains
 an independent query. RPM becomes `on_demand`; a modal request gets the matching
 joint revenue/views/engagedViews series. The helper's default full-report mode
@@ -83,9 +93,18 @@ period can still need one aggregate. Missing dates are not zero. A manual refres
 can update an old daily basis for this channel without refreshing all channels.
 
 - Overview shares dashboard views/watch-time series; its exact period averages
-  are one query with views/watch time/average duration/average percentage.
+  and gained/lost/net subscribers share one query. A daily net-subscriber graph
+  subtracts same-date lost from gained in the existing daily query.
+  Include `engagedViews` in that same aggregate; daily `reports.engaged_views`
+  comes from the existing combined daily query. Plot Views and Engaged views
+  simultaneously with distinct colors, one legend and a shared date tooltip;
+  never replace this with a choice between the two. Missing days stay gaps.
+  Total subscribers is the saved Data API count, not period growth. Keep the
+  subscriber graph selectable on old caches and expose missing history with the
+  existing Refresh Overview action instead of a disabled control.
 - Audience is one country query (paginate when necessary), with same-period
-  channel totals as denominator. Withheld countries stay unreported.
+  channel totals as denominator, plus average duration and average percentage.
+  Withheld countries stay unreported.
 - Earnings stays independent from basic activity and its dates/permissions.
   RPM combines daily revenue/views/engagedViews in one query; cache at least the
   requested range and a useful 90-day daily window, then reuse it for smaller
@@ -101,6 +120,121 @@ can update an old daily basis for this channel without refreshing all channels.
   with the exact per-feature aggregate table. Do not invent per-feature daily
   series. Browse detail `PP` matched Personalized playlists in the pilot Studio
   comparison; preserve unknown returned codes instead of guessing labels.
+
+Suggested rows keep exact case-sensitive video IDs, including `_` and `-`.
+Expose `video_title` and canonical `video_url`, and preserve all traffic metrics
+when a title is missing. The native decorator enriches old saved traffic reports
+without re-querying Analytics or rewriting `fetched_at`. Resolve titles through
+YouTube Data API `videos.list(part=snippet,id=comma-separated IDs)` in batches of
+up to 50; do not combine `maxResults` with `id`. Top-25 Suggested normally needs
+one extra Data API request/unit on first use. Cache titles per connection across
+periods for 30 days, omitted titles for one day, and failed lookups for five
+minutes; explicit Suggested refresh may renew titles. Keep title retrieval time
+separate (`video_titles_fetched_at`) and count the current metadata calls via
+`video_titles_usage`, also included in `current_usage`. Listing metadata may omit
+inaccessible videos; do not infer deleted/private status from an omission.
+
+## Optional cards never load automatically
+
+Additional native sections `demographics`, `viewing`, `videos`, `video_lengths` use the same detail
+endpoint. Without `refresh:true` they read only the saved snapshot for that
+verified connection/period, returning `status:not_loaded` on a miss. No Google
+request, credential renewal, identity probe, daily-basis refresh or Reporting job
+is started. Keep the same rule in an independent Muse executor: opening a card,
+changing tabs/periods or refreshing the main table must not prefetch these groups.
+
+Each group has its own Load data / Refresh button, retrieval time, requested
+Pacific dates and failure state. Explicit refresh fetches only that group, keeps
+the last success on failure and uses the known overview cutoff. Main, Overview
+and country refreshes do not cascade to these groups. A new period with no saved
+report stays unloaded until requested; returning to a saved period makes no
+Google request. Reject late results for another channel/period.
+
+- Demographics: one `ageGroup,gender` / `viewerPercentage` query gives both cards
+  by summing joint cells into margins. Keep privacy limitations explicit.
+- Viewing habits: one `deviceType,subscribedStatus` query with views and watch
+  minutes gives device and subscribed/not-subscribed watch-time shares.
+- Top videos: one `dimensions=video`, `sort=-views`, `maxResults=5` query gives
+  views, engaged views, watch time, average duration and percentage. Resolve missing metadata
+  through one batched `videos.list(part=snippet,contentDetails)` call. Cache across
+  periods up to 30 days (one day missing / five minutes failed). Keep Analytics
+  usable on metadata failure. Cache-only reads omit expired metadata, without
+  silently renewing it. Show original ISO video length separately from average
+  watch duration. Do not scan playlists/search or call each video separately.
+  Add impressions and weighted CTR per video only from saved Combined Reach
+  imports, marking partial coverage. Never trigger Reporting from this card.
+  Retain `video_id` daily aggregates when importing the same CSV; a legacy
+  channel-only index must not become zero per video. The next explicit Reach
+  refresh can backfill still-available files once, without rolling a newer
+  revision/cursor back. Empty revisions replace prior video aggregates too.
+- Average video length (`video_lengths`) is a separate Overview card, with its
+  own Load/Refresh. One Analytics query requests at most 200 ranked video IDs
+  with views in the selected period. Average positive actual runtimes, unweighted
+  per video, using the shared metadata cache in batches of at most 50 IDs.
+  Display known/returned video counts and dates. If 200 rows are returned, label
+  Top 200 only; omit missing durations and never call a top-5 or bounded sample
+  the whole channel's runtime. At most four cold Data API batches; no automatic
+  scan or request to infer an average. Expired metadata does not auto-refresh.
+
+Overview also reuses the saved Reach snapshot for Impressions and weighted CTR.
+It must not call Reporting or initialize a job. Surface Pending / Not loaded /
+no selected-period coverage / partial coverage rather than zero. Reach keeps its
+own control and timestamp. Returning after a Reach refresh reads the latest
+saved Reach state without re-querying Overview Analytics.
+
+Do not invent Studio's unique monthly audience, active-hour heatmap, notification
+bell percentage or New/Casual/Regular groups. Do not call the top-5 average length
+the channel's average video duration. No new API/client/grant is needed for these
+non-monetary queries when the existing Analytics and Data connection works.
+
+## Content catalog and page reports
+
+Read `src/channel_content.py`, `src/static/js/channel_content.js` and the source
+product principles. Content is a separate modal tab, not Reach or the top-five
+summary. The response contains catalog/performance/earnings states, videos, page,
+loaded pages/videos, has_more, cached Reach, actual current_usage and project.
+
+The default `action:peek`, period changes and cached-page navigation make no
+Google calls. Catalog / more are explicit single-page uploads reads (max 50 IDs),
+plus one metadata batch with snippet/contentDetails/status/statistics. Missing
+uploads metadata may add one channel lookup. Verify snippet.channelId; never
+accept arbitrary frontend IDs/page tokens or reuse another connection's catalog.
+Refresh Catalog renews that page's current metadata and restarts newest-first
+pagination. More appends one page; do not loop over the whole catalog on setup.
+
+Performance is one `dimensions=video` Analytics query with the selected page IDs
+in the multi-value `video` filter, plus compatible views/engaged views/watch time/
+average duration/percentage. Earnings is optional, using the existing grant.
+`performance_earnings` collects both in one compatible aggregate when requested;
+group controls still request only their own group. Missing monetary permission
+skips money; an access/metric rejection permits at most one basic-only fallback,
+not a retry on quota, disabled API or 5xx errors. Save distinct group states and
+count failed attempts in actual usage. Cache both by connection, period/custom dates and exact ID
+selection. Never prefetch either group with Catalog or when another period opens.
+Keep old successes/dates on failure and missing rows unavailable, not zero.
+Use direct period aggregates as the numerical source. Daily rows summed or
+reweighted locally can differ through rounding/granularity; they are not an
+exact replacement for another period's aggregate. Content defaults to Available
+(up to 730 days), with a separate period/custom-date window from other topics.
+
+The page-local Content header action is an explicit composition: load one Catalog
+page only if missing, then Performance, plus Earnings only if this page/period
+previously loaded it, combining those metrics in one query. Individual Catalog actions still fetch metadata only.
+Never refresh another page, scan the full catalog, or silently enable monetary
+collection. Date changes read snapshots; explain missing selections with Use
+Refresh Content, distinct from no-data, failed refresh and empty filters.
+
+Keep Earnings visible beside Views/Engaged views even while Not loaded or missing
+permission. Engaged share is the same-query `engagedViews / views * 100`, with
+undefined zero/missing denominators. Pin video/header cells in a bounded scroll
+viewport; the top scrollbar, arrow controls, keyboard/touch scrolling and cached
+pagination make no Google request.
+
+Decorate rows with saved per-video Reach only; no jobs/checks/downloads from
+Content. Comments are Data API totals; period performance/earnings have their own
+dates. Show which page and how many uploads are loaded. Label search/sort as this
+page; never imply it ranked unloaded videos. Apply Privacy to titles, URLs,
+thumbnails and revenue. Catalog remains usable independently from Analytics.
 
 ## Thumbnail impressions and CTR
 
@@ -189,6 +323,20 @@ Official references: [Analytics reports](https://developers.google.com/youtube/a
   unknowns as zero, mix currencies, or silently combine different report dates.
 
 ### Latest reported day and two-day columns
+
+The modal also offers **Last 48h*** (`period:48h`): select the latest two
+consecutive daily reporting dates ending at the saved cutoff, retaining gaps.
+Show the actual dates and a visible non-realtime cue. This is not Studio's
+rolling realtime 48-hour report. Reuse the same per-period caches and wide daily
+series; do not interpret the string 48h as 48 days or issue hourly queries.
+Engaged views can show `engagedViews / views * 100` from the same period aggregate,
+without another API call. Missing/zero Views makes that ratio unavailable; zero
+Engaged views with positive Views gives 0%.
+
+Impressions/CTR cells show cached availability: Pending, Not loaded, No data,
+API/access/quota failure, or Not reported when no matching saved row exists.
+Do not use a bare dash or fabricate zero. For a saved row with zero impressions,
+keep impressions 0 and explain CTR as No impressions; a valid CTR 0 remains 0.0%.
 
 For channel-stats-style short summaries, expose sortable **24h\*** and **48h\***
 views columns. Keep a compact visible note: **Latest reported day / two days ·
